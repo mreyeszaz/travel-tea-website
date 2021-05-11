@@ -1,0 +1,43 @@
+[[extend 'layout.html']]
+
+<div class="section">
+  <h1 class="title">Feed</h1>
+</div>
+
+<div class="section" id="vue-target">
+    <div class="container block">
+      <button @click="set_add_status(true)" class="button is-primary">
+        <i class="fa fa-plus fa-fw"></i>
+      </button>
+    </div>
+
+    <div v-if="add_mode" class="container block">
+      <div class="field">
+        <p class="control">
+          <input class="input" type="text" placeholder="Enter new post here" v-model="new_comment" />
+        </p>
+      </div>
+      <button class="button is-primary" @click="add_comment" >Post</button>
+      <button class="button is-warning" @click="cancel_comment" >Cancel</button>
+    </div>
+
+  <div id="comments" class="block">
+    <!-- Here will go the comments. -->
+    <div v-for="c in comment_list" class="block">
+      <div class="box">
+        {{c}}
+        <div class="field is-grouped is-grouped-right">
+          <button @click="delete_post(c._idx)" class="button is-danger">
+              <span class="icon is-small">
+                <i class="fa fa-trash"></i>
+              </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+[[block page_scripts]]
+<script src="js/feed.js"></script>
+[[end]]

@@ -31,10 +31,42 @@ from .common import db, session, T, cache, auth, logger, authenticated, unauthen
 from py4web.utils.url_signer import URLSigner
 from .models import get_user_email
 
+import uuid
+import random
+
 url_signer = URLSigner(session)
+
 
 @action('index')
 @action.uses(db, auth, 'index.html')
 def index():
     print("User:", get_user_email())
     return dict()
+
+
+@action('profile')
+@action.uses(db, auth.user, 'profile.html')
+def profile():
+    return dict()
+
+
+@action('feed')
+@action.uses(db, auth.user, 'feed.html')
+def feed():
+    return dict()
+
+
+@action('discover')
+@action.uses(db, auth.user, 'discover.html')
+def discover():
+    return dict(
+        search_url = URL('search', signer=url_signer),
+    )
+
+
+@action('search')
+@action.uses()
+def search():
+    q = request.params.get("q")
+    results = [q + ":" + str(uuid.uuid1()) for _ in range(random.randint(2, 6))]
+    return dict(results=results)
