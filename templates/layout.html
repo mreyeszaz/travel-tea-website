@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="data:image/x-icon;base64,AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAAAAAA=="/>
-    <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="css/mystyle.css">
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
     [[block page_head]]<!-- individual pages can customize header here -->[[end]]
   </head>
@@ -14,11 +14,8 @@
     <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="[[=URL('index')]]">
-          Learn py4web
-          <!-- <img class="logo" width="150" src="images/site_icon.png"> -->
+          <img src="../static/imgs/travel-tea-logo-transparent-tight.png" alt="">
         </a>
-
-
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="the-navbar-menu"
            onclick="this.classList.toggle('is-active');document.getElementById(this.dataset.target).classList.toggle('is-active');">
           <span aria-hidden="true"></span>
@@ -26,7 +23,6 @@
           <span aria-hidden="true"></span>
         </a>
       </div>
-
       <div id="the-navbar-menu" class="navbar-menu">
         <div class="navbar-start">
           [[block page_menu_items]]<!-- individual pages can add menu items here -->[[end]]
