@@ -27,4 +27,17 @@ db.define_table(
     Field('biography', 'string'),
 )
 
+db.define_table('posts',
+                Field('post_text', default=""),
+                Field('name', default=""),
+                Field('email', default=get_user_email()),
+                )
+
+db.define_table('likes',
+                Field('is_like', 'boolean'),
+                Field('post', 'reference posts'),
+                Field('name', default=""),
+                Field('email', default=get_user_email()),
+                )
+
 db.commit()
