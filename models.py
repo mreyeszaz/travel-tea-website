@@ -27,33 +27,4 @@ db.define_table(
     Field('biography', 'string'),
 )
 
-db.define_table(
-    'country',
-    Field('name', 'string'),
-    Field('biography', 'string'),
-    Field('places', 'refernce place')
-)
-
-db.define_table(
-    'place',
-    Field('name', 'string'),
-    Field('country', 'reference country'),
-    Field('type', 'string')
-)
-
-db.define_table(
-    'post',
-    Field('username', 'reference user'),
-    Field('content', 'string'),
-    Field('likes', 'int'),
-    Field('comments', 'string')
-)
-
-db.define_table(
-    'comment',
-    Field('post', 'refernece post'),
-    Field('username', 'reference user'),
-    Field('content', 'string'),
-)
-
 db.commit()
