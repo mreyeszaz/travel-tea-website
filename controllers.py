@@ -244,7 +244,8 @@ def resources():
 @action('review')
 @action.uses(auth.user, 'review.html')
 def review():
-    rows = db(db.review.user_email == get_user_email()).select()
+    # rows = db(db.review.user_email == get_user_email()).select()
+    rows = db(db.review).select()
     return dict(rows=rows, url_signer=url_signer)
 
 
