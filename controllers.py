@@ -110,6 +110,7 @@ def delete_profilepic():
 def feed():
     r = db(db.auth_user.email == get_user_email()).select().first()
     n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+    curr_username = r.username
     return dict(
         # COMPLETE: return here any signed URLs you need.
         get_posts_url=URL('get_posts', signer=url_signer),
@@ -120,7 +121,8 @@ def feed():
         flip_like_url=URL('flip_like', signer=url_signer),
         delete_like_url=URL('delete_like', signer=url_signer),
         curr_email=get_user_email(),
-        curr_name=n
+        curr_name=n,
+        curr_username=curr_username
     )
 
 
@@ -150,13 +152,14 @@ def get_posts():
 @action.uses(db, auth.user, url_signer.verify())
 def add_post():
     r = db(db.auth_user.email == get_user_email()).select().first()
-    n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+    n = r.username if r is not None else "Unknown"
     pid = db.posts.insert(
         post_text=request.json.get('post_text'),
-        name=n,
+        username=n,
         email=get_user_email(),
     )
-    return dict(id=pid, name=n, email=get_user_email())
+    print(n)
+    return dict(id=pid, username=n, email=get_user_email())
 
 
 @action('delete_post')

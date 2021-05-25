@@ -42,7 +42,7 @@ db.define_table(
 
 db.define_table('posts',
                 Field('post_text', default=""),
-                Field('name', default=""),
+                Field('username', default=""),
                 Field('email', default=get_user_email()),
                 Field('user', reference=auth)
                 )
