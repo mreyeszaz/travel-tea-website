@@ -1,24 +1,63 @@
 [[extend 'layout.html']]
 
-<div class="section">
+<div class="section" id="vue-target-profile">
+   <div class="container">
    <div class="columns">
       <div class="column is-one-third">
-         <h1 class="title"> Name </h1>
+         <h1 class="title"> [[=user_name]]'s Profile </h1>
 
-         <figure class="image is-128x128">
-            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
-         </figure>
+         <!-- profile picture -->
+         <div class="block" v-if="!thumbnail">
+            <p class="control">
+               <div class="file is-info">
+                     <label class="file-label">
+                        <input class="file-input" type="file"
+                               accept=".jpg, .png. jpe, .gif, .bmp, .tif, .tiff|image/*"
+                               @change="upload_file($event)">
+                        <span class="file-label">
+                           <div class="container">
+                              <p>
+                                 <figure class="image is-128x128">
+                                    <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                                 </figure>
+                              </p>
+                              <p>
+                                 <span><i class="fa fa-upload"></i>Upload a profile picture</span>
+                              </p>
+                           </div>
+                        </span>
+                     </label>
+               </div>
+            </p>
+         </div>
+         <div class="container" v-if="thumbnail" >
+            <img width="200" :src="thumbnail" />
+               <button class="button" @click="delete_profilepic">
+                 <span><i class="fa fa-trash"></i></span>
+               </button>
+         </div>
 
-         <table class="table">
-            <thead>
-               <th>Following</th>
-               <th>Tea Spilt</th>
-            </thead>
-            <tbody>
-               <td>#</td>
-               <td>#</td>
-            </tbody>
-         </table>
+         <!--<div>
+            <div v-for="p in post_list" class="block">
+               <div class="box" v-if="p.email == '[[=curr_email]]'">
+                   &lt;!&ndash; display number of posts that user has made &ndash;&gt;
+                  <p> 1 </p>
+               </div>
+            </div>
+         </div>-->
+
+         <div class="block">
+            <table class="table">
+               <thead>
+                  <th>Following</th>
+                  <th>Tea Spilt</th>
+               </thead>
+               <tbody>
+                  <td>#</td>
+                  <td>#</td>
+               </tbody>
+            </table>
+         </div>
       </div>
       <div class="column">
          <div class="box">
@@ -70,6 +109,14 @@
          <div class="box">Tea ...</div>
       </div>
    </div>
+   </div>
 </div>
 
- <button class="button is-right">Settings</button>
+
+[[block page_scripts]]
+<script>
+   let upload_thumbnail_url = "[[=XML(upload_thumbnail_url)]]";
+   let delete_profilepic_url = "[[=XML(delete_profilepic_url)]]";
+</script>
+<script src="js/profile.js"></script>
+[[end]]

@@ -39,6 +39,17 @@ let init = (app) => {
                 likers: [],
                 dislikers: [],
             });
+
+            //traverse post list after an insertion
+            for(let i = 0; i < app.vue.post_list.length; i++) {
+                    if(app.vue.post_list[i].email === response.data.email) {
+                        app.vue.post_list[i].liked = 1;
+                        app.vue.post_list[i].like_id = response.data.id;
+                        app.vue.post_list[i].likers.push(curr_user);
+                        break;
+                    }
+            }
+
             app.enumerate(app.vue.post_list);
             app.cancel_post();
         });
@@ -235,7 +246,7 @@ let init = (app) => {
 
     // This creates the Vue instance.
     app.vue = new Vue({
-        el: "#vue-target",
+        el: "#vue-target-feed",
         data: app.data,
         methods: app.methods
     });

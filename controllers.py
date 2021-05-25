@@ -30,25 +30,80 @@ from yatl.helpers import A
 from .common import db, session, T, cache, auth, logger, authenticated, unauthenticated, flash
 from py4web.utils.url_signer import URLSigner
 from .models import get_user_email
+from py4web.utils.form import Form, FormStyleBulma
 
 import uuid
 import random
 
 url_signer = URLSigner(session)
 
+
+def user_name():
+    user = db(db.auth_user.email == get_user_email()).select().first()
+    return user.first_name + " " + user.last_name if user else None
+
+
 # controller for each page on website
 
 @action('index')
 @action.uses(db, auth, 'index.html')
 def index():
-    print("User:", get_user_email())
-    return dict()
+    # print("User:", get_user_email())
+    return dict(name=user_name())
 
 
 @action('profile')
 @action.uses(db, auth.user, 'profile.html')
 def profile():
-    return dict()
+    return dict(
+        user_name=user_name(),
+        upload_thumbnail_url=URL('upload_thumbnail', signer=url_signer),
+        delete_profilepic_url=URL('delete_profilepic', signer=url_signer),
+        curr_email=get_user_email(),
+        # get_profile_url=URL('get_profile', signer=url_signer),
+        # add_thumbnail_url=URL('add_thumbnail', signer=url_signer),
+    )
+
+
+# controllers needed for profile.html
+
+
+@action('upload_thumbnail', method="POST")
+@action.uses(db, auth, url_signer.verify())
+def upload_thumbnail():
+    # name = db(db.auth_user.email == get_user_email()).first_name
+    # tl = request.json.get("tl")
+    # db(db.user.id).update(thumbnail=tl)
+    # db(db.user.id).update(thumbnail=thumbnail)
+    return "ok"
+
+
+@action('delete_profilepic', method="POST")
+@action.uses(db, auth.user, url_signer.verify())
+def delete_profilepic():
+    db(db.user.user_email == get_user_email()).thumbnail = ""
+    return "ok"
+
+#
+# @action('get_profile')
+# @action.uses(db, url_signer.verify())
+# def get_profile():
+#     users = db(db.user).select().as_list()
+#
+#     return dict(users=users)
+
+
+# @action('add_thumbnail')
+# @action.uses(db, auth.user, url_signer.verify())
+# def add_thumbnail():
+#     r = db(db.auth_user.email == get_user_email()).select().first()
+#     n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+#     uid = db.user.insert(
+#         user_email=get_user_email(),
+#         user_name=n,
+#         thumbnail=request.json.get('thumbnail'),
+#     )
+#     return dict(id=uid, email=get_user_email())
 
 
 @action('feed')
@@ -68,22 +123,6 @@ def feed():
         curr_email=get_user_email(),
         curr_name=n
     )
-
-
-@action('discover')
-@action.uses(db, auth.user, 'discover.html')
-def discover():
-    return dict(
-        search_url = URL('search', signer=url_signer),
-    )
-
-
-@action('search')
-@action.uses()
-def search():
-    q = request.params.get("q")
-    results = [q + ":" + str(uuid.uuid1()) for _ in range(random.randint(2, 6))]
-    return dict(results=results)
 
 
 # controllers needed for feed.html
@@ -167,3 +206,55 @@ def delete_like():
     assert like_id is not None
     db(db.likes.id == like_id).delete()
     return "ok"
+
+
+# more page controllers
+
+
+@action('discover')
+@action.uses(db, auth.user, 'discover.html')
+def discover():
+    return dict(
+        search_url=URL('search', signer=url_signer),
+    )
+
+# search controller for discover page
+
+
+@action('search')
+@action.uses()
+def search():
+    q = request.params.get("q")
+    results = [q + ":" + str(uuid.uuid1()) for _ in range(random.randint(2, 6))]
+    return dict(results=results)
+
+
+@action('faq')
+@action.uses(auth, 'faq.html')
+def faq():
+    return dict()
+
+
+@action('resources')
+@action.uses(auth.user, 'resources.html')
+def resources():
+    return dict()
+
+
+@action('review')
+@action.uses(auth.user, 'review.html')
+def review():
+    rows = db(db.review.user_email == get_user_email()).select()
+    return dict(rows=rows, url_signer=url_signer)
+
+
+@action('reviewForm', method=["GET", "POST"])
+@action.uses(db, session, auth.user, 'reviewForm.html')
+def reviewForm():
+    # Insert form: no record= in it.
+    revForm = Form(db.review, csrf_session=session, formstyle=FormStyleBulma)
+    if revForm.accepted:  # post request
+        # We simply redirect; the insertion already happened.
+        redirect(URL('review'))
+    # Either this is a GET request, or this is a POST but not accepted = with errors.
+    return dict(form=revForm)

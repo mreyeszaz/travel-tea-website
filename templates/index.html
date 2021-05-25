@@ -1,6 +1,7 @@
 [[extend 'layout.html']]
 
-<section class="hero is-fullheight">
+<!--<section class="hero is-fullheight">-->
+<section>
 
    <div class="container column is-one-third has-text-centered mb-5">
       <div class="image">
@@ -8,6 +9,16 @@
       </div>
       <p class="subtitle is-4 has-text-light pt-1">One-stop for travel advice and more.</p>
    </div>
+
+   [[if name:]]
+   <div class="columns">
+      <div class="column is-7 container">
+         <div class="notification is-success has-text-centered is-half" style="border-radius: 15px;">
+            <h2 class="title">You're logged in [[=name]]!</h2>
+         </div>
+      </div>
+   </div>
+   [[pass]]
 
    <div class="container pt-6">
       <div class="tile is-ancestor mt-10">
@@ -26,7 +37,7 @@
                      <div class="column is-full">
                         <a class="button is-primary is-rounded is-fullwidth" href="[[=URL('discover')]]">
                            <div class="container has-text-centered">
-                              Explore
+                              <h2 class="subtitle is-4">Discover</h2>
                            </div>
                         </a>
                      </div>
@@ -41,12 +52,14 @@
                <p class="subtitle is-5 pt-5 has-text-primary mb-0">Why sign up?</p>
                <p class="subtitle is-5 mt-0 pt-0">Join in the fun and learn fascinating facts about all of your favorite or soon-to-be favorite locations!</p>
                <p class="subtitle is-5 has-text-primary mb-0">What to expect?</p>
-               <p class="subtitle is-5 mt-0 pt-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic ab possimus harum quo ut maxime aspernatur, architecto officiis molestias iste?</p>
-
+               <p class="subtitle is-5 mt-0 pt-0">
+                  TravelTea is an interactive website between users. Users can post reviews about the places
+                  they have traveled to as well as like and comment on other users' reviews.
+               </p>
 
                <a class="button is-primary is-rounded is-fullwidth" href="[[=URL('auth/register')]]">
                   <div class="container has-text-centered">
-                     Sign Up
+                     <h2 class="subtitle is-4">Sign Up</h2>
                   </div>
                </a>
             </div>
@@ -57,20 +70,24 @@
          <div class="tile is-parent">
             <div class="tile is-child notification has-text-white-bis has-background-grey-dark" style="border-radius: 20px;">
                <p class="title is-3">General Information</p>
-               <p class="subtitle is-5 has-text-primary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, voluptas.</p>
-               <a href="" style="text-decoration: none;">
+               <p class="subtitle is-5 has-text-primary">
+                  TravelTea's mission is to provide users with a common resource to find the best places
+                  to travel. Users can read other users first hand experience that can help them decide if they would
+                  like to travel there next.
+               </p>
+                  <!--<a href="" style="text-decoration: none;">
                   <span class="icon"><i class="fa fa-arrow-circle-right fa-2x" style="color: #fff;"></i></span>
-               </a>
+               </a>-->
             </div>
          </div>
          <div class="tile is-parent">
             <div class="tile is-child notification has-text-white-bis has-background-grey-dark" style="border-radius: 20px;">
-               <p class="title is-3">Visit Random Location</p>
+               <p class="title is-3">Resources</p>
                <p class="subtitle is-5 has-text-primary">
-                  Feeling lucky?
+                  See our common resources page for travel including flight, hotel, and rental car information.
                </p>
                <br>
-               <a href="" style="text-decoration: none;">
+               <a href="[[=URL('resources')]]" style="text-decoration: none;">
                   <span class="icon"><i class="fa fa-arrow-circle-right fa-2x" style="color: #fff;"></i></span>
                </a>
             </div>
@@ -79,7 +96,7 @@
             <div class="tile is-child notification has-text-white-bis has-background-grey-dark" style="border-radius: 20px;">
                <p class="title is-3">FAQ</p>
                <p class="subtitle is-5 has-text-primary">A place to get answers to common questions</p>
-               <a href="" style="text-decoration: none;">
+               <a href="[[=URL('faq')]]" style="text-decoration: none;">
                   <span class="icon"><i class="fa fa-arrow-circle-right fa-2x" style="color: #fff;"></i></span>
                </a>
             </div>
@@ -89,7 +106,18 @@
 </section>
 
 <section>
-   <div class="container">
+   <div class="notification mt-6">
+      <div class="container has-text-centered">
+         <h2 class="title is-4">How it Works:</h2>
+      </div>
+      <div class="content container pb-4">
+         <ol class="subtitle">
+            <li>Sign up and Log in to unlock the ability to create posts and share travel expertise</li>
+            <li>Update your profile with a profile picture and start exploring</li>
+            <li>Visit the Discover page to view new locations and get detailed feedback straight from another traveler </li>
+            <li>Create a post of your own, and share your visits to provide valuable traveling insight to the TravelTea community</li>
+         </ol>
+      </div>
       
    </div>
 </section>
