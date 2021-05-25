@@ -46,9 +46,8 @@ def user_name():
 # controller for each page on website
 
 @action('index')
-@action.uses(db, auth, 'index.html')
+@action.uses(db, auth, session, 'index.html')
 def index():
-    # print("User:", get_user_email())
     return dict(name=user_name())
 
 

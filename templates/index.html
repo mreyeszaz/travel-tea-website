@@ -46,6 +46,7 @@
             </div>
          </div>
 
+         [[if name == None:]]
          <div class="tile is-parent">
             <div class="tile is-child notification has-text-white-bis has-background-grey-dark" style="border-radius: 20px;">
                <p class="title is-1">Sign Up Now</p>
@@ -57,13 +58,55 @@
                   they have traveled to as well as like and comment on other users' reviews.
                </p>
 
-               <a class="button is-primary is-rounded is-fullwidth" href="[[=URL('auth/register')]]">
-                  <div class="container has-text-centered">
-                     <h2 class="subtitle is-4">Sign Up</h2>
+               <div class="columns">
+                  <div class="column">
+                     <a class="button is-primary is-rounded is-fullwidth" href="[[=URL('auth/register')]]">
+                        <div class="container has-text-centered">
+                           <h2 class="subtitle is-4">Sign Up</h2>
+                        </div>
+                     </a>
                   </div>
-               </a>
+                  <div class="column">
+                     <a class="button is-primary is-rounded is-fullwidth" href="[[=URL('auth/login')]]">
+                        <div class="container has-text-centered">
+                           <h2 class="subtitle is-4">Log In</h2>
+                        </div>
+                     </a>
+                  </div>
+               </div>
             </div>
          </div>
+         [[else: ]]
+         <div class="tile is-parent">
+            <div class="tile is-child notification has-text-white-bis has-background-grey-dark" style="border-radius: 20px;">
+               <p class="title is-1">Visit Random Location</p>
+               <p class="subtitle is-5 pt-5 has-text-primary mb-0">Feeling Lucky?</p>
+               <p class="subtitle is-5 mt-0 pt-0">Join in the fun and learn fascinating facts about all of your favorite or soon-to-be favorite locations!</p>
+               <p class="subtitle is-5 has-text-primary mb-0">What to expect?</p>
+               <p class="subtitle is-5 mt-0 pt-0">
+                  TravelTea is an interactive website between users. Users can post reviews about the places
+                  they have traveled to as well as like and comment on other users' reviews.
+               </p>
+
+               <div class="columns">
+                  <div class="column">
+                     <a class="button is-primary is-rounded is-fullwidth" href="[[=URL('auth/register')]]">
+                        <div class="container has-text-centered">
+                           <h2 class="subtitle is-4">Sign Up</h2>
+                        </div>
+                     </a>
+                  </div>
+                  <div class="column">
+                     <a class="button is-primary is-rounded is-fullwidth" href="[[=URL('auth/login')]]">
+                        <div class="container has-text-centered">
+                           <h2 class="subtitle is-4">Log In</h2>
+                        </div>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+         [[pass]]
       </div>
 
       <div class="tile is-ancestor">
