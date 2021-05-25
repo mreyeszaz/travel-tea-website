@@ -10,6 +10,7 @@ from pydal.validators import *
 def get_user_email():
     return auth.current_user.get('email') if auth.current_user else None
 
+
 def get_time():
     return datetime.datetime.utcnow()
 
@@ -20,18 +21,12 @@ def get_time():
 #
 ## always commit your models to avoid problems later
 
-db.define_table(
-    'user',
-    Field('user_email', default=get_user_email, writable=False),
-    Field('username', 'string'),
-    Field('biography', 'string'),
-)
 
 db.define_table(
     'country',
     Field('name', 'string'),
     Field('biography', 'string'),
-    Field('places', 'refernce place')
+    # Field('places', 'reference place')
 )
 
 db.define_table(
@@ -41,17 +36,12 @@ db.define_table(
     Field('type', 'string')
 )
 
-db.define_table(
-    'comment',
-    Field('post', 'refernece post'),
-    Field('username', 'reference user'),
-    Field('content', 'string'),
-)
 
 db.define_table('posts',
                 Field('post_text', default=""),
                 Field('name', default=""),
                 Field('email', default=get_user_email()),
+                Field('user', reference=auth)
                 )
 
 db.define_table('likes',
@@ -60,5 +50,33 @@ db.define_table('likes',
                 Field('name', default=""),
                 Field('email', default=get_user_email()),
                 )
+
+db.define_table('user',
+                Field('user_email', default=get_user_email(), reference=auth, writable=False),
+                Field('user_name', 'string'),
+                Field('biography', 'string'),
+                Field('thumbnail', 'text'),
+                )
+
+
+db.define_table(
+    'comment',
+    Field('post', 'reference posts'),
+    Field('username', 'reference user'),
+    Field('content', 'string'),
+)
+
+
+db.define_table(
+    'review',
+    Field('author', requires=IS_NOT_EMPTY()),
+    Field('user_email', default=get_user_email()),
+    Field('rating', 'integer', default=0, requires=IS_INT_IN_RANGE(0, 11)),
+    Field('description', 'text'),
+)
+
+db.review.id.readable = db.review.id.writable = False
+db.review.author.readable = db.review.author.writable = False
+db.review.user_email.readable = db.review.user_email.writable = False
 
 db.commit()

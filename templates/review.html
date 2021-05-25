@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+[[extend 'layout.html']]
+
+<h1 class="title">TravelTea Reviews</h1>
+<h2 class="subtitle"> Tell us how you like our website</h2>
+
+<div class="section">
+
+    <a class="button is-success" href="[[=URL('reviewForm')]]">
+        <span class="icon"><i class="fa fa-plus"></i></span>
+        <span>Add</span>
+    </a>
+
+    <div class="container">
+        <table class="table is-fullwidth is-striped">
+            <tr>
+                <th>Id</th>
+                <th>Author</th>
+                <th>Rating</th>
+                <th>Description</th>
+                <th></th>
+                <th></th>
+            </tr>
+
+            [[for row in rows:]]
+            <tr>
+                    <td>[[=row.id]]</td>
+                    <td>[[=row.user_email]]</td>
+                    <td>[[=row.rating]]</td>
+                    <td>[[=row.description]]</td>
+                    <td></td>
+            </tr>
+            [[pass]]
+        </table>
+    </div>
+</div>
+
