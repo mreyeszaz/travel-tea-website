@@ -212,7 +212,6 @@ def delete_like():
 
 # more page controllers
 
-
 @action('discover')
 @action.uses(db, auth.user, 'discover.html')
 def discover():
@@ -221,7 +220,6 @@ def discover():
     )
 
 # search controller for discover page
-
 
 @action('search')
 @action.uses()
@@ -261,3 +259,9 @@ def reviewForm():
         redirect(URL('review'))
     # Either this is a GET request, or this is a POST but not accepted = with errors.
     return dict(form=revForm)
+
+@action('random_location', method=["GET"])
+@action.uses(db, auth.user, "random_location.html")
+def random_location():
+    generated_id = 0
+    location = db(db.place.id == generated_id).select().first()
