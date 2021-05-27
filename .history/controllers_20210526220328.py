@@ -191,7 +191,6 @@ def delete_post():
     db((db.post.email == auth.current_user.get("email")) &
        (db.post.id == request.json.get('id'))).delete()
     return "deleted post!"
-
 #get specific rating for the post 
 @action('get_rating')
 @action.uses(db, url_signer.verify(),auth.user)
@@ -255,7 +254,7 @@ def get_thumb():
  #       email=get_user_email(),
  #   )
  #   print(n)
- #   return dict(id=pid, username=n, email=get_user_email())
+    return dict(id=pid, username=n, email=get_user_email())
 
 
 #@action('delete_post')
