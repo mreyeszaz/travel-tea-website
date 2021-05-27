@@ -24,17 +24,6 @@ def get_time():
 #
 ## always commit your models to avoid problems later
 
-db.define_table("post",
-                Field('email', default=get_user_email),
-                Field('content', 'text'),
-                Field('post_date', 'datetime', default=get_time),
-                Field('is_reply', 'reference post'),
-                )
-db.define_table('thumb',
-                Field('user_email', default=get_user_email()),
-                Field('post_id', 'reference post'),
-                Field('rating', 'integer', default=0)
-                )
 
 db.define_table(
     'country',
