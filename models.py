@@ -25,19 +25,16 @@ def get_time():
 ## always commit your models to avoid problems later
 
 
-db.define_table(
-    'country',
-    Field('name', 'string'),
-    Field('biography', 'string'),
-    # Field('places', 'reference place')
-)
+db.define_table('country',
+                Field('name', 'string'),
+                Field('biography', 'string'),
+                )
 
-db.define_table(
-    'place',
-    Field('name', 'string'),
-    Field('country', 'reference country'),
-    Field('type', 'string')
-)
+db.define_table('place',
+                Field('name', 'string'),
+                Field('country', 'reference country'),
+                Field('thumbnail', 'text')
+                )
 
 
 db.define_table('posts',
