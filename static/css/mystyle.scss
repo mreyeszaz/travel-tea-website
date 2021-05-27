@@ -35,9 +35,12 @@ $button-text-hover-background-color: $faded-main-blue;
 @import "bulma/sass/utilities/_all.sass";
 @import "bulma/sass/helpers/_all.sass";
 
-.is-vertical-center {
-  display: flex;
-  align-items: center;
+.centered {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
 }
 
 .is-circular {

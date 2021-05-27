@@ -10198,9 +10198,18 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
     visibility: hidden !important;
   }
 }
-.is-vertical-center {
-  display: flex;
-  align-items: center;
+.background-image {
+  height: 85vh;
+  position: relative;
+  filter: blur(7px);
+}
+
+.centered {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
 }
 
 .is-circular {

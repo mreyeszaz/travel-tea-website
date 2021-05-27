@@ -4,14 +4,68 @@
 
 </div>
 
-<section style="background: url('https://source.unsplash.com/1600x900/?[[=country_name]]') no-repeat center center/cover; height: 100%; position: relative;">
+
+<section style="background: url('https://source.unsplash.com/1600x900/?[[=country_name]]') no-repeat center center/cover; height: 85vh; position: relative;">
+   <div class="notification is-large centered has-text-centered">
+     <div class="title is-1">[[=country_name]]</div>
+     <p class="subtitle">[[=country_bio]]</p>
+   </div>
+</section>
+
+
+
+
+<section class="section">
    <div class="container">
+
+      <div class="title">What [[=country_name]] is known for</div>
       <div class="columns">
-         <div class="column has-text-centered">
-            <div class="card notification is-primary">
-               <h1 class="title is-1">[[=country_name]]</h1>
-            </div>
+         <div class="column">
+            <span class="icon-text">
+               <span class="icon">
+                  <i class="fa fa-anchor fa-lg" aria-hidden="true"></i>
+               </span>
+               <span>Beaches</span>
+            </span>
+            <progress class="progress is-info" value="45" max="100">45%</progress>
          </div>
+         <div class="column">
+            <span class="icon-text">
+               <span class="icon">
+                  <i class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
+               </span>
+               <span>Sight Seeing</span>
+            </span>
+            <progress class="progress is-info" value="45" max="100">45%</progress>
+         </div>
+         <div class="column">
+            <span class="icon-text">
+               <span class="icon">
+                  <i class="fa fa-cutlery fa-lg" aria-hidden="true"></i>
+               </span>
+               <span>Places to eat</span>
+            </span>
+            <progress class="progress is-info" value="45" max="100">45%</progress>
+         </div>
+         <div class="column">
+            <span class="icon-text">
+               <span class="icon">
+                  <i class="fa fa-moon-o fa-lg" aria-hidden="true"></i>
+               </span>
+               <span>Nightlife</span>
+            </span>
+            <progress class="progress is-info" value="45" max="100">45%</progress>
+         </div>
+         <div class="column">
+            <span class="icon-text">
+               <span class="icon">
+                  <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
+               </span>
+               <span>Shopping</span>
+            </span>
+            <progress class="progress is-info" value="45" max="100">45%</progress>
+         </div>
+         
       </div>
    </div>
 </section>
@@ -27,6 +81,6 @@
       document.querySelector('.loading').classList.remove('spinner-1');
       document.querySelector('section').style.display = 'block';
       document.querySelector('.loading').style.display = "none";
-   }, 2800);
+   }, 3000);
 </script>
 [[end]]
