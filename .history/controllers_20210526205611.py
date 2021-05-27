@@ -178,70 +178,6 @@ def get_posts():
 
     return dict(posts=all_posts)
 
-@action('posts',  method="POST")
-@action.uses(db, auth.user)  # Needed stuff put inot action.uses
-def save_post():
-   
-    #id might be NONE 
-    id = request.json.get('id') 
-
-    content = request.json.get('content')
-    is_reply = request.json.get('is_reply')
-
-    if (id == None):
-        id = db.post.insert(
-        content = content,
-        
-        is_reply = is_reply
-        # is_reply = request.json.get('is_reply')
-        )
-    else:
-        db(db.post.id == id).update(content = content, is_reply = is_reply)
-        # db(db.post.id == id).update(content = request.json.get('content'), is_reply = request.json.get('is_reply'))
-
-    #
-    # If id is None=>this means that this is a new post needs te inserted inro db
-    # Else => If id is not None, then it needs to be updated into the db
-    return dict(content=content, id=id)
-
-@action('delete_post',  method="POST")
-@action.uses(db, auth.user, session, url_signer.verify())
-def delete_post():
-    db((db.post.email == auth.current_user.get("email")) &
-       (db.post.id == request.json.get('id'))).delete()
-    return "deleted post!"
-#get specific rating for the post 
-@action('get_rating')
-@action.uses(db, url_signer.verify(),auth.user)
-def get_rating():
-    post_id = request.params.get('post_id')
-    email = auth.current_user.get('email')
-    assert post_id is not None
-    rating_entry = db((db.thumb.post_id == post_id) &
-                      (db.thumb.user_email == email)).select().first()
-                    
-    rating = rating_entry.rating if rating_entry is not None else 0
-    return dict(rating=rating)
-
-
-
-    
-# receives whether thumb set or not
-@action('set_thumb', method="POST")
-@action.uses(url_signer.verify(), auth.user, db)
-def set_thumb():
-    post_id = request.json.get('post_id')
-    email = auth.current_user.get('email')
-    rating = request.json.get('rating')
-    db.thumb.update_or_insert(
-        ((db.thumb.post_id == post_id) & (db.thumb.user_email == email)),
-        user_email=email,
-        post_id=post_id,
-        rating=rating
-    )
-    return "thumb set!"
-
-
 @action('add_post', method='POST')
 @action.uses(db, auth.user, url_signer.verify())
 def add_post():
@@ -256,12 +192,12 @@ def add_post():
     return dict(id=pid, username=n, email=get_user_email())
 
 
-#@action('delete_post')
-#@action.uses(db, auth.user, url_signer.verify())
-#def delete_post():
-#    pid = request.params.get('id')
-#    db(db.posts.id == pid).delete()
-#    return "ok"
+@action('delete_post')
+@action.uses(db, auth.user, url_signer.verify())
+def delete_post():
+    pid = request.params.get('id')
+    db(db.posts.id == pid).delete()
+    return "ok"
 
 
 @action('get_likes')
