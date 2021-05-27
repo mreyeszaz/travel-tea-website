@@ -22,7 +22,7 @@ let init = (app) => {
         return a;
     };
 
-
+    // Adds a new post to the database using a request object
     app.add_post = function(){
         axios.post(add_post_url,{
             //put correct post text into the database
@@ -31,7 +31,7 @@ let init = (app) => {
             app.vue.post_list.push({
                 id: response.data.id,
                 post_text: app.vue.new_post_text,
-                name: response.data.name,
+                username: response.data.name,
                 email: response.data.email,
                 liked: 0,
                 like_id: -1,
@@ -262,8 +262,8 @@ let init = (app) => {
                     }
                 }
             }
-
             app.vue.post_list = posts;
+            console.log(app.vue.post_list);
         });
     };
 

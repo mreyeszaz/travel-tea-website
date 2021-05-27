@@ -56,7 +56,7 @@ db.define_table('posts',
                 Field('post_text', default=""),
                 Field('username', default=""),
                 Field('email', default=get_user_email()),
-                Field('user', reference=auth)
+                Field('user', 'reference auth_user')
                 )
 
 db.define_table('likes',

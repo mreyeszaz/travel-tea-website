@@ -45,6 +45,10 @@ def get_name_from_email(e):
     user = db(db.auth_user.email == e).select().first()
     return "" if user is None else user.first_name + " " + user.last_name
 
+def get_username():
+    curr_user = db(db.auth_user.email == get_user_email()).select().first()
+    return curr_user.username if curr_user is not None else "Unknown"
+
 
 # controller for each page on website
 
@@ -129,24 +133,31 @@ def get_posts():
         post_likes = db(db.likes.post == p["id"]).select()
         p["likers"] = []
         p["dislikers"] = []
+        r = db(db.auth_user.email == p["email"]).select().first()
+        username = r.username
+        p["username"] = username
         for like in post_likes:
             if like["is_like"]:
                 p["likers"].append(like["name"])
             else:
                 p["dislikers"].append(like["name"])
 
-    return dict(posts=posts, likes=likes)
+    return dict(posts=posts, 
+                likes=likes, 
+                curr_user=get_user_email())
 
 
 @action('add_post', method='POST')
 @action.uses(db, auth.user, url_signer.verify())
 def add_post():
     r = db(db.auth_user.email == get_user_email()).select().first()
-    n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+    n = get_username()
     pid = db.posts.insert(
         post_text=request.json.get('post_text'),
-        name=n,
+        username=n,
         email=get_user_email(),
+        user=r.id
+
     )
     return dict(id=pid, name=n, email=get_user_email())
 
