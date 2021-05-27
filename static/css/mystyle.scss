@@ -25,10 +25,6 @@ $button-text-color: $white;
 $button-background-color: $primary;
 $button-text-hover-background-color: $faded-main-blue;
 
-.is-circular {
-  border-radius: 50%;
-}
-
 // Import only what you need from Bulma
 @import "bulma/sass/base/_all.sass";
 @import "bulma/sass/components/_all.sass";
@@ -38,3 +34,11 @@ $button-text-hover-background-color: $faded-main-blue;
 @import "bulma/sass/layout/_all.sass";
 @import "bulma/sass/utilities/_all.sass";
 @import "bulma/sass/helpers/_all.sass";
+
+.is-circular {
+  border-radius: 15px;
+}
+
+.is-extra-circular {
+  border-radius: 25px;
+}
