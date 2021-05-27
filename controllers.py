@@ -263,5 +263,20 @@ def reviewForm():
 @action('random_location', method=["GET"])
 @action.uses(db, auth.user, "random_location.html")
 def random_location():
-    generated_id = 0
-    location = db(db.place.id == generated_id).select().first()
+    country_ids = db().select(db.country.id).as_list()
+    id_list = [country['id'] for country in country_ids]
+    random_location_id = random.choice(id_list)
+    random_location = db(db.place.id == random_location_id).select().first()
+    redirect(URL('country_profile', random_location_id))
+
+@action('country_profile/<country_id:int>', method=["GET", "POST"])
+@action.uses(db, auth.user, "country_profile.html")
+def country_profile(country_id=None):
+    assert country_id is not None
+
+    country_info = db(db.country.id == country_id).select().first()
+    assert country_info is not None
+    country_name = country_info.name
+    country_bio = country_info.biography
+    return dict(country_name=country_name, 
+                country_bio=country_bio)

@@ -42,3 +42,80 @@ $button-text-hover-background-color: $faded-main-blue;
 .is-extra-circular {
   border-radius: 25px;
 }
+
+section {
+  animation: transitionIn 0.8s;
+}
+
+// Spinner 1
+.spinner-1:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 60px;
+  width: 60px;
+  margin-top: -30px;
+  margin-left: -30px;
+  border-radius: 50%;
+  border: 3px solid blue;
+  border-top-color: $main-blue;
+  animation: spinner 0.7s linear infinite;
+
+}
+
+// Spinner 2
+.spinner-2:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 60px;
+  width: 60px;
+  margin-top: -30px;
+  margin-left: -30px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: blue;
+  border-bottom-color: aqua;
+  animation: spinner 0.7s ease infinite;
+
+}
+
+// Spinner 3
+.spinner-3:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 60px;
+  width: 60px;
+  margin-top: -30px;
+  margin-left: -30px;
+  border-radius: 50%;
+  border-top: 2px solid blue;
+  border-right: 2px solid transparent;
+  animation: spinner 0.7s linear infinite;
+
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes transitionIn {
+  from {
+    opacity: 0;
+    transform: rotateX(-10deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotateX(0);
+  }
+}
