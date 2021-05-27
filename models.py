@@ -29,6 +29,7 @@ db.define_table("post",
                 Field('post_date', 'datetime', default=get_time),
                 Field('is_reply', 'reference post'),
                 )
+
 db.define_table('thumb',
                 Field('user_email', default=get_user_email()),
                 Field('post_id', 'reference post'),
