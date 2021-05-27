@@ -35,6 +35,11 @@ $button-text-hover-background-color: $faded-main-blue;
 @import "bulma/sass/utilities/_all.sass";
 @import "bulma/sass/helpers/_all.sass";
 
+.is-vertical-center {
+  display: flex;
+  align-items: center;
+}
+
 .is-circular {
   border-radius: 15px;
 }

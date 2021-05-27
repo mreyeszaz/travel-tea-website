@@ -10198,6 +10198,11 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
     visibility: hidden !important;
   }
 }
+.is-vertical-center {
+  display: flex;
+  align-items: center;
+}
+
 .is-circular {
   border-radius: 15px;
 }
