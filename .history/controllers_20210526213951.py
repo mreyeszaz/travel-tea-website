@@ -127,7 +127,7 @@ def feed():
         get_thumb_url = URL('get_thumb', signer=url_signer),
         user_email = auth.current_user.get('email'),
         user_name = auth.current_user.get('first_name') + " " + auth.current_user.get('last_name'),
-        
+        #delete_post_url=URL('delete_post', signer=url_signer),
         get_likes_url=URL('get_likes', signer=url_signer),
         add_like_url=URL('add_like', signer=url_signer),
         flip_like_url=URL('flip_like', signer=url_signer),
@@ -140,6 +140,25 @@ def feed():
 
 
 # controllers needed for feed.html
+
+@action('get_posts')
+@action.uses(db, url_signer.verify())
+def get_posts():
+    posts = db(db.posts).select().as_list()
+    likes = db(db.likes.email == get_user_email()).select().as_list()
+
+    # Add all people who liked each post to each post
+    for p in posts:
+        post_likes = db(db.likes.post == p["id"]).select()
+        p["likers"] = []
+        p["dislikers"] = []
+        for like in post_likes:
+            if like["is_like"]:
+                p["likers"].append(like["name"])
+            else:
+                p["dislikers"].append(like["name"])
+
+    return dict(posts=posts, likes=likes)
 # loads up all the posts on the page
 @action('posts', method="GET")
 @action.uses(db, auth.user, session, url_signer.verify())
@@ -191,7 +210,6 @@ def delete_post():
     db((db.post.email == auth.current_user.get("email")) &
        (db.post.id == request.json.get('id'))).delete()
     return "deleted post!"
-
 #get specific rating for the post 
 @action('get_rating')
 @action.uses(db, url_signer.verify(),auth.user)
@@ -223,39 +241,21 @@ def set_thumb():
     )
     return "thumb set!"
 
-@action('get_thumb')
-@action.uses(url_signer.verify(), db, auth.user)
-def get_thumb():
-    post_id = request.params.get('post_id')
-    rating = request.params.get('rating')
-    name_string = ""
-    comma_add = 0
-    # Select all thumbs that have same rating and post id
-    thumbs = db((db.thumb.rating == rating) &
-                (db.thumb.post_id == post_id)).select().as_list()
-    # Append to name_string (STRING) the first/last names of users based on email present in thumbs
-    for t in thumbs:
-        if comma_add == 1:
-            name_string = name_string + ", "
-        # To access first and last name of user
-        user = db(db.auth_user.email == t['user_email']).select().first()
-        name_string = name_string + "" + user.first_name + " " + user.last_name
-        comma_add = 1
-    return dict(name_string=name_string)
 
 
-#@action('add_post', method='POST')
-#@action.uses(db, auth.user, url_signer.verify())
-#def add_post():
-#    r = db(db.auth_user.email == get_user_email()).select().first()
-#    n = r.username if r is not None else "Unknown"
- #   pid = db.posts.insert(
- #       post_text=request.json.get('post_text'),
- #       username=n,
- #       email=get_user_email(),
- #   )
- #   print(n)
- #   return dict(id=pid, username=n, email=get_user_email())
+
+@action('add_post', method='POST')
+@action.uses(db, auth.user, url_signer.verify())
+def add_post():
+    r = db(db.auth_user.email == get_user_email()).select().first()
+    n = r.username if r is not None else "Unknown"
+    pid = db.posts.insert(
+        post_text=request.json.get('post_text'),
+        username=n,
+        email=get_user_email(),
+    )
+    print(n)
+    return dict(id=pid, username=n, email=get_user_email())
 
 
 #@action('delete_post')
@@ -359,20 +359,5 @@ def reviewForm():
 @action('random_location', method=["GET"])
 @action.uses(db, auth.user, "random_location.html")
 def random_location():
-    country_ids = db().select(db.country.id).as_list()
-    id_list = [country['id'] for country in country_ids]
-    random_location_id = random.choice(id_list)
-    random_location = db(db.place.id == random_location_id).select().first()
-    redirect(URL('country_profile', random_location_id))
-
-@action('country_profile/<country_id:int>', method=["GET", "POST"])
-@action.uses(db, auth.user, "country_profile.html")
-def country_profile(country_id=None):
-    assert country_id is not None
-
-    country_info = db(db.country.id == country_id).select().first()
-    assert country_info is not None
-    country_name = country_info.name
-    country_bio = country_info.biography
-    return dict(country_name=country_name, 
-                country_bio=country_bio)
+    generated_id = 0
+    location = db(db.place.id == generated_id).select().first()

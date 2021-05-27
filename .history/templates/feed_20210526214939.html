@@ -1,0 +1,33 @@
+[[extend 'layout.html']]
+
+<div class="section container">
+  <h1 class="title"> [[=curr_name]]'s Feed </h1>
+</div>
+
+
+
+[[block page_scripts]]
+<script>
+    let get_posts_url = "[[=XML(get_posts_url)]]";
+    let add_post_url = "[[=XML(add_post_url)]]";
+    let delete_post_url = "[[=XML(delete_post_url)]]";
+    let get_likes_url = "[[=XML(get_likes_url)]]";
+    let add_like_url = "[[=XML(add_like_url)]]";
+    let flip_like_url = "[[=XML(flip_like_url)]]";
+    let delete_like_url = "[[=XML(delete_like_url)]]";
+
+    let posts_url = "[[=XML(posts_url)]]";
+    let delete_url = "[[=XML(delete_url)]]";
+    
+  // URLS relating to thumb ratings
+    let get_rating_url = "[[=XML(get_rating_url)]]";
+    
+    let set_thumb_url = "[[=XML(set_thumb_url)]]";
+    
+    let get_thumb_url = "[[=XML(get_thumb_url)]]";
+
+    let user_email = "[[=XML(user_email)]]";
+    let user_name = "[[=XML(user_name)]]";
+</script>
+<script src="js/feed.js"></script>
+[[end]]

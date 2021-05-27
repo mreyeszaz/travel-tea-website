@@ -41,7 +41,7 @@
     <!-- This is used to add a post. --->
     <div class="level">
       <div class="level-left">
-        <button @click="add_post" class="button is-info">
+        <button @click="add_post" class="button is-link">
           <span class="icon"><i class="fa fa-plus"></i></span> <span>Create Post</span>
             </button>
       </div>
@@ -56,7 +56,7 @@
         <div :class="post.is_reply ? 'column is-11 is-offset-1 is-size-6' : 'column is-12 is-size-5'">
 
 
-          <div class="box ">
+          <div class="box has-background-grey-lig">
             <figure class="media-left">
               <p class="image is-64x64">
                 <img src="https://bulma.io/images/placeholders/128x128.png"> 
