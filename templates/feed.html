@@ -1,11 +1,11 @@
 [[extend 'layout.html']]
 
-<div class="section">
+<div class="section container">
   <h1 class="title"> [[=curr_name]]'s Feed </h1>
 </div>
 
 <!-- click button to add new comment -->
-<div class="section" id="vue-target-feed">
+<div class="section container" id="vue-target-feed">
     <div class="container block">
       <button @click="add_mode = true" class="button is-primary">
         <i class="fa fa-plus fa-fw"></i>
@@ -29,8 +29,8 @@
     <div v-for="p in post_list.slice().reverse()" class="block">
       <div class="box">
           <!-- display comment and author name -->
-          <p> {{p.post_text}} </p>
-          <p class="has-text-grey"> {{p.name}} </p>
+          <p class="title is-4"> {{p.post_text}} </p>
+          <p class="has-text-grey">Posted by {{ p.username }} </p>
 
           <div>
                   <!-- Delete post -->

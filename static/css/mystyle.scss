@@ -34,3 +34,11 @@ $button-text-hover-background-color: $faded-main-blue;
 @import "bulma/sass/layout/_all.sass";
 @import "bulma/sass/utilities/_all.sass";
 @import "bulma/sass/helpers/_all.sass";
+
+.is-circular {
+  border-radius: 15px;
+}
+
+.is-extra-circular {
+  border-radius: 25px;
+}

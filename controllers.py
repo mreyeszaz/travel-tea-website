@@ -46,9 +46,8 @@ def user_name():
 # controller for each page on website
 
 @action('index')
-@action.uses(db, auth, 'index.html')
+@action.uses(db, auth, session, 'index.html')
 def index():
-    # print("User:", get_user_email())
     return dict(name=user_name())
 
 
@@ -111,6 +110,7 @@ def delete_profilepic():
 def feed():
     r = db(db.auth_user.email == get_user_email()).select().first()
     n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+    curr_username = r.username
     return dict(
         # COMPLETE: return here any signed URLs you need.
         get_posts_url=URL('get_posts', signer=url_signer),
@@ -121,7 +121,8 @@ def feed():
         flip_like_url=URL('flip_like', signer=url_signer),
         delete_like_url=URL('delete_like', signer=url_signer),
         curr_email=get_user_email(),
-        curr_name=n
+        curr_name=n,
+        curr_username=curr_username
     )
 
 
@@ -151,13 +152,14 @@ def get_posts():
 @action.uses(db, auth.user, url_signer.verify())
 def add_post():
     r = db(db.auth_user.email == get_user_email()).select().first()
-    n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+    n = r.username if r is not None else "Unknown"
     pid = db.posts.insert(
         post_text=request.json.get('post_text'),
-        name=n,
+        username=n,
         email=get_user_email(),
     )
-    return dict(id=pid, name=n, email=get_user_email())
+    print(n)
+    return dict(id=pid, username=n, email=get_user_email())
 
 
 @action('delete_post')
@@ -210,7 +212,6 @@ def delete_like():
 
 # more page controllers
 
-
 @action('discover')
 @action.uses(db, auth.user, 'discover.html')
 def discover():
@@ -219,7 +220,6 @@ def discover():
     )
 
 # search controller for discover page
-
 
 @action('search')
 @action.uses()
@@ -244,7 +244,8 @@ def resources():
 @action('review')
 @action.uses(auth.user, 'review.html')
 def review():
-    rows = db(db.review.user_email == get_user_email()).select()
+    # rows = db(db.review.user_email == get_user_email()).select()
+    rows = db(db.review).select()
     return dict(rows=rows, url_signer=url_signer)
 
 
@@ -258,3 +259,9 @@ def reviewForm():
         redirect(URL('review'))
     # Either this is a GET request, or this is a POST but not accepted = with errors.
     return dict(form=revForm)
+
+@action('random_location', method=["GET"])
+@action.uses(db, auth.user, "random_location.html")
+def random_location():
+    generated_id = 0
+    location = db(db.place.id == generated_id).select().first()

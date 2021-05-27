@@ -31,7 +31,7 @@ let init = (app) => {
             app.vue.post_list.push({
                 id: response.data.id,
                 post_text: app.vue.new_post_text,
-                name: response.data.name,
+                username: response.data.username,
                 email: response.data.email,
                 liked: 0,
                 like_id: -1,

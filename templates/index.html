@@ -12,19 +12,19 @@
 
    [[if name:]]
    <div class="columns">
-      <div class="column is-7 container">
-         <div class="notification is-success has-text-centered is-half" style="border-radius: 15px;">
-            <h2 class="title">You're logged in [[=name]]!</h2>
+      <div class="column is-6 container">
+         <div class="box is-success has-text-centered is-half is-circular">
+            <h2 class="title is-3">Welcome aboard [[=name]]!</h2>
          </div>
       </div>
    </div>
    [[pass]]
 
-   <div class="container pt-6">
+   <div class="container pt-5">
       <div class="tile is-ancestor mt-10">
          <div class="tile is-parent">
-            <div class="tile is-child notification has-text-white-bis has-background-grey-dark" style="border-radius: 20px;">
-               <p class="title is-1">Travel & Enjoy</p>
+            <div class="tile is-child notification has-text-white-bis has-background-grey-dark is-extra-circular">
+               <p class="title is-1">Travel & Explore</p>
                <div class="container">
                   <div class="image is-64x64 block">
                      <img src="https://pngimg.com/uploads/earth/earth_PNG17.png" alt="">
@@ -46,8 +46,9 @@
             </div>
          </div>
 
+         [[if name == None:]]
          <div class="tile is-parent">
-            <div class="tile is-child notification has-text-white-bis has-background-grey-dark" style="border-radius: 20px;">
+            <div class="tile is-child notification has-text-white-bis has-background-grey-dark is-extra-circular">
                <p class="title is-1">Sign Up Now</p>
                <p class="subtitle is-5 pt-5 has-text-primary mb-0">Why sign up?</p>
                <p class="subtitle is-5 mt-0 pt-0">Join in the fun and learn fascinating facts about all of your favorite or soon-to-be favorite locations!</p>
@@ -57,18 +58,43 @@
                   they have traveled to as well as like and comment on other users' reviews.
                </p>
 
-               <a class="button is-primary is-rounded is-fullwidth" href="[[=URL('auth/register')]]">
-                  <div class="container has-text-centered">
-                     <h2 class="subtitle is-4">Sign Up</h2>
+               <div class="columns">
+                  <div class="column">
+                     <a class="button is-primary is-rounded is-fullwidth" href="[[=URL('auth/register')]]">
+                        <div class="container has-text-centered">
+                           <h2 class="subtitle is-4">Sign Up</h2>
+                        </div>
+                     </a>
                   </div>
-               </a>
+                  <div class="column">
+                     <a class="button is-primary is-rounded is-fullwidth" href="[[=URL('auth/login')]]">
+                        <div class="container has-text-centered">
+                           <h2 class="subtitle is-4">Log In</h2>
+                        </div>
+                     </a>
+                  </div>
+               </div>
             </div>
          </div>
+         [[else: ]]
+         <div class="tile is-parent">
+            <div class="tile is-child notification has-text-white-bis has-background-grey-dark is-extra-circular">
+               <p class="title is-1">Visit Random Location</p>
+               <p class="subtitle is-5 pt-5 has-text-primary mb-0">Feeling Lucky?</p>
+               <p class="subtitle is-5 mt-0 pt-0 pb-6">Click the plane below to visit a random location.</p>
+               <div class="container has-text-centered block pt-5">
+                  <a href="[[=URL('random_location')]]" style="text-decoration: none;">
+                     <span class="icon"><i class="fa fa-plane fa-5x"></i></i></span>
+                  </a>  
+               </div>
+            </div>
+         </div>
+         [[pass]]
       </div>
 
       <div class="tile is-ancestor">
          <div class="tile is-parent">
-            <div class="tile is-child notification has-text-white-bis has-background-grey-dark" style="border-radius: 20px;">
+            <div class="tile is-child notification has-text-white-bis has-background-grey-dark is-extra-circular">
                <p class="title is-3">General Information</p>
                <p class="subtitle is-5 has-text-primary">
                   TravelTea's mission is to provide users with a common resource to find the best places
@@ -81,23 +107,22 @@
             </div>
          </div>
          <div class="tile is-parent">
-            <div class="tile is-child notification has-text-white-bis has-background-grey-dark" style="border-radius: 20px;">
+            <div class="tile is-child notification has-text-white-bis has-background-grey-dark is-extra-circular">
                <p class="title is-3">Resources</p>
-               <p class="subtitle is-5 has-text-primary">
+               <p class="subtitle is-5 has-text-primary mb-5">
                   See our common resources page for travel including flight, hotel, and rental car information.
                </p>
-               <br>
                <a href="[[=URL('resources')]]" style="text-decoration: none;">
                   <span class="icon"><i class="fa fa-arrow-circle-right fa-2x" style="color: #fff;"></i></span>
                </a>
             </div>
          </div>
          <div class="tile is-parent">
-            <div class="tile is-child notification has-text-white-bis has-background-grey-dark" style="border-radius: 20px;">
+            <div class="tile is-child notification has-text-white-bis has-background-grey-dark is-extra-circular">
                <p class="title is-3">FAQ</p>
-               <p class="subtitle is-5 has-text-primary">A place to get answers to common questions</p>
+               <p class="subtitle is-5 has-text-primary mb-6">A place to get answers to common questions</p>
                <a href="[[=URL('faq')]]" style="text-decoration: none;">
-                  <span class="icon"><i class="fa fa-arrow-circle-right fa-2x" style="color: #fff;"></i></span>
+                  <span class="icon mt-1"><i class="fa fa-arrow-circle-right fa-2x" style="color: #fff;"></i></span>
                </a>
             </div>
          </div>
@@ -105,8 +130,8 @@
    </div>
 </section>
 
-<section>
-   <div class="notification mt-6">
+<section class="section">
+   <div class="notification mt-6 is-circular">
       <div class="container has-text-centered">
          <h2 class="title is-4">How it Works:</h2>
       </div>
@@ -122,7 +147,7 @@
    </div>
 </section>
 
-<section class="" style="background: url('https://source.unsplash.com/1600x900/?europe') no-repeat center center/cover; height: 100vh; position: relative;">
+<section class="" style="background: url('https://source.unsplash.com/1600x900/?travel') no-repeat center center/cover; height: 100vh; position: relative;">
 
 </section>
 

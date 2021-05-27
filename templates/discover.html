@@ -10,13 +10,15 @@
 }
 </style>
 
-
 <div class="section" id="vue-target" v-cloak>
-  <div class="control block">
-    <input class="input" type="text" v-model="query" @keyup="search" />
-  </div>
+    <div class="control block has-icons-left">
+      <input class="input" type="text" placeholder="Search" v-model="query" @keyup="search" />
+        <span class="icon is-left">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </span>
+    </div>
 
-  <div v-for="r in results">{{r}}</div>
+    <div v-for="r in results">{{r}}</div>
 </div>
 
 
