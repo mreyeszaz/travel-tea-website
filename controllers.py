@@ -1,26 +1,18 @@
 """
 This file defines actions, i.e. functions the URLs are mapped into
 The @action(path) decorator exposed the function at URL:
-
     http://127.0.0.1:8000/{app_name}/{path}
-
 If app_name == '_default' then simply
-
     http://127.0.0.1:8000/{path}
-
 If path == 'index' it can be omitted:
-
     http://127.0.0.1:8000/
-
 The path follows the bottlepy syntax.
-
 @action.uses('generic.html')  indicates that the action uses the generic.html template
 @action.uses(session)         indicates that the action uses the session
 @action.uses(db)              indicates that the action uses the db
 @action.uses(T)               indicates that the action uses the i18n & pluralization
 @action.uses(auth.user)       indicates that the action requires a logged in user
 @action.uses(auth)            indicates that the action requires the auth object
-
 session, db, T, auth, and tempates are examples of Fixtures.
 Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app will result in undefined behavior
 """
@@ -109,161 +101,65 @@ def delete_profilepic():
 #     )
 #     return dict(id=uid, email=get_user_email())
 
+# TODO: UPDATE FEED
 
 @action('feed')
 @action.uses(db, auth.user, 'feed.html')
 def feed():
     r = db(db.auth_user.email == get_user_email()).select().first()
     n = r.first_name + " " + r.last_name if r is not None else "Unknown"
-    curr_username = r.username
     return dict(
         # COMPLETE: return here any signed URLs you need.
         get_posts_url=URL('get_posts', signer=url_signer),
         add_post_url=URL('add_post', signer=url_signer),
-        posts_url = URL('posts', signer=url_signer),
-        delete_url = URL('delete_post', signer=url_signer),
-        get_rating_url = URL('get_rating', signer=url_signer),
-        set_thumb_url = URL('set_thumb', signer=url_signer),
-        get_thumb_url = URL('get_thumb', signer=url_signer),
-        user_email = auth.current_user.get('email'),
-        user_name = auth.current_user.get('first_name') + " " + auth.current_user.get('last_name'),
-        
+        delete_post_url=URL('delete_post', signer=url_signer),
         get_likes_url=URL('get_likes', signer=url_signer),
         add_like_url=URL('add_like', signer=url_signer),
         flip_like_url=URL('flip_like', signer=url_signer),
         delete_like_url=URL('delete_like', signer=url_signer),
-
         curr_email=get_user_email(),
-        curr_name=n,
-        curr_username=curr_username
+        curr_name=n
     )
 
-
-# controllers needed for feed.html
-# loads up all the posts on the page
-@action('posts', method="GET")
-@action.uses(db, auth.user, session, url_signer.verify())
+@action('get_posts')
+@action.uses(db, url_signer.verify())
 def get_posts():
-    # 
-    # 
-    all_posts = []
-    main_posts = db(db.post.is_reply == None).select(orderby=~db.post.post_date).as_list()
-    for post in main_posts:
-        all_posts.append(post)
-        replies = db(db.post.is_reply == post.get("id")).select(orderby=~db.post.post_date).as_list()
-        for reply in replies:
-            all_posts.append(reply)
+    posts = db(db.posts).select().as_list()
+    likes = db(db.likes.email == get_user_email()).select().as_list()
 
-    for post in all_posts:
-        post['user'] = get_name_from_email(post.get("email"))
+    # Add all people who liked each post to each post
+    for p in posts:
+        post_likes = db(db.likes.post == p["id"]).select()
+        p["likers"] = []
+        p["dislikers"] = []
+        for like in post_likes:
+            if like["is_like"]:
+                p["likers"].append(like["name"])
+            else:
+                p["dislikers"].append(like["name"])
 
-    return dict(posts=all_posts)
-
-@action('posts',  method="POST")
-@action.uses(db, auth.user)  # Needed stuff put inot action.uses
-def save_post():
-   
-    #id might be NONE 
-    id = request.json.get('id') 
-
-    content = request.json.get('content')
-    is_reply = request.json.get('is_reply')
-
-    if (id == None):
-        id = db.post.insert(
-        content = content,
-        
-        is_reply = is_reply
-        # is_reply = request.json.get('is_reply')
-        )
-    else:
-        db(db.post.id == id).update(content = content, is_reply = is_reply)
-        # db(db.post.id == id).update(content = request.json.get('content'), is_reply = request.json.get('is_reply'))
-
-    #
-    # If id is None=>this means that this is a new post needs te inserted inro db
-    # Else => If id is not None, then it needs to be updated into the db
-    return dict(content=content, id=id)
-
-@action('delete_post',  method="POST")
-@action.uses(db, auth.user, session, url_signer.verify())
-def delete_post():
-    db((db.post.email == auth.current_user.get("email")) &
-       (db.post.id == request.json.get('id'))).delete()
-    return "deleted post!"
-
-#get specific rating for the post 
-@action('get_rating')
-@action.uses(db, url_signer.verify(),auth.user)
-def get_rating():
-    post_id = request.params.get('post_id')
-    email = auth.current_user.get('email')
-    assert post_id is not None
-    rating_entry = db((db.thumb.post_id == post_id) &
-                      (db.thumb.user_email == email)).select().first()
-                    
-    rating = rating_entry.rating if rating_entry is not None else 0
-    return dict(rating=rating)
+    return dict(posts=posts, likes=likes)
 
 
-
-    
-# receives whether thumb set or not
-@action('set_thumb', method="POST")
-@action.uses(url_signer.verify(), auth.user, db)
-def set_thumb():
-    post_id = request.json.get('post_id')
-    email = auth.current_user.get('email')
-    rating = request.json.get('rating')
-    db.thumb.update_or_insert(
-        ((db.thumb.post_id == post_id) & (db.thumb.user_email == email)),
-        user_email=email,
-        post_id=post_id,
-        rating=rating
+@action('add_post', method='POST')
+@action.uses(db, auth.user, url_signer.verify())
+def add_post():
+    r = db(db.auth_user.email == get_user_email()).select().first()
+    n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+    pid = db.posts.insert(
+        post_text=request.json.get('post_text'),
+        name=n,
+        email=get_user_email(),
     )
-    return "thumb set!"
-
-@action('get_thumb')
-@action.uses(url_signer.verify(), db, auth.user)
-def get_thumb():
-    post_id = request.params.get('post_id')
-    rating = request.params.get('rating')
-    name_string = ""
-    comma_add = 0
-    # Select all thumbs that have same rating and post id
-    thumbs = db((db.thumb.rating == rating) &
-                (db.thumb.post_id == post_id)).select().as_list()
-    # Append to name_string (STRING) the first/last names of users based on email present in thumbs
-    for t in thumbs:
-        if comma_add == 1:
-            name_string = name_string + ", "
-        # To access first and last name of user
-        user = db(db.auth_user.email == t['user_email']).select().first()
-        name_string = name_string + "" + user.first_name + " " + user.last_name
-        comma_add = 1
-    return dict(name_string=name_string)
+    return dict(id=pid, name=n, email=get_user_email())
 
 
-#@action('add_post', method='POST')
-#@action.uses(db, auth.user, url_signer.verify())
-#def add_post():
-#    r = db(db.auth_user.email == get_user_email()).select().first()
-#    n = r.username if r is not None else "Unknown"
- #   pid = db.posts.insert(
- #       post_text=request.json.get('post_text'),
- #       username=n,
- #       email=get_user_email(),
- #   )
- #   print(n)
- #   return dict(id=pid, username=n, email=get_user_email())
-
-
-#@action('delete_post')
-#@action.uses(db, auth.user, url_signer.verify())
-#def delete_post():
-#    pid = request.params.get('id')
-#    db(db.posts.id == pid).delete()
-#    return "ok"
+@action('delete_post')
+@action.uses(db, auth.user, url_signer.verify())
+def delete_post():
+    pid = request.params.get('id')
+    db(db.posts.id == pid).delete()
+    return "ok"
 
 
 @action('get_likes')
@@ -305,6 +201,199 @@ def delete_like():
     db(db.likes.id == like_id).delete()
     return "ok"
 
+# @action('feed')
+# @action.uses(db, auth.user, 'feed.html')
+# def feed():
+#     r = db(db.auth_user.email == get_user_email()).select().first()
+#     n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+#     curr_username = r.username
+#     return dict(
+#         # COMPLETE: return here any signed URLs you need.
+#         get_posts_url=URL('get_posts', signer=url_signer),
+#         add_post_url=URL('add_post', signer=url_signer),
+#         delete_url = URL('delete_post', signer=url_signer),
+#         get_rating_url = URL('get_rating', signer=url_signer),
+#         set_thumb_url = URL('set_thumb', signer=url_signer),
+#         get_thumb_url = URL('get_thumb', signer=url_signer),
+#         user_email = auth.current_user.get('email'),
+#         user_name = auth.current_user.get('first_name') + " " + auth.current_user.get('last_name'),
+#
+#         get_likes_url=URL('get_likes', signer=url_signer),
+#         add_like_url=URL('add_like', signer=url_signer),
+#         flip_like_url=URL('flip_like', signer=url_signer),
+#         delete_like_url=URL('delete_like', signer=url_signer),
+#
+#         curr_email=get_user_email(),
+#         curr_name=n,
+#         curr_username=curr_username
+#     )
+#
+#
+# # controllers needed for feed.html
+# # loads up all the posts on the page
+# @action('posts', method="GET")
+# @action.uses(db, auth.user, session, url_signer.verify())
+# def get_posts():
+#     #
+#     #
+#     all_posts = []
+#     main_posts = db(db.post.is_reply == None).select(orderby=~db.post.post_date).as_list()
+#     for post in main_posts:
+#         all_posts.append(post)
+#         replies = db(db.post.is_reply == post.get("id")).select(orderby=~db.post.post_date).as_list()
+#         for reply in replies:
+#             all_posts.append(reply)
+#
+#     for post in all_posts:
+#         post['user'] = get_name_from_email(post.get("email"))
+#
+#     return dict(posts=all_posts)
+#
+# @action('posts',  method="POST")
+# @action.uses(db, auth.user)  # Needed stuff put inot action.uses
+# def save_post():
+#
+#     #id might be NONE
+#     id = request.json.get('id')
+#
+#     content = request.json.get('content')
+#     is_reply = request.json.get('is_reply')
+#
+#     if (id == None):
+#         id = db.post.insert(
+#         content = content,
+#
+#         is_reply = is_reply
+#         # is_reply = request.json.get('is_reply')
+#         )
+#     else:
+#         db(db.post.id == id).update(content = content, is_reply = is_reply)
+#         # db(db.post.id == id).update(content = request.json.get('content'), is_reply = request.json.get('is_reply'))
+#
+#     #
+#     # If id is None=>this means that this is a new post needs te inserted inro db
+#     # Else => If id is not None, then it needs to be updated into the db
+#     return dict(content=content, id=id)
+#
+# @action('delete_post',  method="POST")
+# @action.uses(db, auth.user, session, url_signer.verify())
+# def delete_post():
+#     db((db.post.email == auth.current_user.get("email")) &
+#        (db.post.id == request.json.get('id'))).delete()
+#     return "deleted post!"
+#
+# #get specific rating for the post
+# @action('get_rating')
+# @action.uses(db, url_signer.verify(),auth.user)
+# def get_rating():
+#     post_id = request.params.get('post_id')
+#     email = auth.current_user.get('email')
+#     assert post_id is not None
+#     rating_entry = db((db.thumb.post_id == post_id) &
+#                       (db.thumb.user_email == email)).select().first()
+#
+#     rating = rating_entry.rating if rating_entry is not None else 0
+#     return dict(rating=rating)
+#
+#
+#
+#
+# # receives whether thumb set or not
+# @action('set_thumb', method="POST")
+# @action.uses(url_signer.verify(), auth.user, db)
+# def set_thumb():
+#     post_id = request.json.get('post_id')
+#     email = auth.current_user.get('email')
+#     rating = request.json.get('rating')
+#     db.thumb.update_or_insert(
+#         ((db.thumb.post_id == post_id) & (db.thumb.user_email == email)),
+#         user_email=email,
+#         post_id=post_id,
+#         rating=rating
+#     )
+#     return "thumb set!"
+#
+# @action('get_thumb')
+# @action.uses(url_signer.verify(), db, auth.user)
+# def get_thumb():
+#     post_id = request.params.get('post_id')
+#     rating = request.params.get('rating')
+#     name_string = ""
+#     comma_add = 0
+#     # Select all thumbs that have same rating and post id
+#     thumbs = db((db.thumb.rating == rating) &
+#                 (db.thumb.post_id == post_id)).select().as_list()
+#     # Append to name_string (STRING) the first/last names of users based on email present in thumbs
+#     for t in thumbs:
+#         if comma_add == 1:
+#             name_string = name_string + ", "
+#         # To access first and last name of user
+#         user = db(db.auth_user.email == t['user_email']).select().first()
+#         name_string = name_string + "" + user.first_name + " " + user.last_name
+#         comma_add = 1
+#     return dict(name_string=name_string)
+#
+#
+# #@action('add_post', method='POST')
+# #@action.uses(db, auth.user, url_signer.verify())
+# #def add_post():
+# #    r = db(db.auth_user.email == get_user_email()).select().first()
+# #    n = r.username if r is not None else "Unknown"
+#  #   pid = db.posts.insert(
+#  #       post_text=request.json.get('post_text'),
+#  #       username=n,
+#  #       email=get_user_email(),
+#  #   )
+#  #   print(n)
+#  #   return dict(id=pid, username=n, email=get_user_email())
+#
+#
+# #@action('delete_post')
+# #@action.uses(db, auth.user, url_signer.verify())
+# #def delete_post():
+# #    pid = request.params.get('id')
+# #    db(db.posts.id == pid).delete()
+# #    return "ok"
+#
+#
+# @action('get_likes')
+# @action.uses(url_signer.verify(), db)
+# def get_likes():
+#     return dict(likes=db(db.likes).select().as_list())
+#
+#
+# @action('add_like', method="POST")
+# @action.uses(url_signer.verify(), db)
+# def add_like():
+#     r = db(db.auth_user.email == get_user_email()).select().first()
+#     n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+#     pid = db.likes.insert(
+#         is_like=request.json.get('is_like'),
+#         post=request.json.get('post'),
+#         email=get_user_email(),
+#         name=n,
+#     )
+#     return dict(id=pid)
+#
+#
+# @action('flip_like', method="POST")
+# @action.uses(url_signer.verify(), db)
+# def flip_like():
+#     like_id = request.json.get('id')
+#     assert like_id is not None
+#     new_val = request.json.get('is_like')
+#     assert new_val is not None
+#     db(db.likes.id == like_id).update(is_like=new_val)
+#     return "ok"
+#
+#
+# @action('delete_like', method="POST")
+# @action.uses(url_signer.verify(), db)
+# def delete_like():
+#     like_id = request.json.get('id')
+#     assert like_id is not None
+#     db(db.likes.id == like_id).delete()
+#     return "ok"
 
 # more page controllers
 
@@ -374,5 +463,5 @@ def country_profile(country_id=None):
     assert country_info is not None
     country_name = country_info.name
     country_bio = country_info.biography
-    return dict(country_name=country_name, 
+    return dict(country_name=country_name,
                 country_bio=country_bio)

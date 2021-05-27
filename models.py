@@ -23,18 +23,18 @@ def get_time():
 #
 ## always commit your models to avoid problems later
 
-db.define_table("post",
-                Field('email', default=get_user_email),
-                Field('content', 'text'),
-                Field('post_date', 'datetime', default=get_time),
-                Field('is_reply', 'reference post'),
-                )
-
-db.define_table('thumb',
-                Field('user_email', default=get_user_email()),
-                Field('post_id', 'reference post'),
-                Field('rating', 'integer', default=0)
-                )
+# db.define_table("post",
+#                 Field('email', default=get_user_email),
+#                 Field('content', 'text'),
+#                 Field('post_date', 'datetime', default=get_time),
+#                 Field('is_reply', 'reference post'),
+#                 )
+#
+# db.define_table('thumb',
+#                 Field('user_email', default=get_user_email()),
+#                 Field('post_id', 'reference post'),
+#                 Field('rating', 'integer', default=0)
+#                 )
 
 db.define_table('country',
                 Field('name', 'string'),
@@ -47,6 +47,12 @@ db.define_table('place',
                 Field('thumbnail', 'text')
                 )
 
+db.define_table(
+    'user',
+    Field('user_email', default=get_user_email, writable=False),
+    Field('username', 'string'),
+    Field('biography', 'string'),
+)
 
 db.define_table('posts',
                 Field('post_text', default=""),
@@ -62,12 +68,12 @@ db.define_table('likes',
                 Field('email', default=get_user_email()),
                 )
 
-db.define_table('user',
-                Field('user_email', default=get_user_email(), reference=auth, writable=False),
-                Field('user_name', 'string'),
-                Field('biography', 'string'),
-                Field('thumbnail', 'text'),
-                )
+# db.define_table('user',
+#                 Field('user_email', default=get_user_email(), reference=auth, writable=False),
+#                 Field('user_name', 'string'),
+#                 Field('biography', 'string'),
+#                 Field('thumbnail', 'text'),
+#                 )
 
 
 db.define_table(
