@@ -13,12 +13,12 @@ let init = (app) => {
         //thumbnail_list: [],
     };
 
-    app.enumerate = (a) => {
+    /*app.enumerate = (a) => {
         // This adds an _idx field to each element of the array.
         let k = 0;
         a.map((e) => {e._idx = k++;});
         return a;
-    };
+    };*/
 
     /*app.add_thumbnail = function(){
         axios.post(add_thumbnail_url,{
@@ -41,12 +41,12 @@ let init = (app) => {
             let reader = new FileReader();
             reader.addEventListener("load", function(){
                 //send image to server
-                //app.vue.thumbnail = reader.result;
+                app.vue.thumbnail = reader.result;
                 axios.post(upload_thumbnail_url, {
-                    //tl: reader.result
-                }).then(function(){
+                    tl: app.vue.thumbnail
+                });//.then(function(response){
                     //set local preview
-                    app.vue.thumbnail=reader.result;
+                    //app.vue.thumbnail=reader.result;
                     /*
                     app.vue.thumbnail_list.push({
                         id: response.data.id,
@@ -54,8 +54,9 @@ let init = (app) => {
                         thumbnail: app.vue.thumbnail,
                     });*/
                 });
-            });
+
             reader.readAsDataURL(file);
+            }
             //app.vue.thumbnail = "";
 
             /*app.vue.uploading = true;
@@ -69,8 +70,8 @@ let init = (app) => {
             });
             req.open("PUT", full_url, true);
             req.send(file); //uploads file to website*/
-        }
-    };
+        };
+    //};
 
     app.delete_profilepic = function(){
         axios.post(delete_profilepic_url);
@@ -96,12 +97,12 @@ let init = (app) => {
     app.init = () => {
         // Put here any initialization code.
         // Typically this is a server GET call to load the data.
-        /*axios.get(get_profile_url)
+        axios.get(get_profile_url)
         .then(function(result){
-            let users = result.data.users;
-            app.enumerate(users);
-            app.vue.thumbnail_list = users;
-        });*/
+            //let users = result.data.users;
+            //app.enumerate(users);
+            app.vue.thumbnail = result.data.tl;
+        });
     };
 
     // Call to the initializer.

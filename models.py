@@ -10,8 +10,6 @@ from pydal.validators import *
 def get_user_email():
     return auth.current_user.get('email') if auth.current_user else None
 
-def get_user_name():
-    return auth.current_user.get('first_name') + " " + auth.current_user.get('last_name') if auth.current_user else None
 
 def get_time():
     return datetime.datetime.utcnow()
@@ -86,7 +84,7 @@ db.define_table(
 
 db.define_table(
     'review',
-    Field('author', default=get_user_name()),
+    Field('author'),
     Field('user_email', default=get_user_email()),
     Field('rating', 'integer', default=0, requires=IS_INT_IN_RANGE(0, 11)),
     Field('description', 'text'),
