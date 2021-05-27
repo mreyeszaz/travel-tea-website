@@ -42,6 +42,12 @@ def user_name():
     user = db(db.auth_user.email == get_user_email()).select().first()
     return user.first_name + " " + user.last_name if user else None
 
+
+def get_tl():
+    user = db(db.auth_user.email == get_user_email()).select().first()
+    return user.thumbnail if user else None
+
+
 def get_name_from_email(e):
     """Given the email of a user, returns the name."""
     user = db(db.auth_user.email == e).select().first()
@@ -64,8 +70,7 @@ def profile():
         upload_thumbnail_url=URL('upload_thumbnail', signer=url_signer),
         delete_profilepic_url=URL('delete_profilepic', signer=url_signer),
         curr_email=get_user_email(),
-        # get_profile_url=URL('get_profile', signer=url_signer),
-        # add_thumbnail_url=URL('add_thumbnail', signer=url_signer),
+        get_profile_url=URL('get_profile', signer=url_signer),
     )
 
 
@@ -75,39 +80,31 @@ def profile():
 @action('upload_thumbnail', method="POST")
 @action.uses(db, auth, url_signer.verify())
 def upload_thumbnail():
-    # name = db(db.auth_user.email == get_user_email()).first_name
-    # tl = request.json.get("tl")
-    # db(db.user.id).update(thumbnail=tl)
-    # db(db.user.id).update(thumbnail=thumbnail)
+    tl = request.json.get("tl")
+    db.auth_user.update_or_insert(
+        (db.auth_user.email == get_user_email()),
+        thumbnail=tl
+    )
     return "ok"
 
 
 @action('delete_profilepic', method="POST")
 @action.uses(db, auth.user, url_signer.verify())
 def delete_profilepic():
-    db(db.user.user_email == get_user_email()).thumbnail = ""
+    db.auth_user.update_or_insert(
+        (db.auth_user.email == get_user_email()),
+        thumbnail=""
+    )
     return "ok"
 
-#
-# @action('get_profile')
-# @action.uses(db, url_signer.verify())
-# def get_profile():
-#     users = db(db.user).select().as_list()
-#
-#     return dict(users=users)
 
-
-# @action('add_thumbnail')
-# @action.uses(db, auth.user, url_signer.verify())
-# def add_thumbnail():
-#     r = db(db.auth_user.email == get_user_email()).select().first()
-#     n = r.first_name + " " + r.last_name if r is not None else "Unknown"
-#     uid = db.user.insert(
-#         user_email=get_user_email(),
-#         user_name=n,
-#         thumbnail=request.json.get('thumbnail'),
-#     )
-#     return dict(id=uid, email=get_user_email())
+@action('get_profile')
+@action.uses(db, auth.user, url_signer.verify())
+def get_profile():
+    tl = get_tl()
+    return dict(
+        tl=tl,
+    )
 
 
 @action('feed')

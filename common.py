@@ -81,8 +81,11 @@ elif settings.SESSION_TYPE == "database":
 # Instantiate the object and actions that handle auth
 # #######################################################
 
-auth = Auth(session, db, define_tables=False, extra_fields=[Field('username', 
-                                                            type='string')])
+auth = Auth(session, db, define_tables=True,
+            extra_fields=[
+                Field('username', type='string'),
+                Field('thumbnail', 'text', default="", readable=False, writable=False),
+            ])
 
 # Fixes the messages.
 auth_messages = copy.deepcopy(auth.MESSAGES)
