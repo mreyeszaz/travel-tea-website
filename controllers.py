@@ -45,6 +45,7 @@ def get_name_from_email(e):
     user = db(db.auth_user.email == e).select().first()
     return "" if user is None else user.first_name + " " + user.last_name
 
+
 def get_username():
     curr_user = db(db.auth_user.email == get_user_email()).select().first()
     return curr_user.username if curr_user is not None else "Unknown"
@@ -67,6 +68,7 @@ def profile():
         delete_profilepic_url=URL('delete_profilepic', signer=url_signer),
         curr_email=get_user_email(),
         get_profile_url=URL('get_profile', signer=url_signer),
+        username=get_username(),
     )
 
 
@@ -437,8 +439,8 @@ def resources():
 @action('review')
 @action.uses(auth.user, 'review.html')
 def review():
-    # rows = db(db.review.user_email == get_user_email()).select()
-    rows = db(db.review).select()
+    rows = db(db.review.author == get_user_email()).select()
+    # rows = db(db.review).select()
     return dict(rows=rows, url_signer=url_signer)
 
 

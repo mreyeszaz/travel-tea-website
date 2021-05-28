@@ -6,6 +6,9 @@ import copy
 import os
 import sys
 import logging
+
+from pydal.validators import IS_NOT_IN_DB
+
 from py4web import Session, Cache, Translator, Flash, DAL, Field, action
 from py4web.utils.mailer import Mailer
 from py4web.utils.auth import Auth
@@ -83,7 +86,7 @@ elif settings.SESSION_TYPE == "database":
 
 auth = Auth(session, db, define_tables=True,
             extra_fields=[
-                Field('username', type='string'),
+                Field('username', type='string', requires=IS_NOT_IN_DB(db, "auth_user.username")),
                 Field('thumbnail', 'text', default="", readable=False, writable=False),
             ])
 

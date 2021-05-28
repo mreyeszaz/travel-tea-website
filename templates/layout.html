@@ -30,6 +30,8 @@
           <a class="navbar-item" href="[[=URL('index')]]">Home</a>
           <a class="navbar-item" href="[[=URL('feed')]]">Feed</a>
           <a class="navbar-item" href="[[=URL('discover')]]">Discover</a>
+          <a class="navbar-item" href="[[=URL('resources')]]">Resources</a>
+          <a class="navbar-item" href="[[=URL('faq')]]">FAQ</a>
           [[end]]
         </div>
 
@@ -39,7 +41,7 @@
               [[if globals().get('user'):]]
                 <div class="navbar-item has-dropdown is-hoverable">
                   <a class="navbar-link is-primary">
-                    [[=globals().get('user').get('email')]]
+                    [[=globals().get('user').get('username')]] | [[=globals().get('user').get('email')]]
                   </a>
                   <div class="navbar-dropdown">
                     <a class="navbar-item" href="[[=URL('profile')]]">Profile</a>

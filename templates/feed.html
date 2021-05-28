@@ -5,7 +5,7 @@
 </div>
 
 <!-- click button to add new comment -->
-<div class="section" id="vue-target">
+<div class="block" id="vue-target">
     <div class="container block">
       <button @click="add_mode = true" class="button is-primary">
         <i class="fa fa-plus fa-fw"></i>
@@ -24,7 +24,7 @@
     </div>
 
     <!-- display posts here -->
-  <div id="posts" class="block">
+  <div id="posts" class="section">
     <!-- Here will go the comments. -->
     <div v-for="p in post_list.slice().reverse()" class="block">
       <div class="box">

@@ -4,8 +4,9 @@
    <div class="container">
       <div class="columns">
          <div class="column is-one-third has-text-centered">
-            <h1 class="title"> [[=user_name]]'s Profile </h1>
-   
+
+            <h1 class="title"> @ [[=username]] </h1>
+
             <!-- profile picture -->
             <div class="block" v-if="!thumbnail">
                <p class="control">
@@ -28,22 +29,11 @@
                   </div>
                </p>
             </div>
-            <div class="container" v-if="thumbnail" >
+            <div class="block" v-if="thumbnail" >
                <img width="200" :src="thumbnail" />
-                  <button class="button" @click="delete_profilepic">
-                    <span><i class="fa fa-trash"></i></span>
-                  </button>
             </div>
-   
-            <!--<div>
-               <div v-for="p in post_list" class="block">
-                  <div class="box" v-if="p.email == '[[=curr_email]]'">
-                      &lt;!&ndash; display number of posts that user has made &ndash;&gt;
-                     <p> 1 </p>
-                  </div>
-               </div>
-            </div>-->
-            
+
+            <!-- table -->
             <div class="block">
                <table class="table container">
                   <thead>
@@ -56,8 +46,44 @@
                   </tbody>
                </table>
             </div>
+
+            <!-- settings -->
+            <div class="dropdown is-hoverable">
+              <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu2">
+                  <span>Settings</span>
+                  <span class="icon is-small">
+                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                <div class="dropdown-content">
+                  <div class="dropdown-item">
+                    <a class="button is-white is-small"> <!-- href="[[=URL('discover')]]">-->
+                        Edit username
+                     </a>
+                  </div>
+                  <hr class="dropdown-divider">
+                  <div class="dropdown-item">
+                     <button class="button is-white is-small" @click="delete_profilepic">
+                        Delete Profile Picture
+                        <!--<span><i class="fa fa-trash"></i> Delete Profile Picture</span>-->
+                     </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!--<div class="block">
+               <div class="tags has-addons">
+                  <span class="tag is-medium">Username</span>
+                  <span class="tag is-medium is-primary">Bulma</span>
+               </div>
+            </div>-->
+
          </div>
-   
          <div class="column">
             <div class="box">
                <p>PlaceA Tea</p>

@@ -84,14 +84,13 @@ db.define_table(
 
 db.define_table(
     'review',
-    Field('author'),
-    Field('user_email', default=get_user_email()),
+    Field('author', default=get_user_email()),
     Field('rating', 'integer', default=0, requires=IS_INT_IN_RANGE(0, 11)),
     Field('description', 'text'),
 )
 
 db.review.id.readable = db.review.id.writable = False
 db.review.author.readable = db.review.author.writable = False
-db.review.user_email.readable = db.review.user_email.writable = False
+# db.review.user_email.readable = db.review.user_email.writable = False
 
 db.commit()
