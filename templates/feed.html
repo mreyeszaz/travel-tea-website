@@ -16,7 +16,7 @@
     <div v-if="add_mode" class="container block">
       <div class="field">
         <p class="control">
-          <input class="input" type="text" placeholder="Enter new post here" v-model="new_post_text" />
+          <textarea class="textarea" placeholder="Enter new post here" v-model="new_post_text"></textarea>
         </p>
       </div>
       <button class="button is-primary" @click="add_post" >Post</button>
