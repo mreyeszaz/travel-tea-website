@@ -56,7 +56,8 @@ db.define_table('posts',
                 Field('post_text', default=""),
                 Field('username', default=""),
                 Field('email', default=get_user_email()),
-                Field('user', 'reference auth_user')
+                Field('user', 'reference auth_user'),
+                Field('image', 'text', default=""),
                 )
 
 db.define_table('likes',
@@ -84,13 +85,14 @@ db.define_table(
 
 db.define_table(
     'review',
-    Field('author', default=get_user_email()),
+    Field('author', 'string'),
+    Field('email', default=get_user_email()),
     Field('rating', 'integer', default=0, requires=IS_INT_IN_RANGE(0, 11)),
     Field('description', 'text'),
 )
 
 db.review.id.readable = db.review.id.writable = False
-db.review.author.readable = db.review.author.writable = False
+db.review.email.writable = False
 # db.review.user_email.readable = db.review.user_email.writable = False
 
 db.commit()

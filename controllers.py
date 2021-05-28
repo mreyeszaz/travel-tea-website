@@ -158,8 +158,8 @@ def add_post():
         post_text=request.json.get('post_text'),
         username=n,
         email=get_user_email(),
-        user=r.id
-
+        user=r.id,
+        image=request.json.get('image')
     )
     return dict(id=pid, name=n, email=get_user_email())
 
@@ -439,7 +439,7 @@ def resources():
 @action('review')
 @action.uses(auth.user, 'review.html')
 def review():
-    rows = db(db.review.author == get_user_email()).select()
+    rows = db(db.review.email == get_user_email()).select()
     # rows = db(db.review).select()
     return dict(rows=rows, url_signer=url_signer)
 

@@ -14,11 +14,36 @@
 
     <!-- if button was clicked, display area to enter post -->
     <div v-if="add_mode" class="container block">
+
       <div class="field">
         <p class="control">
           <textarea class="textarea" placeholder="Enter new post here" v-model="new_post_text"></textarea>
         </p>
       </div>
+
+      <div class="field">
+          <label class="label">Image</label>
+          <div v-if="!selection_done" class="field has-addons block">
+            <p class="control">
+              <div class="file is-info">
+                <label class="file-label">
+                  <input class="file-input" type="file"
+                         accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
+                         @change="select_file($event)">
+                  <span class="file-cta">
+                    <span class="file-label">
+                      <span>Choose file</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </p>
+          </div>
+            <div class="block" v-if="selection_done">
+              <img width="200" :src="image" />
+            </div>
+      </div>
+
       <button class="button is-primary" @click="add_post" >Post</button>
       <button class="button is-warning" @click="cancel_post" >Cancel</button>
     </div>
@@ -31,6 +56,10 @@
           <!-- display comment and author name -->
           <p> {{p.post_text}} </p>
           <p class="has-text-grey"> {{p.username}} </p>
+          <div class="block">
+              image goes here
+<!--              <img width="100" :src="" />-->
+          </div>
 
           <div>
                   <!-- Delete post -->

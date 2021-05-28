@@ -13,6 +13,8 @@ let init = (app) => {
         add_mode: false,
         new_post_text: "",
         post_list: [],
+        image: "",
+        selection_done: false,
     };
 
     app.enumerate = (a) => {
@@ -22,15 +24,33 @@ let init = (app) => {
         return a;
     };
 
+    app.file = null;
+
+    app.select_file = function(event){
+        let input = event.target; //reference to input object that triggers event
+        app.file = input.files[0]; //select single file to upload
+        if(app.file){ //makes sure file is actually there
+            app.vue.selection_done = true;
+            let reader = new FileReader();
+            reader.addEventListener("load", function(){
+                //send image to server
+                app.vue.image = reader.result;
+            });
+            reader.readAsDataURL(app.file);
+        }
+    };
+
     // Adds a new post to the database using a request object
     app.add_post = function(){
         axios.post(add_post_url,{
             //put correct post text into the database
             post_text: app.vue.new_post_text,
+            image: app.vue.image,
         }).then(function(response){
             app.vue.post_list.push({
                 id: response.data.id,
                 post_text: app.vue.new_post_text,
+                image: app.vue.image,
                 username: response.data.name,
                 email: response.data.email,
                 liked: 0,
@@ -40,6 +60,8 @@ let init = (app) => {
                 dislikers: [],
             });
             app.enumerate(app.vue.post_list);
+            app.vue.image = "";
+            app.vue.selection_done = false;
             app.cancel_post();
         });
     };
@@ -231,6 +253,7 @@ let init = (app) => {
         dislike_post: app.dislike_post,
         get_liker_string: app.get_liker_string,
         set_hover: app.set_hover,
+        select_file: app.select_file,
     };
 
     // This creates the Vue instance.
