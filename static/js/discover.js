@@ -25,7 +25,7 @@ let init = (app) => {
         if (app.vue.query.length > 1) {
             axios.get(search_url, {params: {q: app.vue.query}})
                 .then(function (result) {
-                    app.vue.results = result.data.results;
+                    app.vue.results = app.annotate(result.data.results);
                 });
         } else {
             app.vue.results = [];

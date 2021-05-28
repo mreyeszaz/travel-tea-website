@@ -420,8 +420,37 @@ def discover():
 @action.uses()
 def search():
     q = request.params.get("q")
-    results = [q + ":" + str(uuid.uuid1()) for _ in range(random.randint(2, 6))]
+    if q:
+        qq = q.strip()
+        t = (db.country.name.contains(qq))
+    else:
+        t = db.country.id > 0
+
+    results = db(t).select(db.country.ALL).as_list()
     return dict(results=results)
+
+# ------- THIS IS REFERENCE FOR SEARCH BAR -----
+# @action('search_country')
+# @action.uses(db, url_signer.verify())
+# def get_products():
+#     """Gets the list of products, possibly in response to a query."""
+#     t = request.params.get('q')
+#     if t:
+#         tt = t.strip()
+#         q = ((db.product.product_name.contains(tt)) |
+#              (db.product.description.contains(tt)))
+#     else:
+#         q = db.product.id > 0
+#     # This is a bit simplistic; normally you would return only some of
+#     # the products... and add pagination... this is up to you to fix.
+#     products = db(q).select(db.product.ALL).as_list()
+#     # Fixes some fields, to make it easy on the client side.
+#     for p in products:
+#         p['desired_quantity'] = min(1, p['quantity'])
+#         p['cart_quantity'] = 0
+#     return dict(
+#         products=products,
+#     )
 
 
 @action('faq')
