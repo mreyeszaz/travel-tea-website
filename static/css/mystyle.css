@@ -10211,6 +10211,14 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   z-index: -1;
 }
 
+.cropped-1 {
+  width: 60px;
+  /* width of container */
+  height: 40px;
+  /* height of container */
+  object-fit: cover;
+}
+
 .has-shadow {
   text-shadow: 2px 1px 3px #000;
 }

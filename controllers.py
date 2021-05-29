@@ -384,9 +384,11 @@ def country_profile(country_id=None):
     country_info = db(db.country.id == country_id).select().first()
     assert country_info is not None
     country_name = country_info.name
-    country_bio = extract_country_info(country_name)
+    country_bio = country_info.biography
+    country_flag = country_info.thumbnail
     return dict(country_name=country_name,
-                country_bio=country_bio)
+                country_bio=country_bio, 
+                country_flag=country_flag)
 
 @action('insert_all_countries', method=["GET", "POST"])
 @action.uses(db, auth.user)
