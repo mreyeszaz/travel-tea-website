@@ -15,6 +15,7 @@ let init = (app) => {
         new_post_text: "",
         post_list: [],
         image: "",
+        country: "",
         selection_done: false,
         overall_rating: 0,
         beach_rating: 0,
@@ -58,11 +59,13 @@ let init = (app) => {
 
     // Adds a new post to the database using a request object
     app.add_post = function(){
+        //app.select_country();
         axios.post(add_post_url,{
             //put correct info into the database
             title: app.vue.new_title,
             post_text: app.vue.new_post_text,
             image: app.vue.image,
+            country: app.vue.country,
             overall: app.vue.overall_rating,
             beach: app.vue.beach_rating,
             sights: app.vue.sights_rating,
@@ -75,6 +78,7 @@ let init = (app) => {
                 title: app.vue.new_title,
                 post_text: app.vue.new_post_text,
                 image: app.vue.image,
+                country: app.vue.country,
                 overall: app.vue.overall_rating,
                 beach: app.vue.beach_rating,
                 sights: app.vue.sights_rating,
@@ -356,6 +360,7 @@ let init = (app) => {
         app.vue.new_post_text = "";
         app.vue.new_title = "";
         app.vue.image = "";
+        app.vue.country = "";
         app.vue.overall_rating = 0;
         app.vue.beach_rating = 0;
         app.vue.sights_rating = 0;
@@ -378,6 +383,17 @@ let init = (app) => {
         });
     };
 
+    /*app.select_country = function(){
+        var country = document.getElementById("country");
+        var selected = country.value;
+        app.vue.country = selected;
+    }*/
+
+    app.show_country = function(str) {
+      //document.getElementById("txtHint").innerHTML = str;
+      app.vue.country = str;
+    }
+
 
     // This contains all the methods.
     app.methods = {
@@ -393,6 +409,8 @@ let init = (app) => {
         get_traveler_string: app.get_traveler_string,
         travel_hover: app.travel_hover,
         select_file: app.select_file,
+        //select_country: app.select_country,
+        show_country: app.show_country,
     };
 
     // This creates the Vue instance.

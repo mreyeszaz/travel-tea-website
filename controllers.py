@@ -200,6 +200,7 @@ def add_post():
         email=get_user_email(),
         user=r.id,
         image=request.json.get('image'),
+        country=request.json.get('country'),
         title=request.json.get('title'),
         overall=request.json.get('overall'),
         beach=request.json.get('beach'),
