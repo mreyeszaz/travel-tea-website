@@ -1,17 +1,19 @@
 [[extend 'layout.html']]
 
-<div class="loading" style="background: rgb(70, 202, 235) no-repeat center center/cover; height: 100vh; position: relative;">
+<div class="loading" style="background: rgb(70, 202, 235) no-repeat center center/cover; height: 100vh; position: relative; z-index: 10;">
 
 </div>
 
 
-<section style="background: url('https://source.unsplash.com/1600x900/?[[=country_name]]') no-repeat center center/cover; height: 85vh; position: relative;">
-   <div class="notification is-large centered has-text-centered">
+<section style="background: url('https://source.unsplash.com/1600x900/?[[=country_name]]') no-repeat center center/cover; height: 80vh; position: relative;">
+</section>
+
+<section>
+   <div class="notification is-large centered has-text-centered is-circular">
      <div class="title is-1">[[=country_name]]</div>
      <p class="subtitle">[[=country_bio]]</p>
    </div>
 </section>
-
 
 
 
@@ -83,4 +85,5 @@
       document.querySelector('.loading').style.display = "none";
    }, 3000);
 </script>
+
 [[end]]

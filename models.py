@@ -34,16 +34,32 @@ def get_time():
 #                 Field('rating', 'integer', default=0)
 #                 )
 
+db.define_table('country_rating', 
+                Field('beaches', 'integer', default=5,requires=IS_INT_IN_RANGE(0, 11)),
+                Field('sights', 'integer', default=5,
+                requires=IS_INT_IN_RANGE(0, 11)),
+                Field('food', 'integer', default=5,
+                requires=IS_INT_IN_RANGE(0, 11)),
+                Field('nightlife', 'integer', default=5,
+                requires=IS_INT_IN_RANGE(0, 11)),
+                Field('shopping', 'integer', default=5,
+                requires=IS_INT_IN_RANGE(0, 11))
+                
+)
+
 db.define_table('country',
                 Field('name', 'string'),
+                Field('code', 'string'),
                 Field('biography', 'string'),
-                )
+                Field('thumbnail', 'text'),
+                Field('country_rating', 'reference country_rating')
+)
 
 db.define_table('place',
                 Field('name', 'string'),
                 Field('country', 'reference country'),
                 Field('thumbnail', 'text')
-                )
+)
 
 db.define_table(
     'user',
@@ -87,7 +103,7 @@ db.define_table(
     'review',
     Field('author', 'string'),
     Field('email', default=get_user_email()),
-    Field('rating', 'integer', default=0, requires=IS_INT_IN_RANGE(0, 11)),
+    Field('rating', 'integer', default=0,               requires=IS_INT_IN_RANGE(0, 11)),
     Field('description', 'text'),
 )
 

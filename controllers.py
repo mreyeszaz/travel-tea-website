@@ -23,6 +23,7 @@ from .common import db, session, T, cache, auth, logger, authenticated, unauthen
 from py4web.utils.url_signer import URLSigner
 from .models import get_user_email
 from py4web.utils.form import Form, FormStyleBulma
+from .extract_info import extract_country_info, country_info, get_country_flag_link
 
 import uuid
 import random
@@ -501,6 +502,33 @@ def country_profile(country_id=None):
     country_info = db(db.country.id == country_id).select().first()
     assert country_info is not None
     country_name = country_info.name
-    country_bio = country_info.biography
+    country_bio = extract_country_info(country_name)
     return dict(country_name=country_name,
                 country_bio=country_bio)
+
+@action('insert_all_countries', method=["GET", "POST"])
+@action.uses(db, auth.user)
+def insert_all_countries():
+    for country_obj in country_info:
+        rating_id = db.country_rating.insert(
+            beaches=0, 
+            sights=0, 
+            food=0, 
+            nightlife=0, 
+            shopping=0,
+        )
+
+        country_name = country_obj["name"]
+        country_code = country_obj["code"]
+        country_bio = extract_country_info(country_name)
+        country_flag = get_country_flag_link(country_code)
+        
+        db.country.insert(
+            name=country_name,
+            code=country_code,
+            biography=country_bio,
+            thumbnail=country_flag,
+            country_rating=rating_id,
+        )
+
+    return "ok"

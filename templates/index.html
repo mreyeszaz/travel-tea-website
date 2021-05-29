@@ -1,5 +1,9 @@
 [[extend 'layout.html']]
 
+<div class="loading" style="background: rgb(70, 202, 235) no-repeat center center/cover; height: 100vh; position: relative;">
+
+</div>
+
 <!--<section class="hero is-fullheight">-->
 <section class="" style="background: url('https://source.unsplash.com/1600x900/?travel') no-repeat center center/cover; height: 100%; position: relative;">
    <div class="container column is-one-third has-text-centered mb-5">
@@ -144,3 +148,15 @@
       </div>
    </div>
 </section>
+
+<script>
+   document.querySelector('section').style.display = 'none';
+   document.querySelector('.loading').classList.add('spinner-1');
+
+   // Mimic server req
+   setTimeout(() => {
+      document.querySelector('.loading').classList.remove('spinner-1');
+      document.querySelector('section').style.display = 'block';
+      document.querySelector('.loading').style.display = "none";
+   }, 350);
+</script>
