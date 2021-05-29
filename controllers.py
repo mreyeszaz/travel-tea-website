@@ -200,7 +200,6 @@ def add_post():
         email=get_user_email(),
         user=r.id,
         image=request.json.get('image'),
-        country=request.json.get('country'),
         title=request.json.get('title'),
         overall=request.json.get('overall'),
         beach=request.json.get('beach'),
@@ -310,7 +309,8 @@ def search():
     else:
         t = db.country.id > 0
 
-    results = db(t).select(db.country.ALL).as_list()
+    results = db(t).select(db.country.name).as_list()
+    # print(results)
     return dict(results=results)
 
 # ------- THIS IS REFERENCE FOR SEARCH BAR -----
