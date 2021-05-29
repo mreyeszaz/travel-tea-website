@@ -69,15 +69,29 @@ db.define_table(
 )
 
 db.define_table('posts',
+                Field('title', default=""),
                 Field('post_text', default=""),
                 Field('username', default=""),
                 Field('email', default=get_user_email()),
                 Field('user', 'reference auth_user'),
                 Field('image', 'text', default=""),
+                Field('overall', 'integer', default=0, IS_INT_IN_RANGE=(0, 6)),
+                Field('beach', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
+                Field('sights', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
+                Field('food', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
+                Field('night', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
+                Field('shop', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
                 )
 
 db.define_table('likes',
                 Field('is_like', 'boolean'),
+                Field('post', 'reference posts'),
+                Field('name', default=""),
+                Field('email', default=get_user_email()),
+                )
+
+db.define_table('travels',
+                Field('has_traveled', 'boolean'),
                 Field('post', 'reference posts'),
                 Field('name', default=""),
                 Field('email', default=get_user_email()),

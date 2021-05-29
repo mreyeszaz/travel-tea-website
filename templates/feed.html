@@ -7,7 +7,7 @@
 <!-- click button to add new comment -->
 <div class="block" id="vue-target">
     <div class="container block">
-      <button @click="add_mode = true" class="button is-primary">
+      <button @click="add_mode = true" class="button is-primary is-light">
         <i class="fa fa-plus fa-fw"></i>
       </button>
     </div>
@@ -16,8 +16,78 @@
     <div v-if="add_mode" class="container block">
 
       <div class="field">
+          <label class="label">Title</label>
         <p class="control">
-          <textarea class="textarea" placeholder="Enter new post here" v-model="new_post_text"></textarea>
+          <input class="input" type="text" placeholder="Enter title" v-model="new_title">
+        </p>
+      </div>
+
+      <div class="field">
+          <label class="label">Description</label>
+        <p class="control">
+          <textarea class="textarea" placeholder="Enter description of your travel experience" v-model="new_post_text"></textarea>
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="label">Overall Rating</label>
+          <p class="help">Overall rating is out of 5</p>
+          <p class="control has-icons-left">
+            <span class="icon is-small is-left">
+              <i class="fa fa-coffee"></i>
+          </span>
+          <input class="input" type="number" placeholder="Give us the tea" v-model="overall_rating">
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="label">Category Ratings</label>
+          <p class="help">All category ratings are out of 10</p>
+          <p class="control has-icons-left">
+            <span class="icon is-small is-left">
+              <i class="fa fa-anchor"></i>
+          </span>
+          <input class="input" type="number" placeholder="Beach Rating" style="width: 20%;" v-model="beach_rating">
+        </p>
+      </div>
+
+      <div class="field">
+        <p class="control has-icons-left">
+          <input class="input" type="number"  placeholder="Sight Seeing Rating"
+                 style="width: 20%;" v-model="sights_rating">
+          <span class="icon is-small is-left">
+              <i class="fa fa-bicycle fa-lg"></i>
+          </span>
+        </p>
+      </div>
+
+        <div class="field">
+        <p class="control has-icons-left">
+          <input class="input" type="number"  placeholder="Restaurants Rating"
+                 style="width: 20%;" v-model="food_rating">
+          <span class="icon is-small is-left">
+              <i class="fa fa-cutlery fa-lg"></i>
+          </span>
+        </p>
+      </div>
+
+        <div class="field">
+        <p class="control has-icons-left">
+          <input class="input" type="number"  placeholder="Nightlife Rating"
+                 style="width: 20%;" v-model="night_rating">
+          <span class="icon is-small is-left">
+              <i class="fa fa-moon-o fa-lg"></i>
+          </span>
+        </p>
+      </div>
+
+        <div class="field">
+        <p class="control has-icons-left">
+          <input class="input" type="number"  placeholder="Shopping Rating"
+                 style="width: 20%;" v-model="shop_rating">
+          <span class="icon is-small is-left">
+              <i class="fa fa-shopping-bag"></i>
+          </span>
         </p>
       </div>
 
@@ -44,35 +114,171 @@
             </div>
       </div>
 
-      <button class="button is-primary" @click="add_post" >Post</button>
+      <button class="button is-primary is-light" @click="add_post" >Post</button>
       <button class="button is-warning" @click="cancel_post" >Cancel</button>
     </div>
 
     <!-- display posts here -->
   <div id="posts" class="section">
-    <!-- Here will go the comments. -->
     <div v-for="p in post_list.slice().reverse()" class="block">
       <div class="box">
-          <!-- display comment and author name -->
-          <p> {{p.post_text}} </p>
-          <p class="has-text-grey"> {{p.username}} </p>
+          <!-- display title, author name, image, and description  -->
           <div class="block">
-              image goes here
-<!--              <img width="100" :src="" />-->
+              <div>
+                  <h2 class="subtitle"> {{p.title}} </h2>
+              </div>
+              <div>
+                <p class="has-text-grey"> {{p.username}} </p>
+              </div>
+          </div>
+          <div class="block">
+              <div v-if="p.image">
+                  <img width="200" :src="p.image" />
+              </div>
+              <div>
+                <p> {{p.post_text}} </p>
+              </div>
           </div>
 
-          <div>
+          <!--<div class="block">
+              <span class="icon-text">
+                  <span class="icon">
+                          <i class="fa fa-coffee" aria-hidden="true"></i>
+                  </span>
+                  <span>Overall</span>
+              </span>
+              <progress class="progress is-primary" value="45" max="100">45%</progress>
+          </div>
+
+          <div class="block">
+              <div class="columns"><div class="column">
+                    <span class="icon-text">
+                       <span class="icon">
+                          <i class="fa fa-anchor fa-lg" aria-hidden="true"></i>
+                       </span>
+                       <span>Beaches</span>
+                    </span>
+                    <progress class="progress is-primary" :id="p._idx" value="45" max="100"></progress>
+                 </div>
+                 <div class="column">
+                    <span class="icon-text">
+                       <span class="icon">
+                          <i class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
+                       </span>
+                       <span>Sight Seeing</span>
+                    </span>
+                    <progress class="progress is-primary" value="45" max="100">45%</progress>
+                 </div>
+                 <div class="column">
+                    <span class="icon-text">
+                       <span class="icon">
+                          <i class="fa fa-cutlery fa-lg" aria-hidden="true"></i>
+                       </span>
+                       <span>Restaurants</span>
+                    </span>
+                    <progress class="progress is-primary" value="45" max="100">45%</progress>
+                 </div>
+                 <div class="column">
+                    <span class="icon-text">
+                       <span class="icon">
+                          <i class="fa fa-moon-o fa-lg" aria-hidden="true"></i>
+                       </span>
+                       <span>Nightlife</span>
+                    </span>
+                    <progress class="progress is-primary" value="45" max="100">45%</progress>
+                 </div>
+                 <div class="column">
+                    <span class="icon-text">
+                       <span class="icon">
+                          <i class="fa fa-shopping-bag fa-lg" aria-hidden="true"></i>
+                       </span>
+                       <span>Shopping</span>
+                    </span>
+                    <progress class="progress is-primary" value="45" max="100">45%</progress>
+                 </div>
+
+              </div>
+          </div>-->
+
+          <!-- Display ratings -->
+          <div class="block">
+                  Overall Rating:
+              <div v-if="p.overall==5">
+                  <span class="icon">
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                  <span>
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                  <span>
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                  <span>
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                  <span>
+                      <i class="fa fa-coffee"></i>
+                   </span>
+                <div v-if="p.overall==4">
+                  <span class="icon">
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                  <span>
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                  <span>
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                  <span>
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                </div>
+              <div v-if="p.overall==3">
+                  <span class="icon">
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                  <span>
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                  <span>
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                </div>
+              <div v-if="p.overall==2">
+                  <span class="icon">
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                  <span>
+                      <i class="fa fa-coffee"></i>
+                  </span>
+                </div>
+              <div v-if="p.overall==1">
+                  <span class="icon">
+                     <i class="fa fa-coffee"></i>
+                  </span>
+              </div>
+              <div v-if="p.overall==0">
+                  0/5
+              </div>
+          </div>
+              <p>Beaches: {{p.beach}}/10</p>
+              <p>Sight Seeing: {{p.sights}}/10</p>
+              <p>Restaurants: {{p.food}}/10</p>
+              <p>Nightlife: {{p.night}}/10</p>
+              <p>Shopping: {{p.shop}}/10</p>
+          </div>
+
                   <!-- Delete post -->
-              <div v-if="'[[=curr_email]]'==p.email" class="field is-grouped is-grouped-right">
+          <div v-if="'[[=curr_email]]'==p.email" class="field is-grouped is-grouped-right">
                 <button @click="delete_post(p.id)" class="button is-danger">
                   <span class="icon is-small">
                     <i class="fa fa-trash"></i>
                   </span>
                 </button>
-              </div>
+          </div>
 
               <!-- thumbs -->
-              <span @mouseover="set_hover(p._idx, true)" @mouseout="set_hover(p._idx, false)">
+          <span @mouseover="set_hover(p._idx, true)" @mouseout="set_hover(p._idx, false)">
                   <span class="icon has-text-link" @click="like_post(p._idx, '[[=curr_name]]')">
                     <i class="fa fa-thumbs-up fa-flip-horizontal" v-if="p.liked == 1"></i>
                     <i class="fa fa-thumbs-o-up fa-flip-horizontal" v-else></i>
@@ -81,11 +287,22 @@
                     <i class="fa fa-thumbs-down fa-flip-horizontal" v-if="p.liked == -1"></i>
                     <i class="fa fa-thumbs-o-down fa-flip-horizontal" v-else></i>
                   </span>
-              </span>
+          </span>
+
+          <!-- plane -->
+          <span @mouseover="travel_hover(p._idx, true)" @mouseout="travel_hover(p._idx, false)">
+                  <span class="icon has-text-link" @click="travel_post(p._idx, '[[=curr_name]]')">
+                    <i class="fa fa-plane" v-if="p.traveled == 1"></i>
+                    <i class="fa fa-plane fa-flip-horizontal" v-else></i>
+                  </span>
+          </span>
+
 
               <!-- liker/disliker list -->
-              <span class="has-text-link" v-if="p.hover">{{ get_liker_string(p._idx) }}</span>
-          </div>
+          <span class="has-text-link" v-if="p.hover">{{ get_liker_string(p._idx) }}</span>
+
+              <!-- traveler list -->
+          <span class="has-text-link" v-if="p.travel_hover">{{ get_traveler_string(p._idx) }}</span>
 
       </div>
     </div>
@@ -101,6 +318,9 @@
     let add_like_url = "[[=XML(add_like_url)]]";
     let flip_like_url = "[[=XML(flip_like_url)]]";
     let delete_like_url = "[[=XML(delete_like_url)]]";
+    let get_travels_url = "[[=XML(get_travels_url)]]";
+    let add_travel_url = "[[=XML(add_travel_url)]]";
+    let delete_travel_url = "[[=XML(delete_travel_url)]]";
 </script>
 <script src="js/feed.js"></script>
 [[end]]
