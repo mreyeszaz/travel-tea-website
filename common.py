@@ -88,6 +88,7 @@ auth = Auth(session, db, define_tables=True,
             extra_fields=[
                 Field('username', type='string', requires=IS_NOT_IN_DB(db, "auth_user.username")),
                 Field('thumbnail', 'text', default="", readable=False, writable=False),
+                Field('biography', 'text', default="Add a biography in settings", readable=False, writable=False),
             ])
 
 # Fixes the messages.

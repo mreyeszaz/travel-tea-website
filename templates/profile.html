@@ -33,19 +33,14 @@
                <img width="200" :src="thumbnail" />
             </div>
 
-            <!-- table -->
-            <div class="block">
-               <table class="table container">
-                  <thead>
-                     <th>Following</th>
-                     <th>Tea Spilt</th>
-                  </thead>
-                  <tbody>
-                     <td>#</td>
-                     <td>#</td>
-                  </tbody>
-               </table>
-            </div>
+             <!-- bio -->
+             <div class="block">
+                 <div class="box">
+                     <h2 class="subtitle">Biography</h2>
+
+                     [[=bio]]
+                 </div>
+             </div>
 
             <!-- settings -->
             <div class="dropdown is-hoverable">
@@ -66,6 +61,12 @@
                   </div>
                   <hr class="dropdown-divider">
                   <div class="dropdown-item">
+                    <a class="button is-white is-small"> <!-- href="[[=URL('discover')]]">-->
+                        Add a biography
+                     </a>
+                  </div>
+                  <hr class="dropdown-divider">
+                  <div class="dropdown-item">
                      <button class="button is-white is-small" @click="delete_profilepic">
                         Delete Profile Picture
                         <!--<span><i class="fa fa-trash"></i> Delete Profile Picture</span>-->
@@ -74,14 +75,6 @@
                 </div>
               </div>
             </div>
-
-
-            <!--<div class="block">
-               <div class="tags has-addons">
-                  <span class="tag is-medium">Username</span>
-                  <span class="tag is-medium is-primary">Bulma</span>
-               </div>
-            </div>-->
 
          </div>
          <div class="column">

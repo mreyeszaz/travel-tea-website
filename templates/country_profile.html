@@ -1,7 +1,6 @@
 [[extend 'layout.html']]
 
 <div class="loading" style="background: rgb(70, 202, 235) no-repeat center center/cover; height: 100vh; position: relative;">
-
 </div>
 
 
@@ -43,7 +42,7 @@
                <span class="icon">
                   <i class="fa fa-cutlery fa-lg" aria-hidden="true"></i>
                </span>
-               <span>Places to eat</span>
+               <span>Restaurants</span>
             </span>
             <progress class="progress is-info" value="45" max="100">45%</progress>
          </div>
@@ -59,7 +58,7 @@
          <div class="column">
             <span class="icon-text">
                <span class="icon">
-                  <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                  <i class="fa fa-shopping-bag fa-lg" aria-hidden="true"></i>
                </span>
                <span>Shopping</span>
             </span>
@@ -71,7 +70,6 @@
 </section>
 
 [[block page_scripts]]
-<script src="js/profile.js"></script>
 <script>
    document.querySelector('section').style.display = 'none';
    document.querySelector('.loading').classList.add('spinner-1');

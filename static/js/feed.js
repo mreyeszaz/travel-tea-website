@@ -11,10 +11,17 @@ let init = (app) => {
     app.data = {
         // Complete as you see fit.
         add_mode: false,
+        new_title: "",
         new_post_text: "",
         post_list: [],
         image: "",
         selection_done: false,
+        overall_rating: 0,
+        beach_rating: 0,
+        sights_rating: 0,
+        food_rating: 0,
+        night_rating: 0,
+        shop_rating: 0,
     };
 
     app.enumerate = (a) => {
@@ -23,6 +30,15 @@ let init = (app) => {
         a.map((e) => {e._idx = k++;});
         return a;
     };
+
+
+    /*app.updateBeachBar = function(){
+        for(p in app.vue.post_list){
+            let element = document.getElementById(p._idx);
+            element.value = p.beach;
+            document.getElementById(p._idx).innerHTML = element.value;
+        }
+    }*/
 
     app.file = null;
 
@@ -43,14 +59,28 @@ let init = (app) => {
     // Adds a new post to the database using a request object
     app.add_post = function(){
         axios.post(add_post_url,{
-            //put correct post text into the database
+            //put correct info into the database
+            title: app.vue.new_title,
             post_text: app.vue.new_post_text,
             image: app.vue.image,
+            overall: app.vue.overall_rating,
+            beach: app.vue.beach_rating,
+            sights: app.vue.sights_rating,
+            food: app.vue.food_rating,
+            night: app.vue.night_rating,
+            shop: app.vue.shop_rating,
         }).then(function(response){
             app.vue.post_list.push({
                 id: response.data.id,
+                title: app.vue.new_title,
                 post_text: app.vue.new_post_text,
                 image: app.vue.image,
+                overall: app.vue.overall_rating,
+                beach: app.vue.beach_rating,
+                sights: app.vue.sights_rating,
+                food: app.vue.food_rating,
+                night: app.vue.night_rating,
+                shop: app.vue.shop_rating,
                 username: response.data.name,
                 email: response.data.email,
                 liked: 0,
@@ -58,13 +88,24 @@ let init = (app) => {
                 hover: false,
                 likers: [],
                 dislikers: [],
+                traveled: 0,
+                travel_id: -1,
+                travel_hover: false,
+                travelers: [],
             });
             app.enumerate(app.vue.post_list);
-            app.vue.image = "";
             app.vue.selection_done = false;
             app.cancel_post();
         });
     };
+
+    //category rating out of 10, multiply by 10 to get out of 100
+    /*app.get_beach_value = function(p_idx) {
+        let post = app.vue.post_list[p_idx];
+        let b = post.beach;
+
+        return (b*10)
+    }*/
 
     app.like_post = function (post_idx, curr_user) {
         let post = app.vue.post_list[post_idx];
@@ -185,6 +226,46 @@ let init = (app) => {
         }
     }
 
+    app.travel_post = function (post_idx, curr_user) {
+        let post = app.vue.post_list[post_idx];
+
+        // no like exists, add it
+        if(post.traveled == 0) {
+            axios.post(
+                add_travel_url,
+                {
+                    has_traveled: true,
+                    post: post.id,
+                }
+            ).then(function (response) {
+                for(let i = 0; i < app.vue.post_list.length; i++) {
+                    if(app.vue.post_list[i].id === post.id) {
+                        app.vue.post_list[i].traveled = 1;
+                        app.vue.post_list[i].travel_id = response.data.id;
+                        app.vue.post_list[i].travelers.push(curr_user);
+                        break;
+                    }
+                }
+            });
+        }
+        // Already liked, unlike
+        else if(post.traveled == 1) {
+            axios.post(
+                delete_travel_url,
+                {id: post.travel_id}
+            ).then(function (response) {
+                for(let i = 0; i < app.vue.post_list.length; i++) {
+                    if(app.vue.post_list[i].id === post.id) {
+                        app.vue.post_list[i].traveled = 0;
+                        app.vue.post_list[i].travel_id = -1;
+                        app.vue.post_list[i].travelers.splice(app.vue.post_list[i].travelers.indexOf(curr_user), 1);
+                        break;
+                    }
+                }
+            });
+        }
+    }
+
     app.get_liker_string = function (p_idx) {
         let post = app.vue.post_list[p_idx];
         let s = "";
@@ -216,6 +297,49 @@ let init = (app) => {
         if(j > 0) {
             s = s.slice(0, -2);
         }
+/*
+        let k = 0;
+
+        for(; k < post.travelers.length; k++) {
+            if(k == 0) {
+                if(s !== "") {
+                    s += "; ";
+                }
+                s += "Also traveled to by ";
+            }
+            s+= post.travelers[k];
+            s+= ", ";
+        }
+
+        if(k > 0) {
+            s = s.slice(0, -2);
+        }*/
+        return s;
+    }
+
+    app.get_traveler_string = function (p_idx) {
+        let post = app.vue.post_list[p_idx];
+        let s = "";
+        for(let i = 0; i < app.vue.post_list[p_idx].travelers.length; i++) {
+            if(app.vue.post_list[p_idx].travelers.length == 1){
+                s+= post.travelers[i];
+                s += " has also traveled here";
+            }
+            else if(app.vue.post_list[p_idx].travelers.length >= 2) {
+                if(i == app.vue.post_list[p_idx].travelers.length-2) {
+                    s+= post.travelers[i];
+                    s += " and ";
+                }
+                else{
+                s+= post.travelers[i];
+                s+= ", ";
+                }
+                if(i == app.vue.post_list[p_idx].travelers.length-1) {
+                    s = s.slice(0, -2);
+                    s += " have also traveled here";
+                }
+            }
+        }
         return s;
     }
 
@@ -223,9 +347,21 @@ let init = (app) => {
         app.vue.post_list[p_idx].hover = new_value;
     }
 
+    app.travel_hover = function (p_idx, new_value) {
+        app.vue.post_list[p_idx].travel_hover = new_value;
+    }
+
     app.cancel_post = function(){
         app.vue.add_mode = false;
         app.vue.new_post_text = "";
+        app.vue.new_title = "";
+        app.vue.image = "";
+        app.vue.overall_rating = 0;
+        app.vue.beach_rating = 0;
+        app.vue.sights_rating = 0;
+        app.vue.food_rating = 0;
+        app.vue.night_rating = 0;
+        app.vue.shop_rating = 0;
     };
 
     app.delete_post = function(p_idx) {
@@ -253,6 +389,9 @@ let init = (app) => {
         dislike_post: app.dislike_post,
         get_liker_string: app.get_liker_string,
         set_hover: app.set_hover,
+        travel_post: app.travel_post,
+        get_traveler_string: app.get_traveler_string,
+        travel_hover: app.travel_hover,
         select_file: app.select_file,
     };
 
@@ -271,6 +410,7 @@ let init = (app) => {
             let posts = result.data.posts;
             app.enumerate(posts);
             let likes = result.data.likes;
+            let travels = result.data.travels;
             //app.complete(posts);
 
             for(let i = 0; i < posts.length; i++) {
@@ -285,8 +425,22 @@ let init = (app) => {
                     }
                 }
             }
+
+            for(let i = 0; i < posts.length; i++) {
+                posts[i].travel_hover = false;
+                posts[i].traveled = 0;
+                posts[i].travel_id = -1;
+                for(let j = 0; j < travels.length; j++) {
+                    if(travels[j].post == posts[i].id) {
+                        posts[i].traveled = travels[j].has_traveled ? 1 : -1;
+                        posts[i].travel_id = travels[j].id;
+                        break;
+                    }
+                }
+            }
+
             app.vue.post_list = posts;
-            console.log(app.vue.post_list);
+            //console.log(app.vue.post_list);
         });
     };
 
