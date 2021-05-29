@@ -309,7 +309,8 @@ def search():
     else:
         t = db.country.id > 0
 
-    results = db(t).select(db.country.ALL).as_list()
+    results = db(t).select(db.country.name).as_list()
+    # print(results)
     return dict(results=results)
 
 # ------- THIS IS REFERENCE FOR SEARCH BAR -----
