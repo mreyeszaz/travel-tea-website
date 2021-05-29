@@ -48,6 +48,10 @@ $button-text-hover-background-color: $faded-main-blue;
   z-index: -1;
 }
 
+.has-shadow {
+  text-shadow: 2px 1px 3px #000;
+}
+
 .centered {
   position: absolute;
   top: 40%;
