@@ -1,6 +1,7 @@
 [[extend 'layout.html']]
 
-<div class="section">
+<div class="section" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+     xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <h1 class="title">Discover</h1>
     <h2 class="subtitle">Where would you like to go?</h2>
 </div>
@@ -24,7 +25,7 @@
       <div v-for="r in results">
           <div class="box">
               {{r.name}}
-              <a href="[[=URL('random_location')]]" style="text-decoration: none;">
+              <a v-bind:href="'[[=URL()]]country_profile/' + r.id">
                   <span class="icon"><i class="fa fa-plane"></i></i></span>
               </a>
           </div>
