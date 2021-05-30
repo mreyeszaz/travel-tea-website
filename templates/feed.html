@@ -482,6 +482,7 @@
                   <span>
                       <i class="fa fa-coffee"></i>
                    </span>
+              </div>
                 <div v-if="p.overall==4">
                   <span class="icon">
                       <i class="fa fa-coffee"></i>
@@ -529,9 +530,8 @@
               <p>Restaurants: {{p.food}}/10</p>
               <p>Nightlife: {{p.night}}/10</p>
               <p>Shopping: {{p.shop}}/10</p>
-          </div>
 
-                  <!-- Delete post -->
+           <!-- Delete post -->
           <div v-if="'[[=curr_email]]'==p.email" class="field is-grouped is-grouped-right">
                 <button @click="delete_post(p.id)" class="button is-danger">
                   <span class="icon is-small">
@@ -539,6 +539,10 @@
                   </span>
                 </button>
           </div>
+
+          </div>
+
+
 
               <!-- thumbs -->
           <span @mouseover="set_hover(p._idx, true)" @mouseout="set_hover(p._idx, false)">

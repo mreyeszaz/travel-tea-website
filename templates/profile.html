@@ -8,7 +8,7 @@
             <h1 class="title"> @ [[=username]] </h1>
 
             <!-- profile picture -->
-            <div class="block" v-if="!thumbnail">
+            <div class="block" v-if="!thumbnail[0]">
                <p class="control">
                   <div class="file is-info is-centered">
                         <label class="file-label">
@@ -29,7 +29,7 @@
                   </div>
                </p>
             </div>
-            <div class="block" v-if="thumbnail" >
+            <div class="block" v-if="thumbnail[0]" >
                <img width="200" :src="thumbnail" />
             </div>
 
@@ -37,8 +37,19 @@
              <div class="block">
                  <div class="box">
                      <h2 class="subtitle">Biography</h2>
+                        <div v-if="edit_bio">
+                          <div class="field">
+                            <p class="control">
+                              <input class="input" type="text" placeholder="Enter new biography" v-model="new_bio">
+                            </p>
+                          </div>
+                          <button class="button is-primary is-light" @click="add_bio">Done</button>
+                          <button class="button is-warning" @click="cancel_bio" >Cancel</button>
+                        </div>
 
-                     [[=bio]]
+                        <div v-if="!edit_bio">
+                            {{bio[0]}}
+                        </div>
                  </div>
              </div>
 
@@ -54,15 +65,15 @@
               </div>
               <div class="dropdown-menu" id="dropdown-menu2" role="menu">
                 <div class="dropdown-content">
+<!--                  <div class="dropdown-item">-->
+<!--                    <a class="button is-white is-small"> &lt;!&ndash; href="[[=URL('discover')]]">&ndash;&gt;-->
+<!--                        Edit username-->
+<!--                     </a>-->
+<!--                  </div>-->
+<!--                  <hr class="dropdown-divider">-->
                   <div class="dropdown-item">
-                    <a class="button is-white is-small"> <!-- href="[[=URL('discover')]]">-->
-                        Edit username
-                     </a>
-                  </div>
-                  <hr class="dropdown-divider">
-                  <div class="dropdown-item">
-                    <a class="button is-white is-small"> <!-- href="[[=URL('discover')]]">-->
-                        Add a biography
+                    <a class="button is-white is-small" @click="set_edit_bio(true)">
+                        Edit biography
                      </a>
                   </div>
                   <hr class="dropdown-divider">
@@ -78,53 +89,111 @@
 
          </div>
          <div class="column">
-            <div class="box">
-               <p>PlaceA Tea</p>
-               <p>
-                  <span class="icon">
-                     <i class="fa fa-coffee"></i>
-                  </span>
-                  <span class="icon">
-                     <i class="fa fa-coffee"></i>
-                  </span>
-                  <span class="icon">
-                     <i class="fa fa-coffee"></i>
-                  </span>
-               </p>
-               <p>
-                  <figure class="image is-64x64">
-                    <img src="https://bulma.io/images/placeholders/128x128.png">
-                  </figure>
-                  blah blah blah blah
-               </p>
+            <div v-for="p in post_list.slice().reverse()" class="block">
+              <div class="box">
+                  <!-- display title, country, author name, image, and description  -->
+                  <div class="block">
+                      <div>
+                          <h2 class="subtitle"> {{p.title}} </h2>
+                      </div>
+                      <div>
+                          Selected Country here
+                      </div>
+                      <div>
+                        <p class="has-text-grey"> {{p.username}} </p>
+                      </div>
+                  </div>
+                  <div class="block">
+                      <div v-if="p.image">
+                          <img width="200" :src="p.image" />
+                      </div>
+                      <div>
+                        <p> {{p.post_text}} </p>
+                      </div>
+                  </div>
+
+                  <!-- Display ratings -->
+                  <div class="block">
+                          Overall Rating:
+                      <div v-if="p.overall==5">
+                          <span class="icon">
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                          <span>
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                          <span>
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                          <span>
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                          <span>
+                              <i class="fa fa-coffee"></i>
+                           </span>
+                      </div>
+                        <div v-if="p.overall==4">
+                          <span class="icon">
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                          <span>
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                          <span>
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                          <span>
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                        </div>
+                      <div v-if="p.overall==3">
+                          <span class="icon">
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                          <span>
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                          <span>
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                        </div>
+                      <div v-if="p.overall==2">
+                          <span class="icon">
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                          <span>
+                              <i class="fa fa-coffee"></i>
+                          </span>
+                        </div>
+                      <div v-if="p.overall==1">
+                          <span class="icon">
+                             <i class="fa fa-coffee"></i>
+                          </span>
+                      </div>
+                      <div v-if="p.overall==0">
+                          0/5
+                      </div>
+                  </div>
+                      <p>Beaches: {{p.beach}}/10</p>
+                      <p>Sight Seeing: {{p.sights}}/10</p>
+                      <p>Restaurants: {{p.food}}/10</p>
+                      <p>Nightlife: {{p.night}}/10</p>
+                      <p>Shopping: {{p.shop}}/10</p>
+
+                      <!-- Delete post -->
+                  <div v-if="'[[=curr_email]]'==p.email" class="field is-grouped is-grouped-right">
+                        <button @click="delete_post(p.id)" class="button is-danger">
+                          <span class="icon is-small">
+                            <i class="fa fa-trash"></i>
+                          </span>
+                        </button>
+                  </div>
+
+              </div>
+
+
+                </div>
             </div>
-            <div class="box">
-               <p>PlaceB Tea</p>
-               <p>
-                  <span class="icon">
-                     <i class="fa fa-coffee"></i>
-                  </span>
-                  <span class="icon">
-                     <i class="fa fa-coffee"></i>
-                  </span>
-                  <span class="icon">
-                     <i class="fa fa-coffee"></i>
-                  </span>
-                  <span class="icon">
-                     <i class="fa fa-coffee"></i>
-                  </span>
-                  <span class="icon">
-                     <i class="fa fa-coffee"></i>
-                  </span>
-               </p>
-               <p>
-                  <figure class="image is-64x64">
-                    <img src="https://bulma.io/images/placeholders/128x128.png">
-                  </figure>
-                  blah blah blah blah
-               </p>
-            </div>
-            <div class="box">Tea ...</div>
          </div>
       </div>
    </div>
@@ -134,8 +203,11 @@
 [[block page_scripts]]
 <script>
    let get_profile_url = "[[=XML(get_profile_url)]]";
+   let get_posts_url = "[[=XML(get_posts_url)]]";
    let upload_thumbnail_url = "[[=XML(upload_thumbnail_url)]]";
    let delete_profilepic_url = "[[=XML(delete_profilepic_url)]]";
+   let delete_post_url = "[[=XML(delete_post_url)]]";
+   let add_bio_url = "[[=XML(add_bio_url)]]";
 </script>
 <script src="js/profile.js"></script>
 [[end]]
