@@ -379,6 +379,7 @@ def random_location():
     random_location = db(db.place.id == random_location_id).select().first()
     redirect(URL('country_profile', random_location_id))
 
+
 @action('country_profile/<country_id:int>', method=["GET", "POST"])
 @action.uses(db, auth.user, "country_profile.html")
 def country_profile(country_id=None):
