@@ -10220,7 +10220,8 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 
 .has-shadow {
-  text-shadow: -1px 1px 0 #000, 0.5px 0.5px 0 #000, 0.5px -1px 0 #000, -1px -1px 0 #000;
+  text-shadow: -1px 1px 2px #292929, 1px 1px 2px #292929, 1px -1px 2px #292929, -1px -1px 2px #292929;
+  font-weight: bold;
 }
 
 .centered {

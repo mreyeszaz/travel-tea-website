@@ -76,6 +76,8 @@ def profile():
         get_profile_url=URL('get_profile', signer=url_signer),
         username=get_username(),
         bio=get_biography(),
+        get_country_rating_url = URL('get_country_rating', signer=url_signer),
+        set_country_rating_url = URL('set_country_rating', signer=url_signer),
     )
 
 
@@ -417,3 +419,10 @@ def insert_all_countries():
         )
 
     return "ok"
+
+@action('get_country_rating')
+@action.uses(url_signer.verify(), auth.user, db)
+def get_country_ratings():
+    # Returns the 
+    pass
+

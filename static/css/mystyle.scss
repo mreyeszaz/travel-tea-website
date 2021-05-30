@@ -55,10 +55,12 @@ $button-text-hover-background-color: $faded-main-blue;
 }
 
 .has-shadow {
-  text-shadow: -1px 1px 0 #000,
-				  0.5px 0.5px 0 #000,
-				  0.5px -1px 0 #000,
-				  -1px -1px 0 #000;
+  text-shadow: -1px 1px 2px rgb(41, 41, 41),
+				  1px 1px 2px rgb(41, 41, 41),
+				  1px -1px 2px rgb(41, 41, 41),
+				  -1px -1px 2px rgb(41, 41, 41);
+  
+          font-weight: bold;
 }
 
 .centered {

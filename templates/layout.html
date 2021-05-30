@@ -13,7 +13,7 @@
     <!-- Navigation bar -->
     <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item">
+        <a class="navbar-item" href="[[=URL('index')]]">
           <img src="../static/imgs/travel-tea-logo-shadowed.png" alt="">
         </a>
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="the-navbar-menu"
@@ -27,7 +27,6 @@
         <div class="navbar-start">
           [[block page_menu_items]]
           <!-- individual pages can add menu items here -->
-          <a class="navbar-item" href="[[=URL('index')]]">Home</a>
           <a class="navbar-item" href="[[=URL('feed')]]">Feed</a>
           <a class="navbar-item" href="[[=URL('discover')]]">Discover</a>
           <a class="navbar-item" href="[[=URL('resources')]]">Resources</a>
