@@ -43,9 +43,10 @@ db.define_table('country_rating',
                 Field('nightlife', 'integer', default=5,
                 requires=IS_INT_IN_RANGE(0, 11)),
                 Field('shopping', 'integer', default=5,
-                requires=IS_INT_IN_RANGE(0, 11))
-                
+                requires=IS_INT_IN_RANGE(0, 11)),
+                   
 )
+
 
 db.define_table('country',
                 Field('name', 'string'),
@@ -54,6 +55,7 @@ db.define_table('country',
                 Field('thumbnail', 'text'),
                 Field('country_rating', 'reference country_rating')
 )
+
 
 db.define_table('place',
                 Field('name', 'string'),
@@ -118,7 +120,7 @@ db.define_table(
     'review',
     Field('author', 'string'),
     Field('email', default=get_user_email()),
-    Field('rating', 'integer', default=0,               requires=IS_INT_IN_RANGE(0, 11)),
+    Field('rating', 'integer', default=0,        requires=IS_INT_IN_RANGE(0, 11)),
     Field('description', 'text'),
 )
 

@@ -76,8 +76,6 @@ def profile():
         get_profile_url=URL('get_profile', signer=url_signer),
         username=get_username(),
         bio=get_biography(),
-        get_country_rating_url = URL('get_country_rating', signer=url_signer),
-        set_country_rating_url = URL('set_country_rating', signer=url_signer),
     )
 
 
@@ -390,14 +388,29 @@ def country_profile(country_id=None):
     country_name = country_info.name
     country_bio = country_info.biography
     country_flag = country_info.thumbnail
+    country_rating = country_info.country_rating
     return dict(country_name=country_name,
                 country_bio=country_bio, 
-                country_flag=country_flag)
+                country_flag=country_flag,
+                country_rating=country_rating,
+                get_country_rating_url=URL('get_country_rating',country_id),
+                )
+
+@action('get_country_rating/<country_id:int>')
+@action.uses(auth.user, db)
+def get_country_rating(country_id=None):
+    country = db(db.country.id == country_id).select().first()
+    rating_id = country.country_rating
+    ratings = db(db.country_rating.id == rating_id).select().as_list()
+    return dict(ratings=ratings)
+    
+
 
 @action('insert_all_countries', method=["GET", "POST"])
 @action.uses(db, auth.user)
 def insert_all_countries():
     for country_obj in country_info:
+        user = db(db.auth_user.email == get_user_email()).select().first()
         rating_id = db.country_rating.insert(
             beaches=0, 
             sights=0, 
@@ -411,7 +424,7 @@ def insert_all_countries():
         country_bio = extract_country_info(country_name)
         country_flag = get_country_flag_link(country_code)
         
-        db.country.insert(
+        country_id = db.country.insert(
             name=country_name,
             code=country_code,
             biography=country_bio,
@@ -421,9 +434,12 @@ def insert_all_countries():
 
     return "ok"
 
-@action('get_country_rating')
-@action.uses(url_signer.verify(), auth.user, db)
-def get_country_ratings():
-    # Returns the 
-    pass
+@action('delete_all_countries', method=["GET", "POST"])
+@action.uses(db, auth.user)
+def delete_all_countries():
+    db(db.country).delete()
+    db(db.country_rating).delete()
+
+    return "ok"
+
 

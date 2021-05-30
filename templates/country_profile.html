@@ -19,7 +19,7 @@
    </div>
 </section>
 
-<section class="section">
+<section class="section" id="vue-target-country-profile">
    <div class="container">
 
       <div class="title">What [[=country_name]] is known for</div>
@@ -31,7 +31,8 @@
                </span>
                <span>Beaches</span>
             </span>
-            <progress class="progress is-info" value="45" max="100">45%</progress>
+            <progress id="beaches" class="progress is-info is-medium" value="[[=country_rating.beaches]]" max="100">45%</progress>
+
          </div>
          <div class="column">
             <span class="icon-text">
@@ -40,7 +41,7 @@
                </span>
                <span>Sight Seeing</span>
             </span>
-            <progress class="progress is-info" value="45" max="100">45%</progress>
+            <progress id="sights" class="progress is-info is-medium" value="[[=country_rating.sights]]" max="100">45%</progress>
          </div>
          <div class="column">
             <span class="icon-text">
@@ -49,7 +50,7 @@
                </span>
                <span>Restaurants</span>
             </span>
-            <progress class="progress is-info" value="45" max="100">45%</progress>
+            <progress id="food" class="progress is-info is-medium" value="[[=country_rating.food]]" max="100">45%</progress>
          </div>
          <div class="column">
             <span class="icon-text">
@@ -58,7 +59,7 @@
                </span>
                <span>Nightlife</span>
             </span>
-            <progress class="progress is-info" value="45" max="100">45%</progress>
+            <progress id="nightlife" class="progress is-info is-medium" value="[[=country_rating.nightlife]]" max="100">45%</progress>
          </div>
          <div class="column">
             <span class="icon-text">
@@ -67,14 +68,17 @@
                </span>
                <span>Shopping</span>
             </span>
-            <progress class="progress is-info" value="45" max="100">45%</progress>
+            <progress id="shopping" class="progress is-info is-medium" value="[[=country_rating.shopping]]" max="100">45%</progress>
          </div>
-         
       </div>
    </div>
 </section>
 
 [[block page_scripts]]
+<script>
+   let get_country_rating_url = "[[=XML(get_country_rating_url)]]";
+</script>
+<script src="js/country_profile.js"></script>
 <script>
    document.querySelector('section').style.display = 'none';
    document.querySelector('.loading').classList.add('spinner-1');
