@@ -51,6 +51,10 @@ def get_username():
     curr_user = db(db.auth_user.email == get_user_email()).select().first()
     return curr_user.username if curr_user is not None else "Unknown"
 
+def get_userid():
+    curr_user = db(db.auth_user.email == get_user_email()).select().first()
+    return curr_user.id if curr_user is not None else "Unknown"
+
 
 def get_biography():
     curr_user = db(db.auth_user.email == get_user_email()).select().first()
@@ -90,8 +94,11 @@ def profile():
         user_name=user_name(),
         upload_thumbnail_url=URL('upload_thumbnail', signer=url_signer),
         delete_profilepic_url=URL('delete_profilepic', signer=url_signer),
+        delete_post_url=URL('delete_post', signer=url_signer),
         curr_email=get_user_email(),
         get_profile_url=URL('get_profile', signer=url_signer),
+        get_posts_url=URL('get_posts', signer=url_signer),
+        add_bio_url=URL('add_bio', signer=url_signer),
         username=get_username(),
         bio=get_biography(),
     )
@@ -124,26 +131,25 @@ def delete_profilepic():
 @action('get_profile')
 @action.uses(db, auth.user, url_signer.verify())
 def get_profile():
-    tl = get_tl()
+    tl = get_tl(),
+    uid = get_userid(),
+    bio = get_biography(),
     return dict(
         tl=tl,
+        uid=uid,
+        bio=bio,
     )
 
 
-# @action('edit_bio')
-# @action.uses(db, auth.user, 'editProfile.html')
-# def edit_profile():
-#     edit = Form(db.auth_user, csrf_session=session, formstyle=FormStyleBulma)
-#     tl = request.json.get("tl")
-#     db.auth_user.update(
-#         (db.auth_user.email == get_user_email()),
-#         thumbnail=tl
-#     )
-#     if edit.accepted:  # post request
-#         # We simply redirect; the insertion already happened.
-#         redirect(URL('profile'))
-#     # Either this is a GET request, or this is a POST but not accepted = with errors.
-#     return dict(form=edit)
+@action('add_bio', method="POST")
+@action.uses(db, auth.user, url_signer.verify())
+def add_bio():
+    bio = request.json.get('bio')
+    db.auth_user.update_or_insert(
+        (db.auth_user.email == get_user_email()),
+        biography=bio,
+    )
+    return "ok"
 
 
 # TODO: UPDATE FEED
