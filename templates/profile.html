@@ -29,7 +29,7 @@
                   </div>
                </p>
             </div>
-            <div class="block" v-if="thumbnail[0]" >
+            <div class="block" v-if="thumbnail" >
                <img width="200" :src="thumbnail" />
             </div>
 
@@ -48,7 +48,7 @@
                         </div>
 
                         <div v-if="!edit_bio">
-                            {{bio[0]}}
+                            {{bio}}
                         </div>
                  </div>
              </div>

@@ -94,6 +94,7 @@ let init = (app) => {
         // Typically this is a server GET call to load the data.
         axios.get(get_profile_url)
         .then(function(result){
+            //all getting added as arrays instead of single variables??
             app.vue.thumbnail = result.data.tl;
             app.vue.user = result.data.uid;
             app.vue.bio = result.data.bio;

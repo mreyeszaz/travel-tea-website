@@ -131,9 +131,10 @@ def delete_profilepic():
 @action('get_profile')
 @action.uses(db, auth.user, url_signer.verify())
 def get_profile():
-    tl = get_tl(),
-    uid = get_userid(),
-    bio = get_biography(),
+    curr_user = db(db.auth_user.email == get_user_email()).select().first()
+    bio = curr_user.biography if curr_user is not None else "Unknown"
+    tl = curr_user.thumbnail if curr_user is not None else "Unknown"
+    uid = curr_user.id if curr_user is not None else "Unknown"
     return dict(
         tl=tl,
         uid=uid,
@@ -384,11 +385,11 @@ def resources():
 
 
 @action('review')
-@action.uses(auth.user, 'review.html')
+@action.uses(db, auth.user, 'review.html')
 def review():
-    rows = db(db.review.email == get_user_email()).select()
+    # rows = db.review
     # rows = db(db.review).select()
-    return dict(rows=rows, url_signer=url_signer)
+    return dict(rows=db(db.review).select(), url_signer=url_signer)
 
 
 @action('reviewForm', method=["GET", "POST"])

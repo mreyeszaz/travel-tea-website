@@ -8,7 +8,7 @@ from pydal.validators import *
 
 
 def get_user_email():
-    return auth.current_user.get('email') if auth.current_user else None
+    return auth.current_user.get('email') if auth.current_user else "Unknown"
 
 
 def get_time():
@@ -119,24 +119,24 @@ db.define_table('travels',
 #                 )
 
 
-db.define_table(
-    'comment',
-    Field('post', 'reference posts'),
-    Field('username', 'reference user'),
-    Field('content', 'string'),
-)
+# db.define_table(
+#     'comment',
+#     Field('post', 'reference posts'),
+#     Field('username', 'reference user'),
+#     Field('content', 'string'),
+# )
 
 
 db.define_table(
     'review',
     Field('author', 'string'),
-    Field('email', default=get_user_email()),
-    Field('rating', 'integer', default=0,        requires=IS_INT_IN_RANGE(0, 11)),
+    Field('email', default=auth.current_user.get('email') if auth.current_user else "Unknown"),
+    Field('rating', 'integer', default=0, requires=IS_INT_IN_RANGE(0, 11)),
     Field('description', 'text'),
 )
 
 db.review.id.readable = db.review.id.writable = False
-db.review.email.writable = False
+db.review.email.writable = db.review.email.readable = False
 # db.review.user_email.readable = db.review.user_email.writable = False
 
 db.commit()

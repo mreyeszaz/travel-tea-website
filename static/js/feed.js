@@ -384,8 +384,6 @@ let init = (app) => {
         document.querySelector('#location-search').style.display = 'none';
         document.querySelector('#btn-mode').style.display = 'block';
         geocoder.clear();
-
-
     };
 
     app.delete_post = function(p_idx) {
@@ -408,10 +406,10 @@ let init = (app) => {
         app.vue.country = selected;
     }*/
 
-    app.show_country = function(str) {
+    /*app.show_country = function(str) {
       //document.getElementById("txtHint").innerHTML = str;
       app.vue.country = str;
-    }
+    }*/
 
 
     // This contains all the methods.
@@ -429,7 +427,7 @@ let init = (app) => {
         travel_hover: app.travel_hover,
         select_file: app.select_file,
         //select_country: app.select_country,
-        show_country: app.show_country,
+        //show_country: app.show_country,
     };
 
     // This creates the Vue instance.
