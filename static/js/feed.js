@@ -77,6 +77,8 @@ let init = (app) => {
             night: app.vue.night_rating,
             shop: app.vue.shop_rating,
         }).then(function(response){
+            // This information is only for the immediate added post
+            // This is so that the information is visible right after posting
             app.vue.post_list.push({
                 id: response.data.id,
                 title: app.vue.new_title,
@@ -84,8 +86,8 @@ let init = (app) => {
                 image: app.vue.image,
                 place: app.vue.place,
                 place_name: response.data.place_name,
-                place_type: response.data.type,
-                place_country: response.data.country,
+                place_kind: response.data.place_kind,
+                place_country: response.data.place_country,
                 place_properties: app.vue.place_properties,
                 overall: app.vue.overall_rating,
                 beach: app.vue.beach_rating,

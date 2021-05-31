@@ -55,7 +55,6 @@ def get_userid():
     curr_user = db(db.auth_user.email == get_user_email()).select().first()
     return curr_user.id if curr_user is not None else "Unknown"
 
-
 def get_biography():
     curr_user = db(db.auth_user.email == get_user_email()).select().first()
     return curr_user.biography if curr_user is not None else "Unknown"
@@ -207,6 +206,20 @@ def get_posts():
             if t["has_traveled"]:
                 p["travelers"].append(t["name"])
 
+    # Add the location name, country and location type to each post
+    # for p in posts:
+    #     place_id = db(db.posts.id == p["id"]).select(db.posts.place).first()
+    #     place_info = db(db.place.id == place_id).select().first()
+    #     country_id = place_info.country
+    #     country_info = db(db.country.id == country_id).select().first()
+
+    #     place_country = country_info.name
+    #     place_name = place_info.name
+    #     place_type = place_info.type
+    #     p["place_name"] = place_name
+    #     p["place_country"] = place_country
+    #     p["place_type"] = place_type
+
     return dict(posts=posts, 
                 likes=likes,
                 travels=travels,
@@ -263,7 +276,7 @@ def add_post():
                 name=n, 
                 email=get_user_email(),
                 place_name=name,
-                place_type=type,
+                place_kind=type,
                 place_country=country
                 )
 
