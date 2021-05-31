@@ -208,18 +208,16 @@ def get_posts():
                 p["travelers"].append(t["name"])
 
     # Add the location name, country and location type to each post
-    # for p in posts:
-    #     place_id = db(db.posts.id == p["id"]).select(db.posts.place).first()
-    #     place_info = db(db.place.id == place_id).select().first()
-    #     country_id = place_info.country
-    #     country_info = db(db.country.id == country_id).select().first()
-
-    #     place_country = country_info.name
-    #     place_name = place_info.name
-    #     place_type = place_info.type
-    #     p["place_name"] = place_name
-    #     p["place_country"] = place_country
-    #     p["place_type"] = place_type
+    for p in posts:
+        place_id = p["place"]
+        place_info = db(db.place.id == place_id).select().first()
+        p["place_name"] = place_info.name
+        p["place_address"] = place_info.address 
+        p["place_city"] = place_info.city
+        p["place_state"] = place_info.state
+        country_info = db(db.country.id == place_info.country).select().first()
+        p["place_country"] = country_info.name
+        p["place_kind"] = place_info.type
 
     return dict(posts=posts, 
                 likes=likes,
@@ -277,6 +275,9 @@ def add_post():
                 name=n, 
                 email=get_user_email(),
                 place_name=name,
+                place_address=address,
+                place_city=city,
+                place_state=state,
                 place_kind=type,
                 place_country=country
                 )

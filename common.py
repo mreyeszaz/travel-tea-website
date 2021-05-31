@@ -150,16 +150,16 @@ if settings.USE_LDAP:
 
     auth.register_plugin(LDAPPlugin(db=db, groups=groups, **settings.LDAP_SETTINGS))
 
-if settings.OAUTH2GOOGLE_CLIENT_ID:
-    from py4web.utils.auth_plugins.oauth2google import OAuth2Google  # TESTED
+# if settings.OAUTH2GOOGLE_CLIENT_ID:
+#     from py4web.utils.auth_plugins.oauth2google import OAuth2Google  # TESTED
 
-    auth.register_plugin(
-        OAuth2Google(
-            client_id=settings.OAUTH2GOOGLE_CLIENT_ID,
-            client_secret=settings.OAUTH2GOOGLE_CLIENT_SECRET,
-            callback_url="auth/plugin/oauth2google/callback",
-        )
-    )
+#     auth.register_plugin(
+#         OAuth2Google(
+#             client_id=settings.OAUTH2GOOGLE_CLIENT_ID,
+#             client_secret=settings.OAUTH2GOOGLE_CLIENT_SECRET,
+#             callback_url="auth/plugin/oauth2google/callback",
+#         )
+#     )
 if settings.OAUTH2FACEBOOK_CLIENT_ID:
     from py4web.utils.auth_plugins.oauth2facebook import OAuth2Facebook  # UNTESTED
 

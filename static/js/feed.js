@@ -86,6 +86,9 @@ let init = (app) => {
                 image: app.vue.image,
                 place: app.vue.place,
                 place_name: response.data.place_name,
+                place_address: response.data.place_address,
+                place_city: response.data.place_city,
+                place_state: response.data.place_state,
                 place_kind: response.data.place_kind,
                 place_country: response.data.place_country,
                 place_properties: app.vue.place_properties,
@@ -477,7 +480,6 @@ let init = (app) => {
             }
 
             app.vue.post_list = posts;
-            //console.log(app.vue.post_list);
         });
     };
 
