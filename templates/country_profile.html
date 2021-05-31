@@ -19,7 +19,7 @@
    </div>
 </section>
 
-<section class="section" id="vue-target-country-profile">
+<section class="section bottom">
    <div class="container">
 
       <div class="title">What [[=country_name]] is known for</div>
@@ -76,17 +76,15 @@
 
 [[block page_scripts]]
 <script>
-   let get_country_rating_url = "[[=XML(get_country_rating_url)]]";
-</script>
-<script src="js/country_profile.js"></script>
-<script>
    document.querySelector('section').style.display = 'none';
+   document.querySelector('.bottom').style.display = 'none';
    document.querySelector('.loading').classList.add('spinner-1');
 
    // Mimic server req
    setTimeout(() => {
       document.querySelector('.loading').classList.remove('spinner-1');
       document.querySelector('section').style.display = 'block';
+      document.querySelector('.bottom').style.display = 'block';
       document.querySelector('.loading').style.display = "none";
    }, 3000);
 </script>

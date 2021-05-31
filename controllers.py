@@ -56,7 +56,25 @@ def get_biography():
     curr_user = db(db.auth_user.email == get_user_email()).select().first()
     return curr_user.biography if curr_user is not None else "Unknown"
 
+def get_place_components(place, category, properties):
+    place_components = place.split(", ")
+    type_of_place = ""
 
+    if category == "poi":
+        type_of_place = properties["category"]
+        place_components.append(type_of_place)
+        return place_components
+    elif category == "address":
+        place_name = place_components[0]
+        place_components.insert(0, place_name)
+        place_components.append(category)
+    elif category == "neighborhood":
+        place_name = place_components[0]
+        place_components.insert(0, place_name)
+        place_components.append(category)
+    return place_components
+
+    
 # controller for each page on website
 
 @action('index')
@@ -194,7 +212,34 @@ def get_posts():
 def add_post():
     r = db(db.auth_user.email == get_user_email()).select().first()
     n = get_username()
+    place = request.json.get('place')
+    place_properties = request.json.get('place_properties')
+    place_type = request.json.get('place_type')
+    place_components = get_place_components(place, place_type, place_properties)
+
+    name, address, city, state, country, type = place_components
+    print("Place added: ")
+    print(place)
+    print("Place properties: ")
+    print(place_properties)
+    print("Place type: ")
+    print(place_type)
+    print("------------------------")
+
+    country_id = db(db.country.name == country).select().first()
+    # Need to implement a feature to get the average of all ratings from
+    # across all posts about this location to insert into place db table 
+    place_id = db.place.insert(
+        name=name,
+        address=address,
+        city=city,
+        state=state,
+        country=country_id,
+        type=type,
+    )
+
     pid = db.posts.insert(
+        place=place_id,
         post_text=request.json.get('post_text'),
         username=n,
         email=get_user_email(),
@@ -208,7 +253,13 @@ def add_post():
         night=request.json.get('night'),
         shop=request.json.get('shop'),
     )
-    return dict(id=pid, name=n, email=get_user_email())
+    return dict(id=pid, 
+                name=n, 
+                email=get_user_email(),
+                place_name=name,
+                place_type=type,
+                place_country=country
+                )
 
 
 @action('delete_post')

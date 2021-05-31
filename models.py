@@ -59,8 +59,18 @@ db.define_table('country',
 
 db.define_table('place',
                 Field('name', 'string'),
+                Field('address','string', default=""),
+                Field('city','string', default=""),
+                Field('state','string', default=""),
                 Field('country', 'reference country'),
-                Field('thumbnail', 'text')
+                Field('thumbnail', 'text'),
+                Field('type', 'string', default=""),
+                # Field('overall', 'integer', default=0, IS_INT_IN_RANGE=(0, 6)),
+                # Field('beach', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
+                # Field('sights', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
+                # Field('food', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
+                # Field('night', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
+                # Field('shop', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
 )
 
 db.define_table(
@@ -68,6 +78,7 @@ db.define_table(
     Field('user_email', default=get_user_email, writable=False),
     Field('username', 'string'),
     Field('biography', 'string'),
+    
 )
 
 db.define_table('posts',
@@ -77,7 +88,7 @@ db.define_table('posts',
                 Field('email', default=get_user_email()),
                 Field('user', 'reference auth_user'),
                 Field('image', 'text', default=""),
-                Field('country', 'text', default=""),
+                Field('place', 'reference place'),
                 Field('overall', 'integer', default=0, IS_INT_IN_RANGE=(0, 6)),
                 Field('beach', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
                 Field('sights', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),

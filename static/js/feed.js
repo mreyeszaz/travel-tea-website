@@ -15,7 +15,9 @@ let init = (app) => {
         new_post_text: "",
         post_list: [],
         image: "",
-        country: "",
+        place: "",
+        place_properties: null,
+        place_type: "",
         selection_done: false,
         overall_rating: 0,
         beach_rating: 0,
@@ -65,7 +67,9 @@ let init = (app) => {
             title: app.vue.new_title,
             post_text: app.vue.new_post_text,
             image: app.vue.image,
-            country: app.vue.country,
+            place: app.vue.place,
+            place_properties: app.vue.place_properties,
+            place_type: app.vue.place_type,
             overall: app.vue.overall_rating,
             beach: app.vue.beach_rating,
             sights: app.vue.sights_rating,
@@ -78,7 +82,11 @@ let init = (app) => {
                 title: app.vue.new_title,
                 post_text: app.vue.new_post_text,
                 image: app.vue.image,
-                country: app.vue.country,
+                place: app.vue.place,
+                place_name: response.data.place_name,
+                place_type: response.data.type,
+                place_country: response.data.country,
+                place_properties: app.vue.place_properties,
                 overall: app.vue.overall_rating,
                 beach: app.vue.beach_rating,
                 sights: app.vue.sights_rating,
@@ -101,6 +109,9 @@ let init = (app) => {
             app.vue.selection_done = false;
             app.cancel_post();
         });
+
+        console.log(app.vue.place);
+        console.log(app.vue.place_properties);
     };
 
     //category rating out of 10, multiply by 10 to get out of 100
@@ -360,13 +371,21 @@ let init = (app) => {
         app.vue.new_post_text = "";
         app.vue.new_title = "";
         app.vue.image = "";
-        app.vue.country = "";
+        app.vue.place = "";
+        app.vue.place_properties = null;
+        app.vue.place_type = "";
         app.vue.overall_rating = 0;
         app.vue.beach_rating = 0;
         app.vue.sights_rating = 0;
         app.vue.food_rating = 0;
         app.vue.night_rating = 0;
         app.vue.shop_rating = 0;
+        document.querySelector('#geocoder-container').style.display = 'none';
+        document.querySelector('#location-search').style.display = 'none';
+        document.querySelector('#btn-mode').style.display = 'block';
+        geocoder.clear();
+
+
     };
 
     app.delete_post = function(p_idx) {
