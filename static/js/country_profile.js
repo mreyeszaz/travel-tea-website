@@ -82,6 +82,7 @@ let init = (app) => {
                 }
             }
         });
+        console.log(app.vue.post_list);
     };
 
     // Call to the initializer.
