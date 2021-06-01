@@ -82,6 +82,9 @@ db.define_table('posts',
                 Field('food', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
                 Field('night', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
                 Field('shop', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
+                Field('num_like', 'integer', default=0),
+                Field('num_dislike', 'integer', default=0),
+                Field('num_travel', 'integer', default=0),
                 )
 
 db.define_table('likes',
