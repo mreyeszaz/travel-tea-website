@@ -234,6 +234,7 @@ def add_post():
     place_properties = request.json.get('place_properties')
     place_type = request.json.get('place_type')
     place_components = get_place_components(place, place_type, place_properties)
+    print(place_components)
     if (len(place_components) < 6):
         name = place_components[0]
         address = place_components[0]
