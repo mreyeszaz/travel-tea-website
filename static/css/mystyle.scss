@@ -48,6 +48,10 @@ $button-text-hover-background-color: $faded-main-blue;
   z-index: -1;
 }
 
+.stacked-icon {
+  margin-top: 10px;
+}
+
 .cropped-1 {
   width: 60px; /* width of container */
   height: 40px; /* height of container */
@@ -69,6 +73,10 @@ $button-text-hover-background-color: $faded-main-blue;
   left: 50%;
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
+}
+
+.is-little-circular {
+  border-radius: 8px;
 }
 
 .is-circular {

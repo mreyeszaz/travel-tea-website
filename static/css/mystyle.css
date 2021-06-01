@@ -10198,10 +10198,6 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
     visibility: hidden !important;
   }
 }
-.mapboxgl-ctrl-geocoder--input {
-  font-size: 800px;
-}
-
 .page-bg {
   -webkit-filter: blur(5px);
   -moz-filter: blur(5px);
@@ -10213,6 +10209,10 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   top: 0;
   left: 0;
   z-index: -1;
+}
+
+.stacked-icon {
+  margin-top: 10px;
 }
 
 .cropped-1 {
@@ -10234,6 +10234,10 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   left: 50%;
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
+}
+
+.is-little-circular {
+  border-radius: 8px;
 }
 
 .is-circular {
