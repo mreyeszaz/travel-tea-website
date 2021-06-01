@@ -10224,7 +10224,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 }
 
 .has-shadow {
-  text-shadow: -1px 1px 2px #292929, 1px 1px 2px #292929, 1px -1px 2px #292929, -1px -1px 2px #292929;
+  text-shadow: -1px 1px 2px #3a3a3a, 1px 1px 2px #3a3a3a, 1px -1px 2px #3a3a3a, -1px -1px 2px #3a3a3a;
   font-weight: bold;
 }
 

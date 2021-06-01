@@ -204,13 +204,13 @@
                   <img class="is-little-circular" width="400" :src="p.image" />
                 </div>
                 <p class="has-text-grey">
-                  <a v-bind:href="'https://www.google.com/search?q='+p.place_name+' '+p.place_address">
+                  <a v-bind:href="'https://www.google.com/search?q='+p.place_name+' '+p.place_address" target="_blank">
                     <span class="mr-1"><i class="fa fa-location-arrow"></i></span>
                     {{p.place_name}}
                   </a>
                 </p>
                 <p class="has-text-grey">
-                  {{p.place_address}} {{p.place_city}} {{p.place_state}} {{p.place_country}}
+                  {{p.place_address}} {{p.place_city}}, {{p.place_state}}, {{p.place_country}}
                 </p>
               </div>
               <div class="block">
@@ -242,7 +242,7 @@
                       <span class="icon">
                          <i class="fa fa-cutlery fa-lg" aria-hidden="true"></i>
                       </span>
-                      <span>Restaurants</span>
+                      <span>Food</span>
                     </span>
                     <progress id="food" class="progress is-info" :value="p.food*10" max="100"></progress>
                   </div>
@@ -407,6 +407,5 @@
     document.querySelector('#location-search').style.display = 'block';
     document.querySelector('#btn-mode').style.display = 'none';
   }
-
 </script>
 [[end]]

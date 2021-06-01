@@ -235,7 +235,7 @@ def add_post():
     place_type = request.json.get('place_type')
     place_components = get_place_components(place, place_type, place_properties)
 
-    name, address, city, state, country, type = place_components
+    name, address, *other, city, state, country, type = place_components
     print("Place added: ")
     print(place)
     print("Place properties: ")
@@ -443,7 +443,17 @@ def country_profile(country_id=None):
                 country_flag=country_flag,
                 country_rating=country_rating,
                 get_country_rating_url=URL('get_country_rating',country_id),
+                get_posts_url=URL('get_posts', signer=url_signer),
+                delete_post_url=URL('delete_post', signer=url_signer),
+                get_country_url=URL('get_country', country_id),
+                curr_email=get_user_email
                 )
+
+@action('get_country/<country_id:int>', method=["GET", "POST"])
+@action.uses(db, auth.user)
+def get_country(country_id=None):
+    country_info = db(db.country.id == country_id).select().first()
+    return dict(country_id=country_id, country_name=country_info.name)
 
 @action('get_country_rating/<country_id:int>')
 @action.uses(auth.user, db)
@@ -452,7 +462,6 @@ def get_country_rating(country_id=None):
     rating_id = country.country_rating
     ratings = db(db.country_rating.id == rating_id).select().as_list()
     return dict(ratings=ratings)
-    
 
 
 @action('insert_all_countries', method=["GET", "POST"])
