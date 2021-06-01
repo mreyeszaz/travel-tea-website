@@ -34,14 +34,17 @@ let init = (app) => {
         return a;
     };
 
+    app.set_num_like = function(p_idx, value){
+        app.vue.post_list[p_idx].num_like = value;
+    }
 
-    /*app.updateBeachBar = function(){
-        for(p in app.vue.post_list){
-            let element = document.getElementById(p._idx);
-            element.value = p.beach;
-            document.getElementById(p._idx).innerHTML = element.value;
-        }
-    }*/
+    app.set_num_dislike = function(p_idx, value){
+        app.vue.post_list[p_idx].num_dislike = value;
+    }
+
+    app.set_num_travel = function(p_idx, value){
+        app.vue.post_list[p_idx].num_travel = value;
+    }
 
     app.file = null;
 
@@ -109,6 +112,9 @@ let init = (app) => {
                 travel_id: -1,
                 travel_hover: false,
                 travelers: [],
+                num_dislike: 0,
+                num_like: 0,
+                num_travel: 0,
             });
             app.enumerate(app.vue.post_list);
             app.vue.selection_done = false;
@@ -132,11 +138,14 @@ let init = (app) => {
 
         // no like exists, add it
         if(post.liked == 0) {
+            app.set_num_like(post_idx, post.num_like+1);
             axios.post(
                 add_like_url,
                 {
                     is_like: true,
                     post: post.id,
+                    num_like: post.num_like,
+                    num_dislike: post.num_dislike,
                 }
             ).then(function (response) {
                 for(let i = 0; i < app.vue.post_list.length; i++) {
@@ -151,9 +160,15 @@ let init = (app) => {
         }
         // Already liked, unlike
         else if(post.liked == 1) {
+            app.set_num_like(post_idx, post.num_like-1);
             axios.post(
                 delete_like_url,
-                {id: post.like_id}
+                {
+                id: post.like_id,
+                post: post.id,
+                num_like: post.num_like,
+                num_dislike: post.num_dislike,
+                }
             ).then(function (response) {
                 for(let i = 0; i < app.vue.post_list.length; i++) {
                     if(app.vue.post_list[i].id === post.id) {
@@ -167,11 +182,16 @@ let init = (app) => {
         }
         // Disliked, flip to like
         else {
+            app.set_num_like(post_idx, post.num_like+1);
+            app.set_num_dislike(post_idx, post.num_dislike-1);
             axios.post(
                 flip_like_url,
                 {
                     id: post.like_id,
                     is_like: true,
+                    post: post.id,
+                    num_like: post.num_like,
+                    num_dislike: post.num_dislike,
                 }
             ).then(function (response) {
                 for(let i = 0; i < app.vue.post_list.length; i++) {
@@ -191,11 +211,14 @@ let init = (app) => {
 
         // no like exists, add it
         if(post.liked == 0) {
+            app.set_num_dislike(post_idx, post.num_dislike+1);
             axios.post(
                 add_like_url,
                 {
                     is_like: false,
                     post: post.id,
+                    num_like: post.num_like,
+                    num_dislike: post.num_dislike,
                 }
             ).then(function (response) {
                 for(let i = 0; i < app.vue.post_list.length; i++) {
@@ -210,11 +233,16 @@ let init = (app) => {
         }
         // Already liked, flip to dislike
         else if(post.liked == 1) {
+            app.set_num_like(post_idx, post.num_like-1);
+            app.set_num_dislike(post_idx, post.num_dislike+1);
             axios.post(
                 flip_like_url,
                 {
                     id: post.like_id,
                     is_like: false,
+                    post: post.id,
+                    num_like: post.num_like,
+                    num_dislike: post.num_dislike,
                 }
             ).then(function (response) {
                 for(let i = 0; i < app.vue.post_list.length; i++) {
@@ -230,9 +258,15 @@ let init = (app) => {
         }
         // Already disliked, toggle off
         else {
+            app.set_num_dislike(post_idx, post.num_dislike-1);
             axios.post(
                 delete_like_url,
-                {id: post.like_id}
+                {
+                id: post.like_id,
+                post: post.id,
+                num_like: post.num_like,
+                num_dislike: post.num_dislike,
+                }
             ).then(function (response) {
                 for(let i = 0; i < app.vue.post_list.length; i++) {
                     if(app.vue.post_list[i].id === post.id) {
@@ -251,11 +285,13 @@ let init = (app) => {
 
         // no like exists, add it
         if(post.traveled == 0) {
+            app.set_num_travel(post_idx, post.num_travel+1);
             axios.post(
                 add_travel_url,
                 {
                     has_traveled: true,
                     post: post.id,
+                    num_travel: post.num_travel,
                 }
             ).then(function (response) {
                 for(let i = 0; i < app.vue.post_list.length; i++) {
@@ -270,9 +306,14 @@ let init = (app) => {
         }
         // Already liked, unlike
         else if(post.traveled == 1) {
+            app.set_num_travel(post_idx, post.num_travel-1);
             axios.post(
                 delete_travel_url,
-                {id: post.travel_id}
+                {
+                id: post.travel_id,
+                post: post.id,
+                num_travel: post.num_travel,
+                }
             ).then(function (response) {
                 for(let i = 0; i < app.vue.post_list.length; i++) {
                     if(app.vue.post_list[i].id === post.id) {
@@ -431,6 +472,9 @@ let init = (app) => {
         get_traveler_string: app.get_traveler_string,
         travel_hover: app.travel_hover,
         select_file: app.select_file,
+        set_num_like: app.set_num_like,
+        set_num_dislike: app.set_num_dislike,
+        set_num_travel: app.set_num_travel,
         //select_country: app.select_country,
         //show_country: app.show_country,
     };

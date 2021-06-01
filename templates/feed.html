@@ -153,21 +153,21 @@
               <!-- thumbs -->
               <div class="stacked-icon mt-4" @mouseover="set_hover(p._idx, true)" @mouseout="set_hover(p._idx, false)">
                 <div class="icon has-text-link" @click="like_post(p._idx, '[[=curr_name]]')">
-                  <i class="fa fa-thumbs-up fa-flip-horizontal fa-2x" v-if="p.liked == 1"></i>
-                  <i class="fa fa-thumbs-o-up fa-flip-horizontal fa-2x" v-else></i>
+                  <i class="fa fa-thumbs-up fa-2x" v-if="p.liked == 1">{{p.num_like}}</i>
+                  <i class="fa fa-thumbs-o-up fa-2x" v-else>{{p.num_like}}</i>
                 </div>
               </div>
               <div class="stacked-icon" @mouseover="set_hover(p._idx, true)" @mouseout="set_hover(p._idx, false)">
                 <div class="icon has-text-link" @click="dislike_post(p._idx, '[[=curr_name]]')">
-                  <i class="fa fa-thumbs-down fa-flip-horizontal fa-2x" v-if="p.liked == -1"></i>
-                  <i class="fa fa-thumbs-o-down fa-flip-horizontal fa-2x" v-else></i>
+                  <i class="fa fa-thumbs-down fa-2x" v-if="p.liked == -1">{{p.num_dislike}}</i>
+                  <i class="fa fa-thumbs-o-down fa-2x" v-else>{{p.num_dislike}}</i>
                 </div>
               </div>
               <!-- plane -->
               <div class="stacked-icon" @mouseover="travel_hover(p._idx, true)" @mouseout="travel_hover(p._idx, false)">
                 <div class="icon has-text-link" @click="travel_post(p._idx, '[[=curr_name]]')">
-                  <i class="fa fa-plane fa-2x" v-if="p.traveled == 1"></i>
-                  <i class="fa fa-plane fa-flip-horizontal fa-2x" v-else></i>
+                  <i class="fa fa-plane fa-2x" >{{p.num_travel}}</i>
+                  <!--<i class="fa fa-plane fa-flip-horizontal fa-2x" v-else>{{p.num_travel}}</i>-->
                 </div>
               </div>
               <!-- liker/disliker list -->
@@ -268,7 +268,7 @@
 
                     <p>Overall Rating</p>
                     <div v-if="p.overall==5">
-                      
+
                       <span class="icon has-text-info">
                         <i class="fa fa-coffee fa-lg"></i>
                       </span>

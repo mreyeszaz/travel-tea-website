@@ -302,11 +302,16 @@ def get_likes():
 def add_like():
     r = db(db.auth_user.email == get_user_email()).select().first()
     n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+    post_id = request.json.get('post')
     pid = db.likes.insert(
         is_like=request.json.get('is_like'),
-        post=request.json.get('post'),
+        post=post_id,
         email=get_user_email(),
         name=n,
+    )
+    db(db.posts.id == post_id).update(
+        num_like=request.json.get('num_like'),
+        num_dislike=request.json.get('num_dislike'),
     )
     return dict(id=pid)
 
@@ -319,6 +324,12 @@ def flip_like():
     new_val = request.json.get('is_like')
     assert new_val is not None
     db(db.likes.id == like_id).update(is_like=new_val)
+
+    post_id = request.json.get('post')
+    db(db.posts.id == post_id).update(
+        num_like=request.json.get('num_like'),
+        num_dislike=request.json.get('num_dislike'),
+    )
     return "ok"
 
 
@@ -328,6 +339,12 @@ def delete_like():
     like_id = request.json.get('id')
     assert like_id is not None
     db(db.likes.id == like_id).delete()
+
+    post_id = request.json.get('post')
+    db(db.posts.id == post_id).update(
+        num_like=request.json.get('num_like'),
+        num_dislike=request.json.get('num_dislike'),
+    )
     return "ok"
 
 
@@ -348,6 +365,10 @@ def add_travel():
         email=get_user_email(),
         name=n,
     )
+    post_id = request.json.get('post')
+    db(db.posts.id == post_id).update(
+        num_travel=request.json.get('num_travel'),
+    )
     return dict(id=pid)
 
 
@@ -357,6 +378,12 @@ def delete_travel():
     tid = request.json.get('id')
     assert tid is not None
     db(db.travels.id == tid).delete()
+
+    post_id = request.json.get('post')
+    db(db.posts.id == post_id).update(
+        num_travel=request.json.get('num_travel'),
+    )
+
     return "ok"
 
 
