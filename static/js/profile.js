@@ -119,6 +119,14 @@ let init = (app) => {
                         food: posts[i].food,
                         night: posts[i].night,
                         shop: posts[i].shop,
+                        place: app.vue.place,
+                        place_name: posts[i].place_name,
+                        place_address: posts[i].place_address,
+                        place_city: posts[i].place_city,
+                        place_state: posts[i].place_state,
+                        place_kind: posts[i].place_kind,
+                        place_country: posts[i].place_country,
+                        place_properties: posts[i].place_properties,
                     });
                 }
             }
