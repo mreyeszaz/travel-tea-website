@@ -96,7 +96,7 @@
         <div class="column">
           <div class="field">
             <p class="control has-icons-left">
-              <input class="input" type="number"  placeholder="Nightlife Rating"
+              <input class="input" type="number" placeholder="Nightlife Rating"
               v-model="night_rating">
               <span class="icon is-small is-left">
               <i class="fa fa-moon-o fa-lg"></i>
@@ -211,6 +211,9 @@
                 </p>
                 <p class="has-text-grey">
                   {{p.place_address}} {{p.place_city}}, {{p.place_state}}, {{p.place_country}}
+                  <a v-bind:href="'[[=URL()]]country_profile/' + p.country_id">
+                    <span class="icon"><i class="fa fa-plane"></i></i></span>
+                  </a>
                 </p>
               </div>
               <div class="block">

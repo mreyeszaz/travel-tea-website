@@ -216,6 +216,7 @@ def get_posts():
         p["place_city"] = place_info.city
         p["place_state"] = place_info.state
         country_info = db(db.country.id == place_info.country).select().first()
+        p["country_id"] = country_info.id
         p["place_country"] = country_info.name
         p["place_kind"] = place_info.type
 
@@ -279,7 +280,8 @@ def add_post():
                 place_city=city,
                 place_state=state,
                 place_kind=type,
-                place_country=country
+                place_country=country,
+                cid=country_id.id,
                 )
 
 

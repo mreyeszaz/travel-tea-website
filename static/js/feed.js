@@ -94,6 +94,7 @@ let init = (app) => {
                 place_state: response.data.place_state,
                 place_kind: response.data.place_kind,
                 place_country: response.data.place_country,
+                country_id: response.data.cid,
                 place_properties: app.vue.place_properties,
                 overall: app.vue.overall_rating,
                 beach: app.vue.beach_rating,
