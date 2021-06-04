@@ -12,7 +12,7 @@ let init = (app) => {
         post_list: [],
         country: "",
         country_id: null,
-
+        avg_ratings: [{beach: 0}, {sights: 0}, {food: 0}, {night: 0}, {shop: 0}],
     };
 
     app.delete_post = function(p_idx) {
@@ -28,10 +28,27 @@ let init = (app) => {
         });
     };
 
+    app.get_average_rating = function() {
+        let tot_beach = tot_sights = tot_food = tot_night = tot_shop = 0;
+        for(let i = 0; i < app.vue.post_list.length; ++i) {
+            tot_beach += app.vue.post_list[i].beach;
+            tot_sights += app.vue.post_list[i].sights;
+            tot_food += app.vue.post_list[i].food;
+            tot_night += app.vue.post_list[i].night;
+            tot_shop += app.vue.post_list[i].shop;
+        }
+        app.vue.avg_ratings[0].beach = tot_beach/app.vue.post_list.length;
+        app.vue.avg_ratings[1].sights = tot_sights/app.vue.post_list.length;
+        app.vue.avg_ratings[2].food = tot_food/app.vue.post_list.length;
+        app.vue.avg_ratings[3].night = tot_night/app.vue.post_list.length;
+        app.vue.avg_ratings[4].shop = tot_shop/app.vue.post_list.length;
+    };
+
     // This contains all the methods.
     app.methods = {
         // Complete as you see fit.
         delete_post: app.delete_post,
+        get_average_rating: app.get_average_rating,
     };
 
     // This creates the Vue instance.
@@ -56,7 +73,7 @@ let init = (app) => {
         .then(function(result){
             let posts = result.data.posts;
             for(let i = 0; i < posts.length; i++) {
-                if(posts[i].place_country == app.vue.country){ //if country name from post matches current user id
+                if(posts[i].place_country == app.vue.country){ // if country name from post matches current user id
                     app.vue.post_list.push({
                         id: posts[i].id,
                         title: posts[i].title,
@@ -81,10 +98,10 @@ let init = (app) => {
                     });
                 }
             }
+            app.get_average_rating();
         });
-        console.log(app.vue.post_list);
     };
-
+    
     // Call to the initializer.
     app.init();
 };

@@ -30,7 +30,7 @@
                </span>
                <span>Beaches</span>
             </span>
-            <progress id="beaches" class="progress is-info is-medium" value="[[=country_rating.beaches]]" max="100">45%</progress>
+            <progress id="beaches" class="progress is-warning is-medium" value="[[=beach*10]]" max="100">45%</progress>
 
          </div>
          <div class="column">
@@ -40,7 +40,7 @@
                </span>
                <span>Sight Seeing</span>
             </span>
-            <progress id="sights" class="progress is-info is-medium" value="[[=country_rating.sights]]" max="100">45%</progress>
+            <progress id="sights" class="progress is-warning is-medium" value="[[=sights*10]]" max="100">45%</progress>
          </div>
          <div class="column">
             <span class="icon-text">
@@ -49,7 +49,7 @@
                </span>
                <span>Restaurants</span>
             </span>
-            <progress id="food" class="progress is-info is-medium" value="[[=country_rating.food]]" max="100">45%</progress>
+            <progress id="food" class="progress is-warning is-medium" value="[[=food*10]]" max="100">45%</progress>
          </div>
          <div class="column">
             <span class="icon-text">
@@ -58,7 +58,7 @@
                </span>
                <span>Nightlife</span>
             </span>
-            <progress id="nightlife" class="progress is-info is-medium" value="[[=country_rating.nightlife]]" max="100">45%</progress>
+            <progress id="nightlife" class="progress is-warning is-medium" value="[[=night*10]]" max="100">45%</progress>
          </div>
          <div class="column">
             <span class="icon-text">
@@ -67,7 +67,7 @@
                </span>
                <span>Shopping</span>
             </span>
-            <progress id="shopping" class="progress is-info is-medium" value="[[=country_rating.shopping]]" max="100">45%</progress>
+            <progress id="shopping" class="progress is-warning is-medium" value="[[=shop*10]]" max="100">45%</progress>
          </div>
       </div>
    </div>
@@ -266,7 +266,7 @@
    let delete_post_url = "[[=XML(delete_post_url)]]";
    let get_country_url = "[[=XML(get_country_url)]]"
 </script>
-<!--<script src="js/country_profile.js"></script>-->
+<script src="js/country_profile.js"></script>
 <script>
    document.querySelector('section').style.display = 'none';
    document.querySelector('.bottom').style.display = 'none';
@@ -280,6 +280,5 @@
       document.querySelector('.loading').style.display = "none";
    }, 3000);
 </script>
-<script src="js/country_profile.js"></script>
 
 [[end]]

@@ -22,14 +22,14 @@ def get_time():
 ## always commit your models to avoid problems later
 
 db.define_table('country_rating', 
-                Field('beaches', 'integer', default=5,requires=IS_INT_IN_RANGE(0, 11)),
-                Field('sights', 'integer', default=5,
+                Field('beaches', 'integer', default=0,requires=IS_INT_IN_RANGE(0, 11)),
+                Field('sights', 'integer', default=0,
                 requires=IS_INT_IN_RANGE(0, 11)),
-                Field('food', 'integer', default=5,
+                Field('food', 'integer', default=0,
                 requires=IS_INT_IN_RANGE(0, 11)),
-                Field('nightlife', 'integer', default=5,
+                Field('nightlife', 'integer', default=0,
                 requires=IS_INT_IN_RANGE(0, 11)),
-                Field('shopping', 'integer', default=5,
+                Field('shopping', 'integer', default=0,
                 requires=IS_INT_IN_RANGE(0, 11)),
                    
 )
@@ -76,6 +76,7 @@ db.define_table('posts',
                 Field('user', 'reference auth_user'),
                 Field('image', 'text', default=""),
                 Field('place', 'reference place'),
+                Field('country', 'string'),
                 Field('overall', 'integer', default=0, IS_INT_IN_RANGE=(0, 6)),
                 Field('beach', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
                 Field('sights', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),

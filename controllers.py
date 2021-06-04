@@ -264,6 +264,7 @@ def add_post():
 
     pid = db.posts.insert(
         place=place_id,
+        country=country,
         post_text=request.json.get('post_text'),
         username=n,
         email=get_user_email(),
@@ -277,6 +278,37 @@ def add_post():
         night=request.json.get('night'),
         shop=request.json.get('shop'),
     )
+
+    # Recalculate the country's average
+    posts_about_country = db(db.posts.country == country).select(db.posts.beach, db.posts.sights, db.posts.food, db.posts.night, db.posts.shop)
+
+    avg_beach = avg_sights = avg_food = avg_night = avg_shop = 0
+    tot_posts = len(posts_about_country)
+    for p in posts_about_country:
+        avg_beach += p.beach
+        avg_sights += p.sights
+        avg_food += p.food
+        avg_night += p.night
+        avg_shop += p.shop
+    avg_beach /= tot_posts 
+    avg_sights /= tot_posts
+    avg_food /= tot_posts
+    avg_night /= tot_posts
+    avg_shop /= tot_posts
+
+    country_info = db(db.country.id == country_id).select().first()
+    country_rating_id = country_info.country_rating
+
+    db.country_rating.update_or_insert(
+        db.country_rating.id == country_rating_id,
+        beaches=avg_beach,
+        sights=avg_sights,
+        food=avg_food,
+        nightlife=avg_night,
+        shopping=avg_shop
+    )
+    print(avg_beach, avg_sights, avg_food, avg_night, avg_shop)
+
     return dict(id=pid, 
                 name=n, 
                 email=get_user_email(),
@@ -471,11 +503,18 @@ def country_profile(country_id=None):
     country_name = country_info.name
     country_bio = country_info.biography
     country_flag = country_info.thumbnail
-    country_rating = country_info.country_rating
+    country_rating_id = country_info.country_rating
+    country_rating=country_rating_id
+    rating_info = db(db.country_rating.id == country_rating_id).select().first()
     return dict(country_name=country_name,
                 country_bio=country_bio, 
                 country_flag=country_flag,
                 country_rating=country_rating,
+                beach=rating_info.beaches,
+                sights=rating_info.sights,
+                food=rating_info.food,
+                night=rating_info.nightlife,
+                shop=rating_info.shopping,
                 get_country_rating_url=URL('get_country_rating',country_id),
                 get_posts_url=URL('get_posts', signer=url_signer),
                 delete_post_url=URL('delete_post', signer=url_signer),
