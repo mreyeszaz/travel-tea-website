@@ -52,12 +52,6 @@ db.define_table('place',
                 Field('country', 'reference country'),
                 Field('thumbnail', 'text'),
                 Field('type', 'string', default=""),
-                # Field('overall', 'integer', default=0, IS_INT_IN_RANGE=(0, 6)),
-                # Field('beach', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
-                # Field('sights', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
-                # Field('food', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
-                # Field('night', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
-                # Field('shop', 'integer', default=0, IS_INT_IN_RANGE=(0, 11)),
 )
 
 db.define_table(

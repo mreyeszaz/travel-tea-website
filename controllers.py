@@ -96,7 +96,7 @@ def profile():
         delete_post_url=URL('delete_post', signer=url_signer),
         curr_email=get_user_email(),
         get_profile_url=URL('get_profile', signer=url_signer),
-        get_posts_url=URL('get_posts', signer=url_signer),
+        get_posts_url=URL('get_posts'),
         add_bio_url=URL('add_bio', signer=url_signer),
         username=get_username(),
         bio=get_biography(),
@@ -161,7 +161,7 @@ def feed():
     n = r.first_name + " " + r.last_name if r is not None else "Unknown"
     return dict(
         # COMPLETE: return here any signed URLs you need.
-        get_posts_url=URL('get_posts', signer=url_signer),
+        get_posts_url=URL('get_posts'),
         add_post_url=URL('add_post', signer=url_signer),
         delete_post_url=URL('delete_post', signer=url_signer),
         get_likes_url=URL('get_likes', signer=url_signer),
@@ -176,7 +176,7 @@ def feed():
     )
 
 @action('get_posts')
-@action.uses(db, url_signer.verify())
+@action.uses(db)
 def get_posts():
     posts = db(db.posts).select().as_list()
     likes = db(db.likes.email == get_user_email()).select().as_list()
@@ -284,6 +284,9 @@ def add_post():
 
     avg_beach = avg_sights = avg_food = avg_night = avg_shop = 0
     tot_posts = len(posts_about_country)
+    country_info = db(db.country.id == country_id).select().first()
+    country_rating_id = country_info.country_rating
+
     for p in posts_about_country:
         avg_beach += p.beach
         avg_sights += p.sights
@@ -295,9 +298,6 @@ def add_post():
     avg_food /= tot_posts
     avg_night /= tot_posts
     avg_shop /= tot_posts
-
-    country_info = db(db.country.id == country_id).select().first()
-    country_rating_id = country_info.country_rating
 
     db.country_rating.update_or_insert(
         db.country_rating.id == country_rating_id,
@@ -499,6 +499,19 @@ def country_profile(country_id=None):
     assert country_id is not None
 
     country_info = db(db.country.id == country_id).select().first()
+    posts_info = db(db.posts.country == country_info.name).select()
+    print("# OF POSTS: " + str(len(posts_info)))
+    num_posts = len(posts_info)
+    if num_posts < 1:
+        db.country_rating.update_or_insert(
+            db.country_rating.id == country_info.country_rating,
+            beaches=0,
+            sights=0,
+            food=0,
+            nightlife=0,
+            shopping=0
+        )
+
     assert country_info is not None
     country_name = country_info.name
     country_bio = country_info.biography
@@ -516,7 +529,7 @@ def country_profile(country_id=None):
                 night=rating_info.nightlife,
                 shop=rating_info.shopping,
                 get_country_rating_url=URL('get_country_rating',country_id),
-                get_posts_url=URL('get_posts', signer=url_signer),
+                get_posts_url=URL('get_posts'),
                 delete_post_url=URL('delete_post', signer=url_signer),
                 get_country_url=URL('get_country', country_id),
                 curr_email=get_user_email
