@@ -48,12 +48,27 @@
       <div class="field">
         <label class="label">Overall Rating</label>
         <p class="help">Overall rating is out of 5</p>
-        <p class="control has-icons-left">
-          <span class="icon is-small is-left">
-          <i class="fa fa-coffee"></i>
-          </span>
-          <input class="input" type="number" placeholder="Give us the tea" v-model="overall_rating">
-        </p>
+        <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select v-model="overall_rating">
+                <option disabled value="">Give us the Tea</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <span class="icon is-small is-left">
+              <i class="fa fa-coffee"></i>
+            </span>
+          </div>
+<!--        <p class="control has-icons-left">-->
+<!--          <span class="icon is-small is-left">-->
+<!--          <i class="fa fa-coffee"></i>-->
+<!--          </span>-->
+<!--          <input class="input" type="number" placeholder="Give us the tea" v-model="overall_rating">-->
+<!--        </p>-->
       </div>
 
       <label class="label">Category Ratings</label>
@@ -61,60 +76,161 @@
 
       <div class="columns">
         <div class="column">
-          <div class="field">
-            <p class="control has-icons-left">
-              <span class="icon is-small is-left">
+          <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select v-model="beach_rating">
+                <option disabled value="">Beach Rating</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
+            </div>
+            <span class="icon is-small is-left">
               <i class="fa fa-anchor"></i>
-              </span>
-              <input class="input" type="number" placeholder="Beach Rating" v-model="beach_rating">
-            </p>
+            </span>
           </div>
+
+<!--          <div class="field">-->
+<!--            <p class="control has-icons-left">-->
+<!--              <span class="icon is-small is-left">-->
+<!--              <i class="fa fa-anchor"></i>-->
+<!--              </span>-->
+<!--              <input class="input" type="number" placeholder="Beach Rating" v-model="beach_rating">-->
+<!--            </p>-->
+<!--          </div>-->
         </div>
 
         <div class="column">
-          <div class="field">
-            <p class="control has-icons-left">
-              <input class="input" type="number"  placeholder="Sight Seeing Rating" v-model="sights_rating">
-              <span class="icon is-small is-left">
+          <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select v-model="sights_rating">
+                <option disabled value="">Sight Seeing Rating</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
+            </div>
+            <span class="icon is-small is-left">
               <i class="fa fa-bicycle fa-lg"></i>
-              </span>
-            </p>
+            </span>
           </div>
+<!--          <div class="select has-icons-left">-->
+<!--            <p class="control has-icons-left">-->
+<!--              <input class="input" type="number"  placeholder="Sight Seeing Rating" v-model="sights_rating">-->
+<!--              <span class="icon is-small is-left">-->
+<!--              <i class="fa fa-bicycle fa-lg"></i>-->
+<!--              </span>-->
+<!--            </p>-->
+<!--          </div>-->
         </div>
 
         <div class="column">
-          <div class="field">
-            <p class="control has-icons-left">
-              <input class="input" type="number"  placeholder="Restaurants Rating" v-model="food_rating">
-              <span class="icon is-small is-left">
+          <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select v-model="food_rating">
+                <option disabled value="">Restaurants Rating</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
+            </div>
+            <span class="icon is-small is-left">
               <i class="fa fa-cutlery fa-lg"></i>
-              </span>
-            </p>
+            </span>
           </div>
+<!--          <div class="field">-->
+<!--            <p class="control has-icons-left">-->
+<!--              <input class="input" type="number"  placeholder="Restaurants Rating" v-model="food_rating">-->
+<!--              <span class="icon is-small is-left">-->
+<!--              <i class="fa fa-cutlery fa-lg"></i>-->
+<!--              </span>-->
+<!--            </p>-->
+<!--          </div>-->
         </div>
 
         <div class="column">
-          <div class="field">
-            <p class="control has-icons-left">
-              <input class="input" type="number" placeholder="Nightlife Rating"
-              v-model="night_rating">
-              <span class="icon is-small is-left">
+          <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select v-model="night_rating">
+                <option disabled value="">Nightlife Rating</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
+            </div>
+            <span class="icon is-small is-left">
               <i class="fa fa-moon-o fa-lg"></i>
-              </span>
-            </p>
+            </span>
           </div>
+<!--          <div class="field">-->
+<!--            <p class="control has-icons-left">-->
+<!--              <input class="input" type="number" placeholder="Nightlife Rating"-->
+<!--              v-model="night_rating">-->
+<!--              <span class="icon is-small is-left">-->
+<!--              <i class="fa fa-moon-o fa-lg"></i>-->
+<!--              </span>-->
+<!--            </p>-->
+<!--          </div>-->
         </div>
 
         <div class="column">
-          <div class="field">
-            <p class="control has-icons-left">
-              <input class="input" type="number"  placeholder="Shopping Rating"
-              v-model="shop_rating">
-              <span class="icon is-small is-left">
+          <div class="control has-icons-left">
+            <div class="select is-fullwidth">
+              <select v-model="shop_rating">
+                <option disabled value="">Shopping Rating</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
+            </div>
+            <span class="icon is-small is-left">
               <i class="fa fa-shopping-bag"></i>
-              </span>
-            </p>
+            </span>
           </div>
+<!--          <div class="field">-->
+<!--            <p class="control has-icons-left">-->
+<!--              <input class="input" type="number"  placeholder="Shopping Rating"-->
+<!--              v-model="shop_rating">-->
+<!--              <span class="icon is-small is-left">-->
+<!--              <i class="fa fa-shopping-bag"></i>-->
+<!--              </span>-->
+<!--            </p>-->
+<!--          </div>-->
         </div>
 
       </div>
