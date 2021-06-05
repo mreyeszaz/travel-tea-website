@@ -95,7 +95,7 @@ def profile():
         delete_profilepic_url=URL('delete_profilepic', signer=url_signer),
         delete_post_url=URL('delete_post', signer=url_signer),
         curr_email=get_user_email(),
-        get_profile_url=URL('get_profile', signer=url_signer),
+        get_profile_url=URL('get_profile'),
         get_posts_url=URL('get_posts'),
         add_bio_url=URL('add_bio', signer=url_signer),
         username=get_username(),
@@ -128,7 +128,7 @@ def delete_profilepic():
 
 
 @action('get_profile')
-@action.uses(db, auth.user, url_signer.verify())
+@action.uses(db, auth.user)
 def get_profile():
     curr_user = db(db.auth_user.email == get_user_email()).select().first()
     bio = curr_user.biography if curr_user is not None else "Unknown"
@@ -174,6 +174,7 @@ def feed():
         curr_email=get_user_email(),
         curr_name=n
     )
+
 
 @action('get_posts')
 @action.uses(db)
