@@ -27,8 +27,14 @@ from .extract_info import extract_country_info, country_info, get_country_flag_l
 
 import uuid
 import random
+import datetime
 
 url_signer = URLSigner(session)
+
+
+def get_time():
+    return datetime.datetime.utcnow().strftime('%B %d %Y - %H:%M:%S')
+    # return datetime.datetime.utcnow()
 
 
 def user_name():
@@ -278,6 +284,7 @@ def add_post():
         food=request.json.get('food'),
         night=request.json.get('night'),
         shop=request.json.get('shop'),
+        time=get_time(),
     )
 
     # Recalculate the country's average

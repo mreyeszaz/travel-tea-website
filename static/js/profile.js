@@ -10,6 +10,7 @@ let init = (app) => {
     // This is the Vue data.
     app.data = {
         post_list: [],
+        length: 0, //how many posts the user has
         user: -1,
         thumbnail: "",
         bio: "",
@@ -105,6 +106,7 @@ let init = (app) => {
             let posts = result.data.posts;
             for(let i = 0; i < posts.length; i++) {
                 if(posts[i].user == app.vue.user){ //if user id from post matches current user id
+                    app.vue.length = app.vue.length+1;
                     app.vue.post_list.push({
                         id: posts[i].id,
                         title: posts[i].title,
@@ -128,6 +130,7 @@ let init = (app) => {
                         place_country: posts[i].place_country,
                         place_properties: posts[i].place_properties,
                         country_id: posts[i].country_id,
+                        time: posts[i].time,
                     });
                 }
             }

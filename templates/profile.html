@@ -91,6 +91,17 @@
          <div class="column">
             <!-- display posts here -->
     <div id="posts" class="container">
+
+        <!--<div v-if="length==0">
+            <h2 class="subtitle">
+                No posts yet!
+            </h2>
+        </div>-->
+
+            <h1 class="title">
+                 {{length}} posts
+            </h1>
+
       <div v-for="p in post_list.slice().reverse()" class="block">
         <div class="box">
           <div class="columns">
@@ -281,6 +292,8 @@
                 </div>
               </div>
             </div>
+
+            <p class=" is-size-7 has-text-grey">{{p.time}} UTC</p>
           </div>
         </div>
       </div>

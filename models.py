@@ -80,6 +80,7 @@ db.define_table('posts',
                 Field('num_like', 'integer', default=0),
                 Field('num_dislike', 'integer', default=0),
                 Field('num_travel', 'integer', default=0),
+                Field('time'),
                 )
 
 db.define_table('likes',

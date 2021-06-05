@@ -116,6 +116,7 @@ let init = (app) => {
                 num_dislike: 0,
                 num_like: 0,
                 num_travel: 0,
+                time: response.data.time,
             });
             app.enumerate(app.vue.post_list);
             app.vue.selection_done = false;
