@@ -258,8 +258,7 @@ def add_post():
     print("------------------------")
 
     country_id = db(db.country.name == country).select().first()
-    # Need to implement a feature to get the average of all ratings from
-    # across all posts about this location to insert into place db table 
+
     place_id = db.place.insert(
         name=name,
         address=address,
@@ -288,7 +287,11 @@ def add_post():
     )
 
     # Recalculate the country's average
-    posts_about_country = db(db.posts.country == country).select(db.posts.beach, db.posts.sights, db.posts.food, db.posts.night, db.posts.shop)
+    posts_about_country = db(db.posts.country == country).select(db.posts.beach, 
+                                                                 db.posts.sights, 
+                                                                 db.posts.food, 
+                                                                 db.posts.night, 
+                                                                 db.posts.shop)
 
     avg_beach = avg_sights = avg_food = avg_night = avg_shop = 0
     tot_posts = len(posts_about_country)
@@ -327,6 +330,7 @@ def add_post():
                 place_kind=type,
                 place_country=country,
                 cid=country_id.id,
+                time=get_time()
                 )
 
 
