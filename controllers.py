@@ -91,7 +91,6 @@ def get_place_components(place, category, properties):
 def index():
     explored = db(db.place).count()
     total_users = db(db.auth_user).count()
-    print(total_users)
     return dict(name=user_name(),
                 explored=explored,
                 total_users=total_users)

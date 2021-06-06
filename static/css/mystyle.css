@@ -2497,11 +2497,11 @@ a.box:active {
   text-decoration: underline;
 }
 .button.is-text:hover, .button.is-text.is-hovered, .button.is-text:focus, .button.is-text.is-focused {
-  background-color: #0a3a45;
+  background-color: rgba(0, 14, 34, 0.226);
   color: #363636;
 }
 .button.is-text:active, .button.is-text.is-active {
-  background-color: #07272f;
+  background-color: rgba(0, 4, 9, 0.226);
   color: #363636;
 }
 .button.is-text[disabled], fieldset[disabled] .button.is-text {
@@ -3908,7 +3908,7 @@ div.icon-text {
 }
 
 .notification {
-  background-color: whitesmoke;
+  background-color: rgba(0, 14, 34, 0.226);
   border-radius: 4px;
   position: relative;
   padding: 1.25rem 2.5rem 1.25rem 1.5rem;
@@ -10221,6 +10221,10 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   height: 40px;
   /* height of container */
   object-fit: cover;
+}
+
+.has-light-shadow {
+  text-shadow: 0px 0px 2px black;
 }
 
 .has-shadow {

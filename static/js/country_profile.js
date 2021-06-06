@@ -95,6 +95,7 @@ let init = (app) => {
                         place_kind: posts[i].place_kind,
                         place_country: posts[i].place_country,
                         place_properties: posts[i].place_properties,
+                        time: posts[i].time,
                     });
                 }
             }
