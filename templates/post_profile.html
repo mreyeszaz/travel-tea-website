@@ -1,0 +1,239 @@
+[[extend 'layout.html']]
+
+<section class="section" style="height: 100vh;">
+    <div class="box" id="vue-target-profile-post" v-if="post_list[0]">
+        <div class="columns">
+            <div class="column is-narrow">
+            <!-- thumbs -->
+            <div class="stacked-icon mt-4" @mouseover="set_hover(post_list[0]._idx, true)" @mouseout="set_hover(post_list[0]._idx, false)">
+                <div class="icon has-text-link" @click="like_post(post_list[0]._idx, '[[=curr_name]]')">
+                <i class="fa fa-thumbs-up fa-2x" v-if="post_list[0].liked == 1">{{post_list[0].num_like}}</i>
+                <i class="fa fa-thumbs-o-up fa-2x" v-else>{{post_list[0].num_like}}</i>
+                </div>
+            </div>
+            <div class="stacked-icon" @mouseover="set_hover(post_list[0]._idx, true)" @mouseout="set_hover(post_list[0]._idx, false)">
+                <div class="icon has-text-link" @click="dislike_post(post_list[0]._idx, '[[=curr_name]]')">
+                <i class="fa fa-thumbs-down fa-2x" v-if="post_list[0].liked == -1">{{post_list[0].num_dislike}}</i>
+                <i class="fa fa-thumbs-o-down fa-2x" v-else>{{post_list[0].num_dislike}}</i>
+                </div>
+            </div>
+            <!-- plane -->
+            <div class="stacked-icon" @mouseover="travel_hover(post_list[0]._idx, true)" @mouseout="travel_hover(post_list[0]._idx, false)">
+                <div class="icon has-text-link" @click="travel_post(post_list[0]._idx, '[[=curr_name]]')">
+                <i class="fa fa-plane fa-2x" >{{post_list[0].num_travel}}</i>
+                </div>
+            </div>
+            <!-- liker/disliker list -->
+            <span class="has-text-link" v-if="post_list[0].hover">{{ get_liker_string(post_list[0]._idx) }}</span>
+            <!-- traveler list -->
+            <span class="has-text-link" v-if="post_list[0].travel_hover">{{ get_traveler_string(post_list[0]._idx) }}</span>
+            <!-- delete post -->
+            <div v-if="'[[=curr_email]]'==post_list[0].email" class="field is-grouped is-grouped-right">
+                <button @click="delete_post(post_list[0].id)" class="button is-danger is-normal stacked-icon">
+                <span class="icon is-small">
+                <i class="fa fa-trash fa-lg"></i>
+                </span>
+                </button>
+            </div>
+            </div>
+            <div class="column">
+            <div class="block">
+                <div>
+                <h2 class="title is-3"> {{post_list[0].title}} </h2>
+                </div>
+                <div>
+                </div>
+                <div>
+                <p class="subtitle is-6 has-text-grey"> Posted by {{post_list[0].username}} </p>
+                </div>
+            </div>
+
+            <span v-for="type in post_list[0].place_kind.split(', ')" class="block">
+                <span class="tag is-warning is-medium mr-3 mb-3">{{type}}</span>
+            </span>
+            
+            <div class="block">
+                <div v-if="post_list[0].image">
+                <img class="is-little-circular" width="400" :src="post_list[0].image" />
+                </div>
+                <p class="has-text-grey">
+                <a v-bind:href="'https://www.google.com/search?q='+post_list[0].place_name+' '+post_list[0].place_address" target="_blank">
+                    <span class="mr-1"><i class="fa fa-location-arrow"></i></span>
+                    {{post_list[0].place_name}}
+                </a>
+                </p>
+                <p class="has-text-grey">
+                {{post_list[0].place_address}} {{post_list[0].place_city}}, {{post_list[0].place_state}}, {{post_list[0].place_country}}
+                <a v-bind:href="'[[=URL()]]country_profile/' + post_list[0].country_id">
+                    <span class="icon"><i class="fa fa-plane"></i></i></span>
+                </a>
+                </p>
+            </div>
+            <div class="block">
+                <p> {{post_list[0].post_text}} </p>
+            </div>
+            <!-- Display ratings -->
+            <div class="block">
+                <div class="columns">
+                <div class="column">
+                    <span class="icon-text">
+                    <span class="icon">
+                        <i class="fa fa-anchor fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <span>Beaches</span>
+                    </span>
+                    <progress id="beach" class="progress is-info" :value="post_list[0].beach*10" max="100"></progress>
+                </div>
+                <div class="column">
+                    <span class="icon-text">
+                    <span class="icon">
+                        <i class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <span>Sight Seeing</span>
+                    </span>
+                    <progress id="sights" class="progress is-info" :value="post_list[0].sights*10" max="100"></progress>
+                </div>
+                <div class="column">
+                    <span class="icon-text">
+                    <span class="icon">
+                        <i class="fa fa-cutlery fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <span>Food</span>
+                    </span>
+                    <progress id="food" class="progress is-info" :value="post_list[0].food*10" max="100"></progress>
+                </div>
+                <div class="column">
+                    <span class="icon-text">
+                    <span class="icon">
+                        <i class="fa fa-moon-o fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <span>Nightlife</span>
+                    </span>
+                    <progress id="nightlife" class="progress is-info" :value="post_list[0].night*10" max="100">45%</progress>
+                </div>
+                <div class="column">
+                    <span class="icon-text">
+                    <span class="icon">
+                        <i class="fa fa-shopping-bag fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <span>Shopping</span>
+                    </span>
+                    <progress id="shopping" class="progress is-info" :value="post_list[0].shop*10" max="100"></progress>
+                </div>
+                <div class="column">
+
+                    <p>Overall Rating</p>
+                    <div v-if="post_list[0].overall==5">
+
+                    <span class="icon has-text-info">
+                        <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon has-text-info">
+                        <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon has-text-info">
+                        <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon has-text-info">
+                        <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon has-text-info">
+                        <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    </div>
+                    <div v-if="post_list[0].overall==4">
+                    <span class="icon has-text-info">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon has-text-info">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon has-text-info">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon has-text-info">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon">
+                        <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    </div>
+                    <div v-if="post_list[0].overall==3">
+                    <span class="icon has-text-info">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon has-text-info">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon has-text-info">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon">
+                        <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon">
+                        <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    </div>
+                    <div v-if="post_list[0].overall==2">
+                    <span class="icon has-text-info">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon has-text-info">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    </div>
+                    <div v-if="post_list[0].overall==1">
+                    <span class="icon has-text-info">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    <span class="icon">
+                    <i class="fa fa-coffee fa-lg"></i>
+                    </span>
+                    </div>
+                    <div v-if="post_list[0].overall==0">
+                    0/5
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <p class=" is-size-7 has-text-grey">{{post_list[0].time}} UTC</p>
+    </div>
+</section>
+
+[[block page_scripts]]
+<script>
+    let get_posts_url = "[[=XML(get_posts_url)]]";
+    let add_post_url = "[[=XML(add_post_url)]]";
+    let delete_post_url = "[[=XML(delete_post_url)]]";
+    let get_likes_url = "[[=XML(get_likes_url)]]";
+    let add_like_url = "[[=XML(add_like_url)]]";
+    let flip_like_url = "[[=XML(flip_like_url)]]";
+    let delete_like_url = "[[=XML(delete_like_url)]]";
+    let get_travels_url = "[[=XML(get_travels_url)]]";
+    let add_travel_url = "[[=XML(add_travel_url)]]";
+    let delete_travel_url = "[[=XML(delete_travel_url)]]";
+</script>
+<script src="js/post_profile.js"></script>
+[[end]]
