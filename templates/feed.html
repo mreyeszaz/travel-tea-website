@@ -10,10 +10,22 @@
   }
 </style>
 
+<div class="loading" style="background: rgb(70, 202, 235) no-repeat center center/cover; height: 100vh; position: relative;"></div>
+
 <section class="section">
-  
-  <div class="container block">
-    <h1 class="title"> [[=curr_name]]'s Feed </h1>
+  <div class="container is-success block">
+    <div class="notification is-circular">
+      <div class="columns has-text-centered">
+        <div class="column">
+          <p class="heading has-text-success">Page</p>
+          <h1 class="title has-text-success"> [[=curr_name]][[=apostrophe]] Feed</h1>
+        </div>
+        <div class="column">
+          <p class="heading has-text-success">Posts</p>
+          <h1 class="title is-success has-text-success">[[=num_posts]]</h1>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="container" id="location-search">
@@ -451,6 +463,17 @@
 </script>
 
 [[block page_scripts]]
+<script>
+  document.querySelector('section').style.display = 'none';
+  document.querySelector('.loading').classList.add('spinner-1');
+
+  // Mimic server req
+  setTimeout(() => {
+     document.querySelector('.loading').classList.remove('spinner-1');
+     document.querySelector('section').style.display = 'block';
+     document.querySelector('.loading').style.display = "none";
+  }, 90);
+</script>
 <script>
   let get_posts_url = "[[=XML(get_posts_url)]]";
   let add_post_url = "[[=XML(add_post_url)]]";

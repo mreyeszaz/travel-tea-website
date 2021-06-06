@@ -10198,11 +10198,24 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
     visibility: hidden !important;
   }
 }
+.is-vertical-center {
+  display: flex;
+  align-items: center;
+}
+
 .profile-picture {
-  height: 250px;
-  width: 250px;
-  border-radius: 50%;
-  overflow: hidden;
+  width: 60px;
+  height: 60px;
+  -webkit-border-radius: 60px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 60px;
+  -moz-background-clip: padding;
+  border-radius: 60px;
+  background-clip: padding-box;
+  margin: 7px 0 0 5px;
+  float: left;
+  background-size: cover;
+  background-position: center center;
 }
 
 .page-bg {

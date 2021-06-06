@@ -11,6 +11,8 @@ let init = (app) => {
     app.data = {
         // Complete as you see fit.
         query: "",
+        country_results: [],
+        post_results: [],
         results: [],
     };
 
@@ -21,11 +23,25 @@ let init = (app) => {
         return a;
     };
 
+    app.set_type = (a, type) => {
+        a.map((item) => {item.type = type;});
+        return a;
+    };
+
+    app.sort_results = () => {
+        app.vue.country_results = app.set_type(app.vue.country_results, "country");
+        app.vue.post_results = app.set_type(app.vue.post_results, "post");
+        app.vue.results = app.vue.post_results.concat(app.vue.country_results);
+        app.vue.results.sort();
+    };
+
     app.search = function () {
         if (app.vue.query.length > 1) {
             axios.get(search_url, {params: {q: app.vue.query}})
                 .then(function (result) {
-                    app.vue.results = (result.data.results);
+                    app.vue.country_results = (result.data.country_results);
+                    app.vue.post_results = (result.data.post_results);
+                    app.sort_results();
                 });
         } else {
             app.vue.results = [];
@@ -49,6 +65,7 @@ let init = (app) => {
     app.init = () => {
         // Put here any initialization code.
         // Typically this is a server GET call to load the data.
+        app.vue.query = "";
     };
 
     // Call to the initializer.

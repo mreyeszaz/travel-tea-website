@@ -65,6 +65,11 @@ def get_biography():
     curr_user = db(db.auth_user.email == get_user_email()).select().first()
     return curr_user.biography if curr_user is not None else "Unknown"
 
+def get_total_posts(db):
+    num_posts = db(db.posts).count()
+    print(num_posts)
+    return num_posts
+
 def get_place_components(place, category, properties):
     place_components = place.split(", ")
     type_of_place = ""
@@ -169,6 +174,8 @@ def add_bio():
 def feed():
     r = db(db.auth_user.email == get_user_email()).select().first()
     n = r.first_name + " " + r.last_name if r is not None else "Unknown"
+    apostrophe = "'s"
+    if n[-1] == "s": apostrophe = apostrophe[:-1]
     return dict(
         # COMPLETE: return here any signed URLs you need.
         get_posts_url=URL('get_posts'),
@@ -182,7 +189,9 @@ def feed():
         add_travel_url=URL('add_travel', signer=url_signer),
         delete_travel_url=URL('delete_travel', signer=url_signer),
         curr_email=get_user_email(),
-        curr_name=n
+        curr_name=n,
+        apostrophe=apostrophe,
+        num_posts=get_total_posts(db)
     )
 
 
@@ -464,12 +473,14 @@ def search():
     if q:
         qq = q.strip()
         t = (db.country.name.contains(qq))
+        p = (db.posts.title.contains(qq))
     else:
         t = db.country.id > 0
 
-    results = db(t).select(db.country.ALL).as_list()
-
-    return dict(results=results)
+    country_results = db(t).select(db.country.ALL).as_list()
+    post_results = db(p).select(db.posts.ALL).as_list()
+    return dict(country_results=country_results,
+                post_results=post_results)
 
 
 @action('faq')

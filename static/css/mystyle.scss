@@ -37,6 +37,11 @@ $notification-background-color: $faded-main-blue;
 @import "bulma/sass/utilities/_all.sass";
 @import "bulma/sass/helpers/_all.sass";
 
+.is-vertical-center {
+  display: flex;
+  align-items: center;
+}
+
 .profile-picture{
   width: 60px;
   height: 60px;

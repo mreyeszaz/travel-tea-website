@@ -1,312 +1,312 @@
 [[extend 'layout.html']]
+<section>
 
-<div class="section" id="vue-target-profile">
-    <div class="container is-success">
-      <div class="notification">
-        <div class="columns has-text-centered">
-          <div class="column">
-            <p class="heading has-text-success">User</p>
-            <h1 class="title has-text-success"> @[[=username]] </h1>
-          </div>
-          <div class="column">
-            <p class="heading has-text-success">Posts</p>
-            <h1 class="title is-success has-text-success">{{length}}</h1>
-          </div>
-        </div>
-      </div>
-      <div class="columns">
-         <div class="column is-3 has-text-centered">
-
-            <!-- profile picture -->
-            <div class="block" v-if="!thumbnail[0]">
-               <p class="control">
-                  <div class="file is-info is-centered">
-                        <label class="file-label">
-                           <input class="file-input" type="file"
-                                  accept=".jpg, .png. jpe, .gif, .bmp, .tif, .tiff|image/*"
-                                  @change="upload_file($event)">
-                           <span class="file-label">
-                              <div class="container">
-                                    <figure class="image is-128x128 container">
-                                        <img class="is-rounded" src="../static/imgs/blank-profile-pic.png" alt="">
-                                    </figure>
-                                 <p>
-                                    <span><i class="fa fa-upload"></i>Upload a profile picture</span>
-                                 </p>
-                              </div>
-                           </span>
-                        </label>
-                  </div>
-               </p>
-            </div>
-            <div class="block" v-if="thumbnail" >
-              <figure class="image is-square">
-                <img class="is-rounded" :src="thumbnail" />
-
-              </figure>
-            </div>
-
-             <!-- bio -->
-             <div class="block">
-                 <div class="box">
-                     <h2 class="subtitle">Biography</h2>
-                        <div v-if="edit_bio">
-                          <div class="field">
-                            <p class="control">
-                              <input class="input" type="text" placeholder="Enter new biography" v-model="new_bio">
-                            </p>
-                          </div>
-                          <button class="button is-primary is-light" @click="add_bio">Done</button>
-                          <button class="button is-warning" @click="cancel_bio" >Cancel</button>
-                        </div>
-
-                        <div v-if="!edit_bio">
-                            {{bio}}
-                        </div>
-                 </div>
-             </div>
-
-            <!-- settings -->
-            <div class="dropdown is-hoverable">
-              <div class="dropdown-trigger">
-                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu2">
-                  <span>Settings</span>
-                  <span class="icon is-small">
-                    <i class="fa fa-cogs" aria-hidden="true"></i>
-                  </span>
-                </button>
-              </div>
-              <div class="dropdown-menu" id="dropdown-menu2" role="menu">
-                <div class="dropdown-content">
-
-                  <div class="dropdown-item">
-                    <a class="button is-white is-small" @click="set_edit_bio(true)">
-                        Edit biography
-                     </a>
-                  </div>
-                  <hr class="dropdown-divider">
-                  <div class="dropdown-item">
-                     <button class="button is-white is-small" @click="delete_profilepic">
-                        Delete Profile Picture
-                        <!--<span><i class="fa fa-trash"></i> Delete Profile Picture</span>-->
-                     </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-         </div>
-         <div class="column">
-            <!-- display posts here -->
-    <div id="posts" class="container">
-
-        <!--<div v-if="length==0">
-            <h2 class="subtitle">
-                No posts yet!
-            </h2>
-        </div>-->
-
-      <div v-for="p in post_list.slice().reverse()" class="block">
-        <div class="box">
-          <div class="columns">
-            <div class="column is-narrow">
-
-              <!-- delete post -->
-              <div v-if="'[[=curr_email]]'==p.email" class="field is-grouped is-grouped-right">
-                <button @click="delete_post(p.id)" class="button is-danger is-normal stacked-icon">
-                <span class="icon is-small">
-                <i class="fa fa-trash fa-lg"></i>
-                </span>
-                </button>
-              </div>
+  <div class="section" id="vue-target-profile">
+      <div class="container is-success">
+        <div class="notification is-circular">
+          <div class="columns has-text-centered">
+            <div class="column">
+              <p class="heading has-text-success">User</p>
+              <h1 class="title has-text-success"> @[[=username]] </h1>
             </div>
             <div class="column">
-              <div class="block">
-                <div>
-                  <h2 class="title is-3"> {{p.title}} </h2>
-                </div>
-                <div>
-                </div>
-                <div>
-                  <p class="subtitle is-6 has-text-grey"> Posted by {{p.username}} </p>
-                </div>
-              </div>
-
-              <span v-for="type in p.place_kind.split(', ')" class="block">
-                <span class="tag is-warning is-medium mr-3 mb-3">{{type}}</span>
-              </span>
-
-              <div class="block">
-                <div v-if="p.image">
-                  <img class="is-little-circular" width="400" :src="p.image" />
-                </div>
-                <p class="has-text-grey">
-                  <a v-bind:href="'https://www.google.com/search?q='+p.place_name+' '+p.place_address">
-                    <span class="mr-1"><i class="fa fa-location-arrow"></i></span>
-                    {{p.place_name}}
-                  </a>
-                </p>
-                <p class="has-text-grey">
-                  {{p.place_address}} {{p.place_city}} {{p.place_state}} {{p.place_country}}
-                    <a v-bind:href="'[[=URL()]]country_profile/' + p.country_id">
-                    <span class="icon"><i class="fa fa-plane"></i></i></span>
-                  </a>
-                </p>
-              </div>
-              <div class="block">
-                <p> {{p.post_text}} </p>
-              </div>
-              <!-- Display ratings -->
-              <div class="block">
-
-                <p>Overall</p>
-                    <div v-if="p.overall==5">
-
-                      <span class="icon has-text-info">
-                        <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon has-text-info">
-                        <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon has-text-info">
-                        <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon has-text-info">
-                        <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon has-text-info">
-                        <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                    </div>
-                    <div v-if="p.overall==4">
-                      <span class="icon has-text-info">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon has-text-info">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon has-text-info">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon has-text-info">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon">
-                        <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                    </div>
-                    <div v-if="p.overall==3">
-                      <span class="icon has-text-info">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon has-text-info">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon has-text-info">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon">
-                        <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon">
-                        <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                    </div>
-                    <div v-if="p.overall==2">
-                      <span class="icon has-text-info">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon has-text-info">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                    </div>
-                    <div v-if="p.overall==1">
-                      <span class="icon has-text-info">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                      <span class="icon">
-                      <i class="fa fa-coffee fa-lg"></i>
-                      </span>
-                    </div>
-                    <div v-if="p.overall==0">
-                      0/5
-                    </div>
-
-                <div class="columns">
-                  <div class="column">
-                    <span class="icon-text">
-                      <span class="icon">
-                         <i class="fa fa-anchor fa-lg" aria-hidden="true"></i>
-                      </span>
-                    </span>
-                    <progress id="beach" class="progress is-info" :value="p.beach*10" max="100"></progress>
-                  </div>
-                  <div class="column">
-                    <span class="icon-text">
-                      <span class="icon">
-                         <i class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
-                      </span>
-                    </span>
-                    <progress id="sights" class="progress is-info" :value="p.sights*10" max="100"></progress>
-                  </div>
-                  <div class="column">
-                    <span class="icon-text">
-                      <span class="icon">
-                         <i class="fa fa-cutlery fa-lg" aria-hidden="true"></i>
-                      </span>
-                    </span>
-                    <progress id="food" class="progress is-info" :value="p.food*10" max="100"></progress>
-                  </div>
-                  <div class="column">
-                    <span class="icon-text">
-                      <span class="icon">
-                         <i class="fa fa-moon-o fa-lg" aria-hidden="true"></i>
-                      </span>
-                    </span>
-                    <progress id="nightlife" class="progress is-info" :value="p.night*10" max="100">45%</progress>
-                  </div>
-                  <div class="column">
-                    <span class="icon-text">
-                      <span class="icon">
-                         <i class="fa fa-shopping-bag fa-lg" aria-hidden="true"></i>
-                      </span>
-                    </span>
-                    <progress id="shopping" class="progress is-info" :value="p.shop*10" max="100"></progress>
-                  </div>
-                </div>
-
-                </div>
-              </div>
+              <p class="heading has-text-success">Posts</p>
+              <h1 class="title is-success has-text-success">{{length}}</h1>
             </div>
-
-            <p class=" is-size-7 has-text-grey">{{p.time}} UTC</p>
           </div>
         </div>
-      </div>
-    </div>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
+        <div class="columns">
+           <div class="column is-3 has-text-centered">
+  
+              <!-- profile picture -->
+              <div class="block" v-if="!thumbnail[0]">
+                 <p class="control">
+                    <div class="file is-info is-centered">
+                          <label class="file-label">
+                             <input class="file-input" type="file"
+                                    accept=".jpg, .png. jpe, .gif, .bmp, .tif, .tiff|image/*"
+                                    @change="upload_file($event)">
+                             <span class="file-label">
+                                <div class="container">
+                                      <figure class="image is-128x128 container">
+                                          <img class="is-rounded" src="../static/imgs/blank-profile-pic.png" alt="">
+                                      </figure>
+                                   <p>
+                                      <span><i class="fa fa-upload"></i>Upload a profile picture</span>
+                                   </p>
+                                </div>
+                             </span>
+                          </label>
+                    </div>
+                 </p>
+              </div>
+              <div class="block" v-if="thumbnail" >
+                <figure class="image is-square">
+                  <img class="is-rounded" :src="thumbnail" />
+  
+                </figure>
+              </div>
+  
+               <!-- bio -->
+               <div class="block">
+                   <div class="box">
+                       <h2 class="subtitle">Biography</h2>
+                          <div v-if="edit_bio">
+                            <div class="field">
+                              <p class="control">
+                                <input class="input" type="text" placeholder="Enter new biography" v-model="new_bio">
+                              </p>
+                            </div>
+                            <button class="button is-primary is-light" @click="add_bio">Done</button>
+                            <button class="button is-warning" @click="cancel_bio" >Cancel</button>
+                          </div>
+  
+                          <div v-if="!edit_bio">
+                              {{bio}}
+                          </div>
+                   </div>
+               </div>
+  
+              <!-- settings -->
+              <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                  <button class="button is-link" aria-haspopup="true" aria-controls="dropdown-menu2">
+                    <span>Settings</span>
+                    <span class="icon is-small">
+                      <i class="fa fa-cogs" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                  <div class="dropdown-content">
+                    <div class="dropdown-item">
+                      <a class="button is-white is-small" @click="set_edit_bio(true)">
+                          Edit biography
+                       </a>
+                    </div>
+                    <hr class="dropdown-divider">
+                    <div class="dropdown-item">
+                       <button class="button is-white is-small" @click="delete_profilepic">
+                          Delete Profile Picture
+                       </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+           </div>
+  
+           <div class="column">
+              <!-- display posts here -->
+              <div id="posts" class="container">
+                <div class="notification is-circular" style="min-height: 64vh;">
+                  <div class="container" v-if="length==0">
+                    <h2 class="title has-text-success has-text-centered" v-if="length==0">
+                      No Posts Yet!
+                    </h2>
+                  </div>
+                  <div v-for="p in post_list.slice().reverse()" class="block ml-4">
+                    <div class="box">
+                      <div class="columns">
+                        <div class="column is-narrow">
+                          <!-- delete post -->
+                          <div v-if="'[[=curr_email]]'==p.email" class="field is-grouped is-grouped-right">
+                            <button @click="delete_post(p.id)" class="button is-danger is-normal stacked-icon">
+                            <span class="icon is-small">
+                            <i class="fa fa-trash fa-lg"></i>
+                            </span>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="column">
+                          <div class="block">
+                            <div>
+                              <h2 class="title is-3"> {{p.title}} </h2>
+                            </div>
+                            <div>
+                            </div>
+                            <div>
+                              <p class="subtitle is-6 has-text-grey"> Posted by {{p.username}} </p>
+                            </div>
+                          </div>
+    
+                          <span v-for="type in p.place_kind.split(', ')" class="block">
+                            <span class="tag is-warning is-medium mr-3 mb-3">{{type}}</span>
+                          </span>
+    
+                          <div class="block">
+                            <div v-if="p.image">
+                              <img class="is-little-circular" width="400" :src="p.image" />
+                            </div>
+                            <p class="has-text-grey">
+                              <a v-bind:href="'https://www.google.com/search?q='+p.place_name+' '+p.place_address" target="_blank" style="color: rgb(70, 202, 235); text-decoration: none;">
+                                <span class="mr-1"><i class="fa fa-location-arrow"></i></span>
+                                {{p.place_name}}
+                              </a>
+                            </p>
+                            <p class="has-text-grey">
+                              {{p.place_address}} {{p.place_city}} {{p.place_state}} {{p.place_country}}
+                                <a v-bind:href="'[[=URL()]]country_profile/' + p.country_id" style="color: rgb(70, 202, 235); text-decoration: none;">
+                                <span class="icon"><i class="fa fa-plane"></i></i></span>
+                              </a>
+                            </p>
+                          </div>
+                          <div class="block">
+                            <p> {{p.post_text}} </p>
+                          </div>
+                          <!-- Display ratings -->
+                          <div class="block">
+    
+                            <p>Overall</p>
+                                <div v-if="p.overall==5">
+    
+                                  <span class="icon has-text-info">
+                                    <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon has-text-info">
+                                    <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon has-text-info">
+                                    <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon has-text-info">
+                                    <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon has-text-info">
+                                    <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                </div>
+                                <div v-if="p.overall==4">
+                                  <span class="icon has-text-info">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon has-text-info">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon has-text-info">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon has-text-info">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon">
+                                    <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                </div>
+                                <div v-if="p.overall==3">
+                                  <span class="icon has-text-info">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon has-text-info">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon has-text-info">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon">
+                                    <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon">
+                                    <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                </div>
+                                <div v-if="p.overall==2">
+                                  <span class="icon has-text-info">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon has-text-info">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                </div>
+                                <div v-if="p.overall==1">
+                                  <span class="icon has-text-info">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                  <span class="icon">
+                                  <i class="fa fa-coffee fa-lg"></i>
+                                  </span>
+                                </div>
+                                <div v-if="p.overall==0">
+                                  0/5
+                                </div>
+    
+                            <div class="columns">
+                              <div class="column">
+                                <span class="icon-text">
+                                  <span class="icon">
+                                    <i class="fa fa-anchor fa-lg" aria-hidden="true"></i>
+                                  </span>
+                                </span>
+                                <progress id="beach" class="progress is-info" :value="p.beach*10" max="100"></progress>
+                              </div>
+                              <div class="column">
+                                <span class="icon-text">
+                                  <span class="icon">
+                                    <i class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
+                                  </span>
+                                </span>
+                                <progress id="sights" class="progress is-info" :value="p.sights*10" max="100"></progress>
+                              </div>
+                              <div class="column">
+                                <span class="icon-text">
+                                  <span class="icon">
+                                    <i class="fa fa-cutlery fa-lg" aria-hidden="true"></i>
+                                  </span>
+                                </span>
+                                <progress id="food" class="progress is-info" :value="p.food*10" max="100"></progress>
+                              </div>
+                              <div class="column">
+                                <span class="icon-text">
+                                  <span class="icon">
+                                    <i class="fa fa-moon-o fa-lg" aria-hidden="true"></i>
+                                  </span>
+                                </span>
+                                <progress id="nightlife" class="progress is-info" :value="p.night*10" max="100">45%</progress>
+                              </div>
+                              <div class="column">
+                                <span class="icon-text">
+                                  <span class="icon">
+                                    <i class="fa fa-shopping-bag fa-lg" aria-hidden="true"></i>
+                                  </span>
+                                </span>
+                                <progress id="shopping" class="progress is-info" :value="p.shop*10" max="100"></progress>
+                              </div>
+                            </div>
+    
+                            </div>
+                          </div>
+                        </div>
+    
+                        <p class=" is-size-7 has-text-grey">{{p.time}} UTC</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  
+              </div>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+</section>
 
 
 [[block page_scripts]]
