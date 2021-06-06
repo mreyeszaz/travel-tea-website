@@ -1,11 +1,21 @@
 [[extend 'layout.html']]
 
 <div class="section" id="vue-target-profile">
-   <div class="container">
+    <div class="container is-success">
+      <div class="notification">
+        <div class="columns has-text-centered">
+          <div class="column">
+            <p class="heading has-text-success">User</p>
+            <h1 class="title has-text-success"> @[[=username]] </h1>
+          </div>
+          <div class="column">
+            <p class="heading has-text-success">Posts</p>
+            <h1 class="title is-success has-text-success">{{length}}</h1>
+          </div>
+        </div>
+      </div>
       <div class="columns">
          <div class="column is-3 has-text-centered">
-
-            <h1 class="title has-text-success"> @[[=username]] </h1>
 
             <!-- profile picture -->
             <div class="block" v-if="!thumbnail[0]">
@@ -18,7 +28,7 @@
                            <span class="file-label">
                               <div class="container">
                                     <figure class="image is-128x128 container">
-                                        <img src="../static/imgs/blank-profile-pic.png" alt="">
+                                        <img class="is-rounded" src="../static/imgs/blank-profile-pic.png" alt="">
                                     </figure>
                                  <p>
                                     <span><i class="fa fa-upload"></i>Upload a profile picture</span>
@@ -30,7 +40,10 @@
                </p>
             </div>
             <div class="block" v-if="thumbnail" >
-               <img width="200" :src="thumbnail" />
+              <figure class="image is-square">
+                <img class="is-rounded" :src="thumbnail" />
+
+              </figure>
             </div>
 
              <!-- bio -->
@@ -65,12 +78,7 @@
               </div>
               <div class="dropdown-menu" id="dropdown-menu2" role="menu">
                 <div class="dropdown-content">
-<!--                  <div class="dropdown-item">-->
-<!--                    <a class="button is-white is-small"> &lt;!&ndash; href="[[=URL('discover')]]">&ndash;&gt;-->
-<!--                        Edit username-->
-<!--                     </a>-->
-<!--                  </div>-->
-<!--                  <hr class="dropdown-divider">-->
+
                   <div class="dropdown-item">
                     <a class="button is-white is-small" @click="set_edit_bio(true)">
                         Edit biography
@@ -97,12 +105,6 @@
                 No posts yet!
             </h2>
         </div>-->
-            <div class="notification">
-              <h1 class="title is-success has-text-success">
-                   {{length}} posts
-              </h1>
-
-            </div>
 
       <div v-for="p in post_list.slice().reverse()" class="block">
         <div class="box">
