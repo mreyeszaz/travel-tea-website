@@ -31,7 +31,7 @@
                <span>{{r.name}}</span>
             </span>
           </a>
-          <a class="notification button is-fullwidth is-success" v-if="r.type == 'post'">
+          <a class="notification button is-fullwidth is-success" v-if="r.type == 'post'" v-bind:href="'[[=URL()]]post_profile/' + r.id">
             <span class="icon-text">
                <span class="icon ml-1"><i class="fa fa-pencil"></i></i></span>
                <span>{{r.title}}  ({{r.time}})</span>

@@ -470,11 +470,7 @@ def discover():
 @action.uses()
 def search():
     q = request.params.get("q")
-    places = db().select(db.posts.place).as_list()
-    places = [p['place'] for p in places]
-    # find_places = db.place.id.contains(places, all=False)
-    # print(find_places)
-    
+
     if q:
         qq = q.strip()
         t = (db.country.name.contains(qq))
@@ -570,6 +566,27 @@ def country_profile(country_id=None):
                 delete_post_url=URL('delete_post', signer=url_signer),
                 get_country_url=URL('get_country', country_id),
                 curr_email=get_user_email
+                )
+
+@action('post_profile/<post_id:int>', method=["POST", "GET"])
+@action.uses(db, auth.user, "post_profile.html")
+def post_profile(post_id=None):
+    assert post_id is not None
+    post_info = db(db.posts.id == post_id).select().first()
+    curr_name = user_name()
+    return dict(post_info=post_info,
+                get_posts_url=URL('get_posts'),
+                add_post_url=URL('add_post', signer=url_signer),
+                delete_post_url=URL('delete_post', signer=url_signer),
+                get_likes_url=URL('get_likes', signer=url_signer),
+                add_like_url=URL('add_like', signer=url_signer),
+                flip_like_url=URL('flip_like', signer=url_signer),
+                delete_like_url=URL('delete_like', signer=url_signer),
+                get_travels_url=URL('get_travels', signer=url_signer),
+                add_travel_url=URL('add_travel', signer=url_signer),
+                delete_travel_url=URL('delete_travel', signer=url_signer),
+                curr_email=get_user_email(),
+                curr_name=curr_name
                 )
 
 @action('get_country/<country_id:int>', method=["GET", "POST"])

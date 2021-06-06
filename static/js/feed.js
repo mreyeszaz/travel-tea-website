@@ -345,9 +345,7 @@ let init = (app) => {
         if(s !== "") {
             s = s.slice(0, -2);
         }
-
         let j = 0;
-
         for(; j < post.dislikers.length; j++) {
             if(j == 0) {
                 if(s !== "") {
@@ -358,27 +356,9 @@ let init = (app) => {
             s+= post.dislikers[j];
             s+= ", ";
         }
-
         if(j > 0) {
             s = s.slice(0, -2);
         }
-/*
-        let k = 0;
-
-        for(; k < post.travelers.length; k++) {
-            if(k == 0) {
-                if(s !== "") {
-                    s += "; ";
-                }
-                s += "Also traveled to by ";
-            }
-            s+= post.travelers[k];
-            s+= ", ";
-        }
-
-        if(k > 0) {
-            s = s.slice(0, -2);
-        }*/
         return s;
     }
 
@@ -451,18 +431,6 @@ let init = (app) => {
         });
     };
 
-    /*app.select_country = function(){
-        var country = document.getElementById("country");
-        var selected = country.value;
-        app.vue.country = selected;
-    }*/
-
-    /*app.show_country = function(str) {
-      //document.getElementById("txtHint").innerHTML = str;
-      app.vue.country = str;
-    }*/
-
-
     // This contains all the methods.
     app.methods = {
         // Complete as you see fit.
@@ -497,10 +465,10 @@ let init = (app) => {
         // Typically this is a server GET call to load the data.
         axios.get(get_posts_url).then(function(result){
             let posts = result.data.posts;
+
             app.enumerate(posts);
             let likes = result.data.likes;
             let travels = result.data.travels;
-            //app.complete(posts);
 
             for(let i = 0; i < posts.length; i++) {
                 posts[i].hover = false;
