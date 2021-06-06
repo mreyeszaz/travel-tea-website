@@ -25,6 +25,7 @@ let init = (app) => {
         food_rating: 0,
         night_rating: 0,
         shop_rating: 0,
+        num_posts: 0,
     };
 
     app.enumerate = (a) => {
@@ -121,8 +122,9 @@ let init = (app) => {
             app.enumerate(app.vue.post_list);
             app.vue.selection_done = false;
             app.cancel_post();
+            app.vue.num_posts = app.vue.post_list.length;
         });
-
+        
         console.log(app.vue.place);
         console.log(app.vue.place_properties);
     };
@@ -445,6 +447,7 @@ let init = (app) => {
                     break;
                 }
             }
+            app.vue.num_posts = app.vue.post_list.length;
         });
     };
 
@@ -526,6 +529,7 @@ let init = (app) => {
             }
 
             app.vue.post_list = posts;
+            app.vue.num_posts = app.vue.post_list.length;
         });
     };
 

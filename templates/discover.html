@@ -12,31 +12,32 @@
 }
 </style>
 
-<section style="background: url('https://source.unsplash.com/1600x900/?travel') no-repeat center center/cover; height: 60vh; position: relative;">
+<section style="background: url('https://source.unsplash.com/1600x900/?travel') no-repeat center center/cover; height: 68vh; position: relative;">
 
-  <div class="section" id="vue-target" v-cloak>
-      <div class="control block has-icons-left">
-        <input class="input" type="text" placeholder="Search" v-model="query" @keyup="search" />
-          <span class="icon is-left">
-          <i class="fa fa-search" aria-hidden="true"></i>
-        </span>
+  <div class="container" id="vue-target" v-cloak>
+      <div class="pt-5">
+        <div class="control block has-icons-left is-marginless">
+          <input class="input" type="text" placeholder="Search" v-model="query" @keyup="search" />
+            <span class="icon is-left">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </span>
+        </div>
       </div>
 
       <div v-for="r in results">
           <a class="notification button is-fullwidth is-link" v-if="r.type == 'country'" v-bind:href="'[[=URL()]]country_profile/' + r.id">
             <span class="icon-text">
-               <span class="icon"><i class="fa fa-plane"></i></i></span>
+               <span class="icon ml-1"><i class="fa fa-plane"></i></i></span>
                <span>{{r.name}}</span>
             </span>
           </a>
           <a class="notification button is-fullwidth is-success" v-if="r.type == 'post'">
             <span class="icon-text">
-               <span class="icon"><i class="fa fa-pencil"></i></i></span>
+               <span class="icon ml-1"><i class="fa fa-pencil"></i></i></span>
                <span>{{r.title}}  ({{r.time}})</span>
             </span>
           </a>
       </div>
-
   </div>
 </section>
 

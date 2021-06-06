@@ -470,10 +470,16 @@ def discover():
 @action.uses()
 def search():
     q = request.params.get("q")
+    places = db().select(db.posts.place).as_list()
+    places = [p['place'] for p in places]
+    # find_places = db.place.id.contains(places, all=False)
+    # print(find_places)
+    
     if q:
         qq = q.strip()
         t = (db.country.name.contains(qq))
         p = (db.posts.title.contains(qq))
+        key_words = (db.posts)
     else:
         t = db.country.id > 0
 
@@ -606,7 +612,7 @@ def insert_all_countries():
             thumbnail=country_flag,
             country_rating=rating_id,
         )
-
+    print("DONE INSERTING COUNTRIES")
     return "ok"
 
 @action('delete_all_countries', method=["GET", "POST"])
