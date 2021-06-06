@@ -89,7 +89,12 @@ def get_place_components(place, category, properties):
 @action('index')
 @action.uses(db, auth, session, 'index.html')
 def index():
-    return dict(name=user_name())
+    explored = db(db.place).count()
+    total_users = db(db.auth_user).count()
+    print(total_users)
+    return dict(name=user_name(),
+                explored=explored,
+                total_users=total_users)
 
 
 @action('profile')
@@ -259,7 +264,8 @@ def add_post():
 
     country_id = db(db.country.name == country).select().first()
 
-    place_id = db.place.insert(
+
+    place_id = db.place.update_or_insert(
         name=name,
         address=address,
         city=city,
@@ -267,6 +273,9 @@ def add_post():
         country=country_id,
         type=type,
     )
+
+    if not place_id:
+        place_id = (db(db.place.name == name).select().first()).id
 
     pid = db.posts.insert(
         place=place_id,
