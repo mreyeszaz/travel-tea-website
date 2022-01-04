@@ -16,7 +16,7 @@ def extract_country_info(country_name):
         return text
 
 def get_country_flag_link(country_code):
-    return "https://www.countryflags.io/" + country_code + "/flat/64.png"
+    return "https://countryflagsapi.com/png/" + country_code
     
 
 
